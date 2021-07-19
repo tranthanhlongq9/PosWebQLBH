@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PosWebQLBH.Application.Catalog.Products;
+using PosWebQLBH.Application.Common;
 using PosWebQLBH.Data.Entities;
 using PosWebQLBH.Utilities.Constants;
 using System;
@@ -36,7 +37,9 @@ namespace PosWebQLBH.WebApp
                 options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
             //Declare DI
+            services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManageProductService, ManageProductService>();
 
             services.AddControllersWithViews();
 

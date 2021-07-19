@@ -9,14 +9,16 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
 {
     public class ProductViewModel
     {
-        public string ID_Product { get; set; }
+        public string ID { get; set; }
 
-        public string Nam_Category { get; set; }
+        public string ID_Category { get; set; }
+        public string Name_Category { get; set; }
 
         public string Name_Product { get; set; }
 
         public decimal Price { get; set; }
 
+        public string ID_Unit { get; set; }
         public string Name_Unit { get; set; }
 
         public decimal? Length { get; set; }

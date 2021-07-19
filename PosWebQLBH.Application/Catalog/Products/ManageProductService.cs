@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.Application.Catalog.Products
 {
-    class ManageProductService : IManageProductService
+    public class ManageProductService : IManageProductService
     {
         private readonly DbQLBHContext _context;
         private readonly IStorageService _storageService;
@@ -49,22 +49,18 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Inventories = new List<Inventory>()
                 {
                     new Inventory()
-                    {
-                        Quantity = request.Quantity
+                    {                        
+                        Quantity = request.Quantity,
+                        CreatedBy = request.CreatedBy,
+                        CreatedDate = DateTime.Now,
+                        UpdatedBy = request.UpdatedBy,
+                        UpdatedDate = DateTime.Now,
+
                     }
                 }
 
             };
-            //save image
-            //if (request.ThumbnailImage != null)
-            //{
-            //    product = new Product()
-            //    {
-            //        ImagePath = await this.SaveFile(request.ThumbnailImage),
-
-            //    };                              
-            //}
-
+            
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product.IdProduct;
@@ -77,14 +73,14 @@ namespace PosWebQLBH.Application.Catalog.Products
             if (product == null) throw new EShopException($"Cannot find a product: {productId}");
 
             //xóa ảnh
-            //var images = _context.Products.Where(i => i.ID_Product == productId);
-            //foreach (var image in images)
-            //{
-            //    await _storageService.DeleteFileAsync(image.ImagePath);
-            //}
+            var images = _context.Products.Where(i => i.IdProduct == productId);
+            foreach (var image in images)
+            {
+                await _storageService.DeleteFileAsync(image.ImagePath);
+            }
 
             //xóa bên bảng Inventory
-            var quantity = await _context.Inventories.FindAsync(productId);
+            var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);                       
             _context.Inventories.Remove(quantity);
 
             _context.Products.Remove(product);
@@ -117,8 +113,8 @@ namespace PosWebQLBH.Application.Catalog.Products
                 .Take(request.PageSize)
                 .Select(x => new ProductViewModel()
                 {
-                    ID_Product = x.p.IdProduct,
-                    Nam_Category = x.c.NameCategory,
+                    ID = x.p.IdProduct,
+                    Name_Category = x.c.NameCategory,
                     Name_Product = x.p.NameProduct,
                     Price = x.p.Price,
                     Name_Unit = x.u.NameUnit,
@@ -139,9 +135,35 @@ namespace PosWebQLBH.Application.Catalog.Products
 
         }
 
-        public Task<ProductViewModel> GetById(string productId)
+        public async Task<ProductViewModel> GetById(string productId)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(productId);
+            var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
+            var cate = await _context.Categories.FindAsync(product.IdCategory);
+            var unit = await _context.Units.FindAsync(product.IdUnit);
+
+            var productViewModel = new ProductViewModel()
+            {
+                ID = product.IdProduct,
+                Name_Product = product != null ? product.NameProduct : null,
+                ID_Category = product != null ? product.IdCategory : null,
+                Name_Category = cate.NameCategory,
+                Price = product.Price,
+                ID_Unit = product != null ? product.IdUnit : null,
+                Name_Unit = unit.NameUnit,
+                Length = product.Length,
+                Width = product.Width,
+                Height = product.Height,
+                Weight = product.Weight,
+                CreatedBy = product != null ? product.CreatedBy : null,
+                CreatedDate = product.CreatedDate,
+                UpdatedBy = product != null ? product.UpdatedBy : null,
+                UpdatedDate = product.UpdatedDate,
+                Quantity = inventory.Quantity,
+                ThumbnailImage = product != null ? product.ImagePath : null
+
+            };
+            return productViewModel;
         }
 
         public async Task<int> Update(ProductUpdateRequest request)
@@ -161,14 +183,14 @@ namespace PosWebQLBH.Application.Catalog.Products
             product.ImagePath = await this.SaveFile(request.ThumbnailImage);
 
             //update tồn kho
-            var quantity = await _context.Inventories.FindAsync(request.ID_Product);
+            var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == request.ID_Product);
             quantity.Quantity = request.Quantity;
             _context.Inventories.Update(quantity);
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdatePrice(int productId, decimal newPrice)
+        public async Task<bool> UpdatePrice(string productId, decimal newPrice)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new EShopException($"Cannot find a product with id: {productId}");
