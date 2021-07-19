@@ -33,8 +33,8 @@ namespace PosWebQLBH.Application.Catalog.Products
 
             var data = await query.Select(x => new ProductViewModel()
             {
-                ID_Product = x.p.IdProduct,
-                Nam_Category = x.c.NameCategory,
+                ID = x.p.IdProduct,
+                Name_Category = x.c.NameCategory,
                 Name_Product = x.p.NameProduct,
                 Price = x.p.Price,
                 Name_Unit = x.u.NameUnit,
@@ -74,8 +74,8 @@ namespace PosWebQLBH.Application.Catalog.Products
                 .Take(request.PageSize)
                 .Select(x => new ProductViewModel()
                 {
-                    ID_Product = x.p.IdProduct,
-                    Nam_Category = x.c.NameCategory,
+                    ID = x.p.IdProduct,
+                    Name_Category = x.c.NameCategory,
                     Name_Product = x.p.NameProduct,
                     Price = x.p.Price,
                     Name_Unit = x.u.NameUnit,

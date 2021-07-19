@@ -15,7 +15,7 @@ namespace PosWebQLBH.Application.Catalog.Products
 
         Task<ProductViewModel> GetById(string productId);
 
-        Task<bool> UpdatePrice(int productId, decimal newPrice);
+        Task<bool> UpdatePrice(string productId, decimal newPrice);
 
         //Task<bool> UpdateStock(int productId, int addedQuantity);
 

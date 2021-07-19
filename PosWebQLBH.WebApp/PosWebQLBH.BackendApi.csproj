@@ -18,4 +18,8 @@
     <ProjectReference Include="..\PosWebQLBH.ViewModels\PosWebQLBH.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\user-content\" />
+  </ItemGroup>
+
 </Project>

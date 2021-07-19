@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using PosWebQLBH.Application.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PosShopApp.Application.Common
+namespace PosWebQLBH.Application.Common
 {
     public class FileStorageService : IStorageService
     {

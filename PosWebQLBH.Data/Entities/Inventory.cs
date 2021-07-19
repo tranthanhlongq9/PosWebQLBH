@@ -16,5 +16,6 @@ namespace PosWebQLBH.Data.Entities
         public DateTime? UpdatedDate { get; set; }
 
         public virtual Product IdProductNavigation { get; set; }
+
     }
 }
