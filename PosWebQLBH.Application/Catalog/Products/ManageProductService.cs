@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PosWebQLBH.Application.Common;
 using PosWebQLBH.Data.Entities;
 using PosWebQLBH.Utilities.Exceptions;
+using PosWebQLBH.ViewModels.Catalog.ProductImages;
 using PosWebQLBH.ViewModels.Catalog.Products;
 using PosWebQLBH.ViewModels.Common;
 using System;
@@ -122,7 +123,8 @@ namespace PosWebQLBH.Application.Catalog.Products
                     Width = x.p.Width,
                     Height = x.p.Height,
                     Weight = x.p.Weight,
-                    //Quantity = x.inv.Quantity,
+                    Quantity = x.inv.Quantity,
+                    ThumbnailImage = x.p.ImagePath
                 }).ToListAsync();
 
             //4. Select and projection
@@ -166,6 +168,18 @@ namespace PosWebQLBH.Application.Catalog.Products
             return productViewModel;
         }
 
+        //Phát  triển sau
+        public async Task<List<ProductImageViewModel>> GetListImages(string productId)
+        {
+            return await _context.Products.Where(x => x.IdProduct == productId)
+                .Select(i => new ProductImageViewModel()
+                {
+                    ProductId = i.IdProduct,
+                    ImagePath = i.ImagePath,                                      
+                    //SortOrder = i.SortOrder
+                }).ToListAsync();
+        }
+
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.ID_Product);
@@ -182,7 +196,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             //save image
             product.ImagePath = await this.SaveFile(request.ThumbnailImage);
 
-            //update tồn kho
+            //update SL
             var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == request.ID_Product);
             quantity.Quantity = request.Quantity;
             _context.Inventories.Update(quantity);
@@ -195,6 +209,14 @@ namespace PosWebQLBH.Application.Catalog.Products
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new EShopException($"Cannot find a product with id: {productId}");
             product.Price = newPrice;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> UpdateStock(string productId, int addedQuantity) //update số lượng tồn kho
+        {
+            var proQuantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
+            if (proQuantity == null) throw new EShopException($"Cannot find a product with id: {productId}");
+            proQuantity.Quantity += addedQuantity; //tăng số lượng tồn kho lên
             return await _context.SaveChangesAsync() > 0;
         }
 

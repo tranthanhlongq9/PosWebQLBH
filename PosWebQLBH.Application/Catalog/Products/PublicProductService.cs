@@ -75,15 +75,18 @@ namespace PosWebQLBH.Application.Catalog.Products
                 .Select(x => new ProductViewModel()
                 {
                     ID = x.p.IdProduct,
+                    ID_Category = x.p.IdCategory,
                     Name_Category = x.c.NameCategory,
                     Name_Product = x.p.NameProduct,
                     Price = x.p.Price,
+                    ID_Unit = x.p.IdUnit,
                     Name_Unit = x.u.NameUnit,
                     Length = x.p.Length,
                     Width = x.p.Width,
                     Height = x.p.Height,
-                    Weight = x.p.Weight
-                    //Quantity = x.inv.Quantity,
+                    Weight = x.p.Weight,
+                    Quantity = x.inv.Quantity,
+                    ThumbnailImage = x.p.ImagePath
                 }).ToListAsync();
 
             //4. Select and projection
