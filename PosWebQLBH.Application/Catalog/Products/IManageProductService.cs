@@ -1,6 +1,8 @@
 ﻿
+using PosWebQLBH.ViewModels.Catalog.ProductImages;
 using PosWebQLBH.ViewModels.Catalog.Products;
 using PosWebQLBH.ViewModels.Common;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PosWebQLBH.Application.Catalog.Products
@@ -17,9 +19,7 @@ namespace PosWebQLBH.Application.Catalog.Products
 
         Task<bool> UpdatePrice(string productId, decimal newPrice);
 
-        //Task<bool> UpdateStock(int productId, int addedQuantity);
-
-        //Task AddViewcount(int productId);
+        Task<bool> UpdateStock(string productId, int addedQuantity);
 
         Task<PagedResult<ProductViewModel>> GetAllpaging(GetManageProductPagingRequest request);
 
@@ -31,6 +31,6 @@ namespace PosWebQLBH.Application.Catalog.Products
 
         //Task<ProductImageViewModel> GetImageById(int imageId);
 
-        //Task<List<ProductImageViewModel>> GetListImages(int productId);
+        Task<List<ProductImageViewModel>> GetListImages(string productId);
     }
 }

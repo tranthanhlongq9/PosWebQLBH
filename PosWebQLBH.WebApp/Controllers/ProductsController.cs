@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.BackendApi.Controllers
 {
+    //api/products
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;
         private readonly IManageProductService _manageProductService;
 
-        public ProductController(IPublicProductService publicProductService, 
+        public ProductsController(IPublicProductService publicProductService, 
                                  IManageProductService manageProductService)
         {
             _publicProductService = publicProductService;
@@ -25,15 +26,15 @@ namespace PosWebQLBH.BackendApi.Controllers
 
         //http://localhost:port/product
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var products = await _publicProductService.GetAll();
             return Ok(products);
         }
 
-        //http://localhost:port/product/public-paging
-        [HttpGet("public-paging")]
-        public async Task<IActionResult> Get([FromQuery]GetPublicProductPagingRequest request)
+        //http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
+        [HttpGet("{CategoryId}")]
+        public async Task<IActionResult> GetByCategoryId([FromQuery]GetPublicProductPagingRequest request)
         {
             var products = await _publicProductService.GetAllByCategoryId(request);
             return Ok(products);
@@ -54,6 +55,10 @@ namespace PosWebQLBH.BackendApi.Controllers
         [HttpPost] //thường là HttpPost vì nó tạo mới
         public async Task<IActionResult> Create([FromForm]ProductCreateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var productId = await _manageProductService.Create(request);
             if (productId == null)
                 return BadRequest();
@@ -66,6 +71,10 @@ namespace PosWebQLBH.BackendApi.Controllers
         [HttpPut] // là HttpPut vì nó update
         public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var affectedResult = await _manageProductService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
@@ -87,6 +96,16 @@ namespace PosWebQLBH.BackendApi.Controllers
         public async Task<IActionResult> UpdatePrice(string productId, decimal newPrice)
         {
             var isSuccessfull = await _manageProductService.UpdatePrice(productId, newPrice);
+            if (isSuccessfull)
+                return Ok();
+
+            return BadRequest();
+        }
+
+        [HttpPut("{productId}/{addedQuantity}")] //HttpPut : update
+        public async Task<IActionResult> UpdateStockProduct(string productId, int addedQuantity) //update số lượng tồn kho
+        {
+            var isSuccessfull = await _manageProductService.UpdateStock(productId, addedQuantity);
             if (isSuccessfull)
                 return Ok();
 
