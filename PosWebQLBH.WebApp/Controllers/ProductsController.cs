@@ -33,7 +33,7 @@ namespace PosWebQLBH.BackendApi.Controllers
         }
 
         //http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
-        [HttpGet("CategoryId=")]
+        [HttpGet("product=")]
         public async Task<IActionResult> GetByCategoryId([FromQuery] GetPublicProductPagingRequest request)
         {
             var products = await _publicProductService.GetAllByCategoryId(request);

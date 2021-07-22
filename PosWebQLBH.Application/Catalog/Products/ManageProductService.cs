@@ -136,11 +136,11 @@ namespace PosWebQLBH.Application.Catalog.Products
         public async Task<ProductViewModel> GetById(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
+            if (product == null) throw new EShopException($"Cannot find a product: {productId}");
+
             var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
             var cate = await _context.Categories.FindAsync(product.IdCategory);
             var unit = await _context.Units.FindAsync(product.IdUnit);
-
-            //if (product == null || inventory == null || cate == null || unit == null) throw new EShopException($"Cannot find a product: {productId}");
 
             var productViewModel = new ProductViewModel()
             {
