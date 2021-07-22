@@ -50,22 +50,19 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Inventories = new List<Inventory>()
                 {
                     new Inventory()
-                    {                        
+                    {
                         Quantity = request.Quantity,
                         CreatedBy = request.CreatedBy,
                         CreatedDate = DateTime.Now,
                         UpdatedBy = request.UpdatedBy,
                         UpdatedDate = DateTime.Now,
-
                     }
                 }
-
             };
-            
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product.IdProduct;
-
         }
 
         public async Task<int> Delete(string productId)
@@ -81,7 +78,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             }
 
             //xóa bên bảng Inventory
-            var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);                       
+            var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
             _context.Inventories.Remove(quantity);
 
             _context.Products.Remove(product);
@@ -134,12 +131,13 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Items = data
             };
             return pagedResult;
-
         }
 
         public async Task<ProductViewModel> GetById(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
+            if (product == null) throw new EShopException($"Cannot find a product: {productId}");
+
             var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
             var cate = await _context.Categories.FindAsync(product.IdCategory);
             var unit = await _context.Units.FindAsync(product.IdUnit);
@@ -163,7 +161,6 @@ namespace PosWebQLBH.Application.Catalog.Products
                 UpdatedDate = product.UpdatedDate,
                 Quantity = inventory.Quantity,
                 ThumbnailImage = product != null ? product.ImagePath : null
-
             };
             return productViewModel;
         }
@@ -175,7 +172,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                 .Select(i => new ProductImageViewModel()
                 {
                     ProductId = i.IdProduct,
-                    ImagePath = i.ImagePath,                                      
+                    ImagePath = i.ImagePath,
                     //SortOrder = i.SortOrder
                 }).ToListAsync();
         }
