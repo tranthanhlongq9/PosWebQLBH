@@ -17,7 +17,7 @@ namespace PosWebQLBH.BackendApi.Controllers
         private readonly IPublicProductService _publicProductService;
         private readonly IManageProductService _manageProductService;
 
-        public ProductsController(IPublicProductService publicProductService, 
+        public ProductsController(IPublicProductService publicProductService,
                                  IManageProductService manageProductService)
         {
             _publicProductService = publicProductService;
@@ -33,8 +33,8 @@ namespace PosWebQLBH.BackendApi.Controllers
         }
 
         //http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
-        [HttpGet("{CategoryId}")]
-        public async Task<IActionResult> GetByCategoryId([FromQuery]GetPublicProductPagingRequest request)
+        [HttpGet("CategoryId=")]
+        public async Task<IActionResult> GetByCategoryId([FromQuery] GetPublicProductPagingRequest request)
         {
             var products = await _publicProductService.GetAllByCategoryId(request);
             return Ok(products);
@@ -44,16 +44,16 @@ namespace PosWebQLBH.BackendApi.Controllers
         [HttpGet("{productId}")]
         public async Task<IActionResult> GetById(string productId)
         {
-            var product = await _manageProductService.GetById(productId);
-            if (product == null)
-            { 
+            var proById = await _manageProductService.GetById(productId);
+            if (proById == null)
+            {
                 return BadRequest("Không tìm thấy sản phẩm");
             }
-            return Ok(product);
+            return Ok(proById);
         }
 
         [HttpPost] //thường là HttpPost vì nó tạo mới
-        public async Task<IActionResult> Create([FromForm]ProductCreateRequest request)
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace PosWebQLBH.BackendApi.Controllers
 
             var product = await _manageProductService.GetById(productId);
 
-            return CreatedAtAction(nameof(GetById), new { id = productId } , request);
+            return CreatedAtAction(nameof(GetById), new { id = productId }, request);
         }
 
         [HttpPut] // là HttpPut vì nó update
@@ -111,6 +111,5 @@ namespace PosWebQLBH.BackendApi.Controllers
 
             return BadRequest();
         }
-
     }
 }
