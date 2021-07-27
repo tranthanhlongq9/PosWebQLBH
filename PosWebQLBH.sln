@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.BackendApi", "PosWebQLBH.WebApp\PosWebQLBH.BackendApi.csproj", "{80029073-8331-4FFF-9E6D-C9DCD0ED451E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.Data", "PosWebQLBH.Data\PosWebQLBH.Data.csproj", "{8C9749E1-1C78-4B82-B94B-FC6CDA01E1E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.Application", "PosWebQLBH.Application\PosWebQLBH.Application.csproj", "{5C7A0412-761E-4903-8F96-E9DA733269D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.ViewModels", "PosWebQLBH.ViewModels\PosWebQLBH.ViewModels.csproj", "{38B871C4-44BA-43B5-A612-0220C2FD7899}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.Utilities", "PosWebQLBH.Utilities\PosWebQLBH.Utilities.csproj", "{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PosWebQLBH.AdminApp", "PosWebQLBH.AdminApp\PosWebQLBH.AdminApp.csproj", "{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80029073-8331-4FFF-9E6D-C9DCD0ED451E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80029073-8331-4FFF-9E6D-C9DCD0ED451E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80029073-8331-4FFF-9E6D-C9DCD0ED451E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80029073-8331-4FFF-9E6D-C9DCD0ED451E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C9749E1-1C78-4B82-B94B-FC6CDA01E1E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C9749E1-1C78-4B82-B94B-FC6CDA01E1E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C9749E1-1C78-4B82-B94B-FC6CDA01E1E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C9749E1-1C78-4B82-B94B-FC6CDA01E1E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C7A0412-761E-4903-8F96-E9DA733269D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C7A0412-761E-4903-8F96-E9DA733269D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C7A0412-761E-4903-8F96-E9DA733269D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C7A0412-761E-4903-8F96-E9DA733269D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38B871C4-44BA-43B5-A612-0220C2FD7899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38B871C4-44BA-43B5-A612-0220C2FD7899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38B871C4-44BA-43B5-A612-0220C2FD7899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38B871C4-44BA-43B5-A612-0220C2FD7899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B85FAC9D-F6EF-4A38-89FF-954D939463CD}
+	EndGlobalSection
+EndGlobal
