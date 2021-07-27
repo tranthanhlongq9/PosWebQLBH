@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.Application", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.ViewModels", "PosWebQLBH.ViewModels\PosWebQLBH.ViewModels.csproj", "{38B871C4-44BA-43B5-A612-0220C2FD7899}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PosWebQLBH.Utilities", "PosWebQLBH.Utilities\PosWebQLBH.Utilities.csproj", "{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.Utilities", "PosWebQLBH.Utilities\PosWebQLBH.Utilities.csproj", "{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PosWebQLBH.AdminApp", "PosWebQLBH.AdminApp\PosWebQLBH.AdminApp.csproj", "{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

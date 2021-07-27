@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PosWebQLBH.Application.Catalog.Products;
 using PosWebQLBH.ViewModels.Catalog.Products;
@@ -12,6 +13,7 @@ namespace PosWebQLBH.BackendApi.Controllers
     //api/products
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;
@@ -102,7 +104,7 @@ namespace PosWebQLBH.BackendApi.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{productId}/{addedQuantity}")] //HttpPut : update
+        [HttpPut("{productId}/quantity+={addedQuantity}")] //HttpPut : update
         public async Task<IActionResult> UpdateStockProduct(string productId, int addedQuantity) //update số lượng tồn kho
         {
             var isSuccessfull = await _manageProductService.UpdateStock(productId, addedQuantity);

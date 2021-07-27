@@ -1,11 +1,12 @@
-﻿using System;
+﻿//using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
 
 namespace PosWebQLBH.Data.Entities
 {
-    public partial class Role
+    public partial class Role /*: IdentityUser<Guid>*/
     {
         public Role()
         {

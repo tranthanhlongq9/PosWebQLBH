@@ -1,10 +1,10 @@
-{
+﻿{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:12619",
-      "sslPort": 44317
+      "applicationUrl": "http://localhost:64703",
+      "sslPort": 44397
     }
   },
   "profiles": {
@@ -15,14 +15,14 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "PosWebQLBH.BackendApi": {
+    "PosWebQLBH.AdminApp": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "swagger",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5001"
+      }
     }
   }
 }
