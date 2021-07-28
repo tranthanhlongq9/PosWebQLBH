@@ -35,6 +35,7 @@ namespace PosWebQLBH.Application.System.Users
             _config = config;
         }
 
+        //hàm xử lý đăng nhập
         public async Task<string> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
@@ -68,6 +69,7 @@ namespace PosWebQLBH.Application.System.Users
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        //hàm lấy user và sắp xếp show theo trang
         public async Task<PagedResult<UserVm>> GetUserPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
@@ -102,6 +104,7 @@ namespace PosWebQLBH.Application.System.Users
             return pagedResult;
         }
 
+        //hàm tạo tài khoản
         public async Task<bool> Register(RegisterRequest request)
         {
             //var user = new Employee()

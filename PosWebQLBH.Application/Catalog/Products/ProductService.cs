@@ -91,7 +91,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
-        //hàm lấy sp và phân trang
+        //hàm lấy sp và sắp xếp show theo trang
         public async Task<PagedResult<ProductViewModel>> GetAllpaging(GetManageProductPagingRequest request)
         {
             //1. select join

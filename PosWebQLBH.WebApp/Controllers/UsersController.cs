@@ -12,6 +12,7 @@ namespace PosWebQLBH.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] //ủy quyền
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -22,21 +23,23 @@ namespace PosWebQLBH.BackendApi.Controllers
         }
 
         [HttpPost("authenticate")]
-        [AllowAnonymous]
+        [AllowAnonymous] //cho phép vượt qua ủy quyền
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var resultToken = await _userService.Authencate(request);
+
             if (string.IsNullOrEmpty(resultToken))
             {
                 return BadRequest("Username hoặc mật khẩu không đúng");
             }
+
             return Ok(resultToken);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -49,6 +52,15 @@ namespace PosWebQLBH.BackendApi.Controllers
                 return BadRequest("Đăng ký thất bại");
             }
             return Ok();
+        }
+
+        //bắt buộc phải xác nhận ủy quyền vì ko có [AllowAnonymous]
+        //http: //localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=...
+        [HttpGet("paging")] //lấy tất cả user và phân trang
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
+        {
+            var products = await _userService.GetUserPaging(request);
+            return Ok(products);
         }
     }
 }
