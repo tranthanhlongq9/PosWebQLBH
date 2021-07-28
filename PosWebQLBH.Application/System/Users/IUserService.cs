@@ -1,4 +1,5 @@
-﻿using PosWebQLBH.ViewModels.System.Users;
+﻿using PosWebQLBH.ViewModels.Common;
+using PosWebQLBH.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace PosWebQLBH.Application.System.Users
         Task<string> Authencate(LoginRequest request);
 
         Task<bool> Register(RegisterRequest request);
+
+        Task<PagedResult<UserVm>> GetUserPaging(GetUserPagingRequest request);
     }
 }

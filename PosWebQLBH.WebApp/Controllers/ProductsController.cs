@@ -16,37 +16,34 @@ namespace PosWebQLBH.BackendApi.Controllers
     [Authorize]
     public class ProductsController : ControllerBase
     {
-        private readonly IPublicProductService _publicProductService;
-        private readonly IManageProductService _manageProductService;
+        private readonly IProductService _productService;
 
-        public ProductsController(IPublicProductService publicProductService,
-                                 IManageProductService manageProductService)
+        public ProductsController(IProductService productService)
         {
-            _publicProductService = publicProductService;
-            _manageProductService = manageProductService;
+            _productService = productService;
         }
 
         //http://localhost:port/product
-        [HttpGet]
+        [HttpGet] //lấy tất cả sp
         public async Task<IActionResult> GetAll()
         {
-            var products = await _publicProductService.GetAll();
+            var products = await _productService.GetAll();
             return Ok(products);
         }
 
         //http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
-        [HttpGet("product=")]
+        [HttpGet("product=")] //lấy sp theo category id
         public async Task<IActionResult> GetByCategoryId([FromQuery] GetPublicProductPagingRequest request)
         {
-            var products = await _publicProductService.GetAllByCategoryId(request);
+            var products = await _productService.GetAllByCategoryId(request);
             return Ok(products);
         }
 
         //http://localhost:port/product/pep221
-        [HttpGet("{productId}")]
+        [HttpGet("{productId}")] //lấy sp theo id
         public async Task<IActionResult> GetById(string productId)
         {
-            var proById = await _manageProductService.GetById(productId);
+            var proById = await _productService.GetById(productId);
             if (proById == null)
             {
                 return BadRequest("Không tìm thấy sản phẩm");
@@ -61,11 +58,11 @@ namespace PosWebQLBH.BackendApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await _manageProductService.Create(request);
+            var productId = await _productService.Create(request);
             if (productId == null)
                 return BadRequest();
 
-            var product = await _manageProductService.GetById(productId);
+            var product = await _productService.GetById(productId);
 
             return CreatedAtAction(nameof(GetById), new { id = productId }, request);
         }
@@ -77,7 +74,7 @@ namespace PosWebQLBH.BackendApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var affectedResult = await _manageProductService.Update(request);
+            var affectedResult = await _productService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
 
@@ -87,27 +84,27 @@ namespace PosWebQLBH.BackendApi.Controllers
         [HttpDelete("{productId}")] // là HttpDelete vì nó xóa
         public async Task<IActionResult> Delete(string productId)
         {
-            var affectedResult = await _manageProductService.Delete(productId);
+            var affectedResult = await _productService.Delete(productId);
             if (affectedResult == 0)
                 return BadRequest();
 
             return Ok();
         }
 
-        [HttpPatch("{productId}/{newPrice}")] //HttpPatch : Update 1 phần của bản ghi
+        [HttpPatch("{productId}/{newPrice}")] //HttpPatch : Update 1 phần của bản ghi.. (và vì price nằm trong bảng product nên dùng update 1 phần sẽ nhanh hơn, chú trọng vào update giá thôi)
         public async Task<IActionResult> UpdatePrice(string productId, decimal newPrice)
         {
-            var isSuccessfull = await _manageProductService.UpdatePrice(productId, newPrice);
+            var isSuccessfull = await _productService.UpdatePrice(productId, newPrice);
             if (isSuccessfull)
                 return Ok();
 
             return BadRequest();
         }
 
-        [HttpPut("{productId}/quantity+={addedQuantity}")] //HttpPut : update
+        [HttpPut("{productId}/quantity+={addedQuantity}")] //HttpPut : update tồn kho
         public async Task<IActionResult> UpdateStockProduct(string productId, int addedQuantity) //update số lượng tồn kho
         {
-            var isSuccessfull = await _manageProductService.UpdateStock(productId, addedQuantity);
+            var isSuccessfull = await _productService.UpdateStock(productId, addedQuantity);
             if (isSuccessfull)
                 return Ok();
 

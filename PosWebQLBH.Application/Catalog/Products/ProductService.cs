@@ -15,17 +15,21 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.Application.Catalog.Products
 {
-    public class ManageProductService : IManageProductService
+    public class ProductService : IProductService
     {
+        //khai báo
         private readonly DbQLBHContext _context;
+
         private readonly IStorageService _storageService;
 
-        public ManageProductService(DbQLBHContext context, IStorageService storageService)
+        //gán
+        public ProductService(DbQLBHContext context, IStorageService storageService)
         {
             _context = context;
             _storageService = storageService;
         }
 
+        //hàm tạo sp
         public async Task<string> Create(ProductCreateRequest request)
         {
             var product = new Product()
@@ -65,6 +69,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             return product.IdProduct;
         }
 
+        //hàm xóa sp
         public async Task<int> Delete(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -86,6 +91,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
+        //hàm lấy sp và phân trang
         public async Task<PagedResult<ProductViewModel>> GetAllpaging(GetManageProductPagingRequest request)
         {
             //1. select join
@@ -133,6 +139,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             return pagedResult;
         }
 
+        //hàm lấy sp theo id
         public async Task<ProductViewModel> GetById(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -177,6 +184,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                 }).ToListAsync();
         }
 
+        //hàm cập nhật sản phẩm
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.ID_Product);
@@ -201,6 +209,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
+        //hàm cập nhật giá
         public async Task<bool> UpdatePrice(string productId, decimal newPrice)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -209,12 +218,97 @@ namespace PosWebQLBH.Application.Catalog.Products
             return await _context.SaveChangesAsync() > 0;
         }
 
+        //hàm cập nhật tồn kho
         public async Task<bool> UpdateStock(string productId, int addedQuantity) //update số lượng tồn kho
         {
             var proQuantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
             if (proQuantity == null) throw new EShopException($"Cannot find a product with id: {productId}");
             proQuantity.Quantity += addedQuantity; //tăng số lượng tồn kho lên
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        //hàm lấy tất cả sp
+        public async Task<List<ProductViewModel>> GetAll()
+        {
+            //return await _context.Products.Select(x => new ProductViewModel()
+            //{
+            //    ID_Product = x.IdProduct,
+            //    Name_Product = x.NameProduct,
+
+            //}).ToListAsync();
+
+            var query = from p in _context.Products
+                        join inv in _context.Inventories on p.IdProduct equals inv.IdProduct
+                        join c in _context.Categories on p.IdCategory equals c.IdCategory
+                        join u in _context.Units on p.IdUnit equals u.IdUnit
+                        select new { p, c, u, inv };
+
+            var data = await query.Select(x => new ProductViewModel()
+            {
+                ID = x.p.IdProduct,
+                Name_Category = x.c.NameCategory,
+                Name_Product = x.p.NameProduct,
+                Price = x.p.Price,
+                Name_Unit = x.u.NameUnit,
+                Length = x.p.Length,
+                Width = x.p.Width,
+                Height = x.p.Height,
+                Weight = x.p.Weight,
+                Quantity = x.inv.Quantity,
+                CreatedBy = x.p.CreatedBy,
+                CreatedDate = x.p.CreatedDate,
+                UpdatedBy = x.p.UpdatedBy,
+                UpdatedDate = x.p.UpdatedDate,
+                ThumbnailImage = x.p.ImagePath
+            }).ToListAsync();
+            return data;
+        }
+
+        //hàm lấy sản phẩm theo category id
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request)
+        {
+            //1. select join
+            var query = from p in _context.Products
+                        join inv in _context.Inventories on p.IdProduct equals inv.IdProduct
+                        join c in _context.Categories on p.IdCategory equals c.IdCategory
+                        join u in _context.Units on p.IdUnit equals u.IdUnit
+                        select new { p, c, inv, u };
+
+            //2. filter
+            if (request.CategoryId != null)
+            {
+                query = query.Where(p => p.p.IdCategory == request.CategoryId);
+            }
+
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new ProductViewModel()
+                {
+                    ID = x.p.IdProduct,
+                    ID_Category = x.p.IdCategory,
+                    Name_Category = x.c.NameCategory,
+                    Name_Product = x.p.NameProduct,
+                    Price = x.p.Price,
+                    ID_Unit = x.p.IdUnit,
+                    Name_Unit = x.u.NameUnit,
+                    Length = x.p.Length,
+                    Width = x.p.Width,
+                    Height = x.p.Height,
+                    Weight = x.p.Weight,
+                    Quantity = x.inv.Quantity,
+                    ThumbnailImage = x.p.ImagePath
+                }).ToListAsync();
+
+            //4. Select and projection
+            var pagedResult = new PagedResult<ProductViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+            return pagedResult;
         }
 
         //Hàm save file ảnh
