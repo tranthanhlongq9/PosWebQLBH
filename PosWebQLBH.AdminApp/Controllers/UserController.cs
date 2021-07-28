@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
@@ -27,9 +28,19 @@ namespace PosWebQLBH.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
+            var sessions = HttpContext.Session.GetString("Token"); //lấy session
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = sessions,
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _userApiClient.GetUsersPagings(request);
+
+            return View(data);
         }
 
         [HttpGet]
@@ -54,7 +65,9 @@ namespace PosWebQLBH.AdminApp.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10), //sau 10p sẽ out session
                 IsPersistent = false
             };
-            //Login session và đăng nhập
+            HttpContext.Session.SetString("Token", token);
+
+            //Cookie và đăng nhập
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
@@ -66,12 +79,15 @@ namespace PosWebQLBH.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            //đăng xuất SignOutAsync
+            //đăng xuất SignOutAsync -- xóa cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            HttpContext.Session.Remove("Token"); //xóa session
+
             return RedirectToAction("Login", "User");
         }
 
-        //hàm lấy token
+        //hàm xử lý token
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {
             IdentityModelEventSource.ShowPII = true;

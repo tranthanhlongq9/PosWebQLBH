@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.Application.System.Users
 {
+    //Làm việc với Database
     public interface IUserService
     {
         Task<string> Authencate(LoginRequest request);

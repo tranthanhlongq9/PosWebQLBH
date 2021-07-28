@@ -1,4 +1,4 @@
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +39,12 @@ namespace PosWebQLBH.AdminApp
 
             services.AddControllersWithViews()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
-            ;
+
+            //add session
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); //session tồn tại trong 30p
+            });
 
             //Declare DI
             services.AddTransient<IUserApiClient, UserApiClient>();
@@ -71,11 +76,13 @@ namespace PosWebQLBH.AdminApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            app.UseAuthentication(); //chạy authenticate
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession(); //chạy session
 
             app.UseEndpoints(endpoints =>
             {

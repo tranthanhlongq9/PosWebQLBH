@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.Application.Catalog.Products
 {
+    //này làm việc với Database
     public interface IProductService
     {
         //tạo
