@@ -1,4 +1,4 @@
-# POS Web App project 
+﻿# POS Web App project 
 ## Technologies
 - ASP.NET Core 5.0
 - Entity Framework Core 5.0
@@ -14,3 +14,6 @@
 ## Youtube tutorial
 - TEDU
 ## Admin template: https://startbootstrap.com/templates/sb-admin/
+## Tài khoản:
+- tk: Admin 
+- mk: Admin@123
