@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +46,8 @@ namespace PosWebQLBH.AdminApp
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30); //session tồn tại trong 30p
             });
+            //AddSingleton: cả ứng dụng dùng đúng 1 instance
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Declare DI
             services.AddTransient<IUserApiClient, UserApiClient>();

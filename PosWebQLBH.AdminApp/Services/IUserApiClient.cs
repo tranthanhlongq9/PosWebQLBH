@@ -10,10 +10,14 @@ namespace PosWebQLBH.AdminApp.Services
     //này sẽ làm việc với API
     public interface IUserApiClient
     {
-        Task<string> Authenticate(LoginRequest request);
+        Task<ApiResult<string>> Authenticate(LoginRequest request);
 
-        Task<PagedResult<UserVm>> GetUsersPagings(GetUserPagingRequest request);
+        Task<ApiResult<PagedResult<UserVm>>> GetUsersPagings(GetUserPagingRequest request);
 
-        Task<bool> RegisterUser(RegisterRequest registerRequest);
+        Task<ApiResult<bool>> RegisterUser(RegisterRequest registerRequest);
+
+        Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
+
+        Task<ApiResult<UserVm>> GetUserById(Guid id);
     }
 }

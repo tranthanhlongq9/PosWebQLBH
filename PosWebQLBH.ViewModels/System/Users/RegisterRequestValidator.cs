@@ -22,7 +22,7 @@ namespace PosWebQLBH.ViewModels.System.Users
                 .WithMessage("Ngày tháng năm sinh không được vượt quá 100 năm !!");
 
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email là bắt buộc")
-                .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$") //email pattern
+                .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$") //đây là email pattern
                 .WithMessage("Định dạng Email không khớp - không được sử dụng những ký tự đặc biệt");
 
             RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Số điện thoại là bắt buộc")
