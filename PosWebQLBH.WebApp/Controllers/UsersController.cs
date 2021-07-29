@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//backendApi sẽ tương tác với Database
 namespace PosWebQLBH.BackendApi.Controllers
 {
     [Route("api/[controller]")]
@@ -29,14 +30,14 @@ namespace PosWebQLBH.BackendApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await _userService.Authencate(request);
+            var result = await _userService.Authencate(request);
 
-            if (string.IsNullOrEmpty(resultToken))
+            if (string.IsNullOrEmpty(result.ResultObj))
             {
-                return BadRequest("Username hoặc mật khẩu không đúng");
+                return BadRequest(result);
             }
 
-            return Ok(resultToken);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -47,11 +48,26 @@ namespace PosWebQLBH.BackendApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Register(request);
-            if (!result)
+            if (!result.IsSuccessed)
             {
-                return BadRequest("Đăng ký thất bại");
+                return BadRequest(result);
             }
-            return Ok();
+            return Ok(result);
+        }
+
+        //http: //localhost/api/users/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         //bắt buộc phải xác nhận ủy quyền vì ko có [AllowAnonymous]
@@ -61,6 +77,13 @@ namespace PosWebQLBH.BackendApi.Controllers
         {
             var products = await _userService.GetUserPaging(request);
             return Ok(products);
+        }
+
+        [HttpGet("{id}")] //lấy tất cả user theo id
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var user = await _userService.GetUserById(id);
+            return Ok(user);
         }
     }
 }

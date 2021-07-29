@@ -44,15 +44,15 @@ namespace PosWebQLBH.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var token = await _userApiClient.Authenticate(request); //lấy token
+            var result = await _userApiClient.Authenticate(request); //lấy token
 
-            var userPrincipal = this.ValidateToken(token);
+            var userPrincipal = this.ValidateToken(result.ResultObj);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10), //sau 10p sẽ out session
                 IsPersistent = false
             };
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("Token", result.ResultObj);
 
             //Cookie và đăng nhập
             await HttpContext.SignInAsync(

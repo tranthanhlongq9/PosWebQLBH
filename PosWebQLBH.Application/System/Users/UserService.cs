@@ -1,4 +1,5 @@
 ﻿using eShopSolution.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,8 +27,11 @@ namespace PosWebQLBH.Application.System.Users
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IConfiguration _config;
 
-        public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                            RoleManager<AppRole> roleManager, IConfiguration config)
+        public UserService(UserManager<AppUser> userManager,
+                            SignInManager<AppUser> signInManager,
+
+                            RoleManager<AppRole> roleManager,
+                            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -36,7 +40,7 @@ namespace PosWebQLBH.Application.System.Users
         }
 
         //hàm xử lý đăng nhập
-        public async Task<string> Authencate(LoginRequest request)
+        public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) return null;
@@ -66,11 +70,31 @@ namespace PosWebQLBH.Application.System.Users
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
+        }
+
+        public async Task<ApiResult<UserVm>> GetUserById(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<UserVm>("User không tồn tại");
+            }
+
+            var userVm = new UserVm()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                Birthday = user.Dob
+            };
+            return new ApiSuccessResult<UserVm>(userVm);
         }
 
         //hàm lấy user và sắp xếp show theo trang
-        public async Task<PagedResult<UserVm>> GetUserPaging(GetUserPagingRequest request)
+        public async Task<ApiResult<PagedResult<UserVm>>> GetUserPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
             if (!string.IsNullOrEmpty(request.Keyword))
@@ -101,13 +125,24 @@ namespace PosWebQLBH.Application.System.Users
                 TotalRecord = totalRow,
                 Items = data
             };
-            return pagedResult;
+            return new ApiSuccessResult<PagedResult<UserVm>>(pagedResult);
         }
 
         //hàm tạo tài khoản
-        public async Task<bool> Register(RegisterRequest request)
+        public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
-            //var user = new Employee()
+            // check
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user != null)
+            {
+                return new ApiErrorResult<bool>("Tài khoản này đã tồn tại");
+            }
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
+            {
+                return new ApiErrorResult<bool>("Email đã tồn tại");
+            }
+
+            //user = new Employee()
             //{
             //    IdEmployee = request.UserName,
             //    NameEmployee = request.NameEmployee,
@@ -119,7 +154,7 @@ namespace PosWebQLBH.Application.System.Users
             //    CreatedDate = DateTime.Now,
             //};
 
-            var user = new AppUser()
+            user = new AppUser()
             {
                 Dob = request.Birthday,
                 Email = request.Email,
@@ -132,9 +167,33 @@ namespace PosWebQLBH.Application.System.Users
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
-                return true;
+                return new ApiSuccessResult<bool>();
             }
-            return false;
+            return new ApiErrorResult<bool>("Đăng ký không thành công");
+        }
+
+        public async Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request)
+        {
+            //AnyAsync : Có bất cứ cái nào thỏa điều kiện
+            if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id))
+            {
+                return new ApiErrorResult<bool>("Email đã tồn tại");
+            }
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            user.Dob = request.Birthday;
+            user.Email = request.Email;
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.PhoneNumber = request.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Cập nhật không thành công");
         }
     }
 }
