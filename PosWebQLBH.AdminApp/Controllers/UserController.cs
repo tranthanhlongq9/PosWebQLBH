@@ -112,5 +112,28 @@ namespace PosWebQLBH.AdminApp.Controllers
 
             return RedirectToAction("Index", "Login");
         }
+
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            return View(new UserDeleteRequest()
+            {
+                Id = id
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(UserDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.DeleteUser(request.Id);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
+            return View(request);
+        }
     }
 }

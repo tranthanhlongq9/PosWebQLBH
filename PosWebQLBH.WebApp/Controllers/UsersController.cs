@@ -85,5 +85,12 @@ namespace PosWebQLBH.BackendApi.Controllers
             var user = await _userService.GetUserById(id);
             return Ok(user);
         }
+
+        [HttpDelete("{id}")] //lấy tất cả user theo id
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _userService.Delete(id);
+            return Ok(result);
+        }
     }
 }
