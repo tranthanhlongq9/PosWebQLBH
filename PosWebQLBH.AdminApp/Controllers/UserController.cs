@@ -95,6 +95,13 @@ namespace PosWebQLBH.AdminApp.Controllers
             return View(request);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var result = await _userApiClient.GetUserById(id);
+            return View(result.ResultObj);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
