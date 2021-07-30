@@ -41,7 +41,9 @@
                         <th>
                             Email
                         </th>
-                        <th></th>
+                        <th>
+                            Option
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +77,8 @@
                     }
                 </tbody>
             </table>
+
+            @await Component.InvokeAsync("Pager", Model)
         </div>
     </div>
 </div>
