@@ -11,7 +11,6 @@
         setTimeout(function () {
             $('#msgAlert').fadeOut('slow');
         }, 3000);
-
     </script>
 }
 
@@ -22,7 +21,7 @@
         <li class="breadcrumb-item active">Danh sách User</li>
     </ol>
 
-    <div class="card mb-4">      
+    <div class="card mb-4">
         <div class="card-header">
             <a class="btn btn-success" asp-action="Create" asp-controller="User">Tạo mới</a>
             <!--Tìm kiếm theo keyword ( nhưng mà nhìn nó phèn hơn JS )-->
@@ -98,9 +97,10 @@
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.Id }) |
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
+                                @Html.ActionLink("Gán Quyền", "RoleAssign", new { id = item.Id })
                             </td>
                         </tr>
                     }

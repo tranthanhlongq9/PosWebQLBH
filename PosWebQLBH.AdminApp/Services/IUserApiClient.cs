@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.AdminApp.Services
 {
-    //này sẽ làm việc với API
+    //này sẽ làm việc với backendAPI
     public interface IUserApiClient
     {
         Task<ApiResult<string>> Authenticate(LoginRequest request);
@@ -21,5 +21,7 @@ namespace PosWebQLBH.AdminApp.Services
         Task<ApiResult<UserVm>> GetUserById(Guid id);
 
         Task<ApiResult<bool>> DeleteUser(Guid id);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

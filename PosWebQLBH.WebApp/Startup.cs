@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PosWebQLBH.Application.Catalog.Products;
 using PosWebQLBH.Application.Common;
+using PosWebQLBH.Application.System.Roles;
 using PosWebQLBH.Application.System.Users;
 using PosWebQLBH.Data.Entities;
 using PosWebQLBH.Utilities.Constants;
@@ -48,7 +49,7 @@ namespace PosWebQLBH.WebApp
                 .AddEntityFrameworkStores<DbQLBHContext>()
                 .AddDefaultTokenProviders();
 
-            //Declare DI
+            //Declare DI -- product
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IProductService, ProductService>();
 
@@ -58,10 +59,13 @@ namespace PosWebQLBH.WebApp
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
 
+            //DI -- Role
+            services.AddTransient<IRoleService, RoleService>();
+
             //services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             //services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
 
-            //Register xác thực bắt lỗi
+            //Tạo xác thực bắt lỗi
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 

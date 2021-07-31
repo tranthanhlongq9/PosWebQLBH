@@ -24,7 +24,7 @@ namespace PosWebQLBH.BackendApi.Controllers
         }
 
         [HttpPost("authenticate")]
-        [AllowAnonymous] //cho phép vượt qua ủy quyền
+        [AllowAnonymous] //cho phép vượt qua ủy quyền -- cho phép hoạt động
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
@@ -90,6 +90,20 @@ namespace PosWebQLBH.BackendApi.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _userService.Delete(id);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.RoleAssign(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
     }

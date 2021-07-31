@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PosWebQLBH.AdminApp.Services;
+using PosWebQLBH.ViewModels.Common;
 using PosWebQLBH.ViewModels.System.Users;
 using System;
 using System.Text;
@@ -16,11 +17,14 @@ namespace PosWebQLBH.AdminApp.Controllers
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
+        private readonly IRoleApiClient _roleApiClient;
 
-        public UserController(IUserApiClient userApiClient, IConfiguration configuration)
+        public UserController(IUserApiClient userApiClient, IConfiguration configuration,
+                              IRoleApiClient roleApiClient)
         {
             _userApiClient = userApiClient;
             _configuration = configuration;
+            _roleApiClient = roleApiClient;
         }
 
         //phương thức lấy user
@@ -147,6 +151,50 @@ namespace PosWebQLBH.AdminApp.Controllers
 
             ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
             return View(request);
+        }
+
+        [HttpGet] //lấy dữ liệu
+        public async Task<IActionResult> RoleAssign(Guid id)
+        {
+            var roleAssignRequest = await GetRoleAssignRequest(id);
+            return View(roleAssignRequest);
+        }
+
+        [HttpPost] //đưa dữ liệu thay đổi vào db
+        public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid) // ModelState: lỗi hệ thống
+                return View();
+
+            var result = await _userApiClient.RoleAssign(request.Id, request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật quyền cho người dùng thành công ";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi (lỗi model)
+            var roleAssignRequest = await GetRoleAssignRequest(request.Id);
+
+            return View(roleAssignRequest);
+        }
+
+        private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
+        {
+            var userObj = await _userApiClient.GetUserById(id);
+            var roleObj = await _roleApiClient.GetAll();
+            var roleAssignRequest = new RoleAssignRequest();
+            foreach (var role in roleObj.ResultObj)
+            {
+                roleAssignRequest.Roles.Add(new SelectItem()
+                {
+                    Id = role.Id.ToString(),
+                    Name = role.Name,
+                    Selected = userObj.ResultObj.Roles.Contains(role.Name)
+                });
+            }
+
+            return roleAssignRequest;
         }
     }
 }
