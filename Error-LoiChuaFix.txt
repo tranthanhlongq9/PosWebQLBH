@@ -1,0 +1,2 @@
+﻿1. Khi đăng nhập: nếu để trong username vs để trống password thì sẽ bị trả về view Error
+2. Khi xóa user .. phải hiển thị thêm thông tin trước khi xóa ( mới hiện đc ID thôi )

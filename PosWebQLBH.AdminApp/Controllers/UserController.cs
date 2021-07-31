@@ -26,8 +26,7 @@ namespace PosWebQLBH.AdminApp.Controllers
         //phương thức lấy user
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            var sessions = HttpContext.Session.GetString("Token"); //lấy session
-
+            //var sessions = HttpContext.Session.GetString("Token"); //lấy session
             var request = new GetUserPagingRequest()
             {
                 Keyword = keyword,
@@ -35,7 +34,12 @@ namespace PosWebQLBH.AdminApp.Controllers
                 PageSize = pageSize
             };
             var data = await _userApiClient.GetUsersPagings(request);
+            ViewBag.Keyword = keyword; //để giữ dữ liệu keyword lại trên view khi tìm kiếm
 
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMess = TempData["result"];
+            }
             return View(data.ResultObj);
         }
 
@@ -53,13 +57,16 @@ namespace PosWebQLBH.AdminApp.Controllers
 
             var result = await _userApiClient.RegisterUser(request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Tạo Người Dùng Thành Công !!";
                 return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
 
             ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
             return View(request);
         }
 
-        [HttpGet]
+        [HttpGet] //lấy dữ liệu
         public async Task<IActionResult> Edit(Guid id)
         {
             var result = await _userApiClient.GetUserById(id);
@@ -81,7 +88,7 @@ namespace PosWebQLBH.AdminApp.Controllers
             return RedirectToAction("Error", "Home");
         }
 
-        [HttpPost]
+        [HttpPost] //đưa dữ liệu vào db
         public async Task<IActionResult> Edit(UserUpdateRequest request)
         {
             if (!ModelState.IsValid) // ModelState: lỗi hệ thống
@@ -89,7 +96,10 @@ namespace PosWebQLBH.AdminApp.Controllers
 
             var result = await _userApiClient.UpdateUser(request.Id, request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Chỉnh sửa người dùng thành công.. ";
                 return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
 
             ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi (lỗi model)
             return View(request);
@@ -108,7 +118,7 @@ namespace PosWebQLBH.AdminApp.Controllers
             //đăng xuất SignOutAsync -- xóa cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            HttpContext.Session.Remove("Token"); //xóa session
+            HttpContext.Session.Remove("Token"); //xóa token session đc cấp lúc đăng nhập
 
             return RedirectToAction("Index", "Login");
         }
@@ -130,7 +140,10 @@ namespace PosWebQLBH.AdminApp.Controllers
 
             var result = await _userApiClient.DeleteUser(request.Id);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa Người Dùng Thành Công";
                 return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
 
             ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
             return View(request);
