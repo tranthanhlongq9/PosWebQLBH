@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PosWebQLBH.ViewModels.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,5 +31,8 @@ namespace PosWebQLBH.ViewModels.System.Users
 
         [Display(Name = "Email:")]
         public string Email { get; set; }
+
+        [Display(Name = "Quyền hạn:")]
+        public IList<string> Roles { get; set; }
     }
 }

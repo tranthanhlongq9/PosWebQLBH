@@ -22,5 +22,8 @@ namespace PosWebQLBH.Application.System.Users
         Task<ApiResult<UserVm>> GetUserById(Guid id);
 
         Task<ApiResult<bool>> Delete(Guid id);
+
+        //Gán quyền
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

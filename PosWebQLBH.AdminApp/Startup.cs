@@ -46,11 +46,13 @@ namespace PosWebQLBH.AdminApp
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30); //session tồn tại trong 30p
             });
+
             //AddSingleton: cả ứng dụng dùng đúng 1 instance
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Declare DI
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IRoleApiClient, RoleApiClient>();
 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

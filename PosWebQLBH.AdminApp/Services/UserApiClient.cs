@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.AdminApp.Services
 {
+    //tích hợp vào cho Client: người dùng
     public class UserApiClient : IUserApiClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -28,7 +29,7 @@ namespace PosWebQLBH.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        //hàm xác thực đăng nhập
+        //Tích hợp hàm xác thực đăng nhập
         public async Task<ApiResult<string>> Authenticate(LoginRequest request)
         {
             var json = JsonConvert.SerializeObject(request);
@@ -47,6 +48,7 @@ namespace PosWebQLBH.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<string>>(await response.Content.ReadAsStringAsync());
         }
 
+        //Tích hợp hàm Xóa user
         public async Task<ApiResult<bool>> DeleteUser(Guid id)
         {
             //lấy session
@@ -67,6 +69,7 @@ namespace PosWebQLBH.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
 
+        //Tích hợp hàm lấy user bằng truyền id vào
         public async Task<ApiResult<UserVm>> GetUserById(Guid id)
         {
             //lấy session
@@ -87,6 +90,7 @@ namespace PosWebQLBH.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<UserVm>>(body);
         }
 
+        //Tích hợp hàm phân trang
         public async Task<ApiResult<PagedResult<UserVm>>> GetUsersPagings(GetUserPagingRequest request)
         {
             var client = _httpClientFactory.CreateClient();
@@ -106,6 +110,7 @@ namespace PosWebQLBH.AdminApp.Services
             return users;
         }
 
+        //Tạo User
         public async Task<ApiResult<bool>> RegisterUser(RegisterRequest registerRequest)
         {
             var client = _httpClientFactory.CreateClient();
@@ -124,6 +129,31 @@ namespace PosWebQLBH.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
+        //Tích hợp hàm Gán quyền
+        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            //lấy session
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            //truyền token đăng nhập vào ủy quyền(Authorization)
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/users/{id}/roles", httpContent);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        //Chình sửa User
         public async Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
