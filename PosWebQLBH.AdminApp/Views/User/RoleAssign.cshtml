@@ -63,7 +63,7 @@
                                     <input type="hidden" asp-for="Roles[i].Name" />
                                 </td>
                                 <td>
-                                    <input type="checkbox" asp-for="Roles[i].Name" />
+                                   @Model.Roles[i].Description
                                 </td>
                             </tr>
                         }

@@ -14,6 +14,8 @@ namespace PosWebQLBH.ViewModels.Common
 
         public bool Selected { get; set; }
 
+        public string Description { get; set; }
+
         public object Select()
         {
             throw new NotImplementedException();

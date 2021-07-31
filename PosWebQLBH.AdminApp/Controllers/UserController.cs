@@ -179,6 +179,7 @@ namespace PosWebQLBH.AdminApp.Controllers
             return View(roleAssignRequest);
         }
 
+        //lấy tt Role show lên
         private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
         {
             var userObj = await _userApiClient.GetUserById(id);
@@ -190,7 +191,8 @@ namespace PosWebQLBH.AdminApp.Controllers
                 {
                     Id = role.Id.ToString(),
                     Name = role.Name,
-                    Selected = userObj.ResultObj.Roles.Contains(role.Name)
+                    Selected = userObj.ResultObj.Roles.Contains(role.Name),
+                    Description = role.Description
                 });
             }
 
