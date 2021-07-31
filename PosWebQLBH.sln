@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Hosts", "3. Hosts", "{E5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Solution Items", "{C3236CE2-0BBA-4740-85F5-13F3D100F308}"
 	ProjectSection(SolutionItems) = preProject
+		Error-LoiChuaFix.txt = Error-LoiChuaFix.txt
 		README.md = README.md
 	EndProjectSection
 EndProject

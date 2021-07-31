@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.ViewModels.System.Users
 {
-    public class LoginRequest
+    public class UserDeleteRequest
     {
-        public string UserName { get; set; }
+        public Guid Id { get; set; }
 
-        //[DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        public bool RememberMe { get; set; }
+        //[Display(Name = "Tài khoản - Mã nhân viên")]
+        //public string UserName { get; set; }
     }
 }

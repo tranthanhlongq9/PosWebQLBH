@@ -45,6 +45,11 @@ namespace PosWebQLBH.AdminApp.Controllers
                 return View(ModelState);
 
             var result = await _userApiClient.Authenticate(request); //lấy token
+            if (result.ResultObj == null) //nếu ko có tài khoản thì sẽ trả về message lỗi
+            {
+                ModelState.AddModelError("", result.Message);
+                return View();
+            }
 
             var userPrincipal = this.ValidateToken(result.ResultObj);
             var authProperties = new AuthenticationProperties

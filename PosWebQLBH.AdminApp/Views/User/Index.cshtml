@@ -6,6 +6,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 3000);
+
+    </script>
+}
+
 <div class="container-fluid px-4">
     <h1 class="mt-4">Danh Sách Người Dùng</h1>
     <ol class="breadcrumb mb-4">
@@ -13,12 +22,32 @@
         <li class="breadcrumb-item active">Danh sách User</li>
     </ol>
 
-    <div class="card mb-4">
+    <div class="card mb-4">      
         <div class="card-header">
             <a class="btn btn-success" asp-action="Create" asp-controller="User">Tạo mới</a>
+            <!--Tìm kiếm theo keyword ( nhưng mà nhìn nó phèn hơn JS )-->
+            @*<form asp-action="Index" method="get">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                        </div>
+                        <div class="cold-md-3">
+                            <button type="submit" class="btn btn-primary">Tìm</button>
+                            <button type="button" onclick="window.location.href='/User/Index'" class="btn btn-dark">Reset</button>
+                        </div>
+                    </div>
+                </form>*@
         </div>
 
         <div class="card-body">
+            <!--alert thông báo-->
+            @if (ViewBag.SuccessMess != null)
+            {
+                <div id="msgAlert" class="alert alert-success" role="alert">
+                    @ViewBag.SuccessMess
+                </div>
+            }
+
             <!-- id="datatablesSimple" -->
             <table class="table table-bordered" id="datatablesSimple">
                 <thead>
@@ -78,7 +107,7 @@
                 </tbody>
             </table>
 
-            @await Component.InvokeAsync("Pager", Model)
+            @await Component.InvokeAsync("Pager", Model) <!--Phân trang-->
         </div>
     </div>
 </div>

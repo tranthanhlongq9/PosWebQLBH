@@ -20,5 +20,7 @@ namespace PosWebQLBH.Application.System.Users
         Task<ApiResult<PagedResult<UserVm>>> GetUserPaging(GetUserPagingRequest request);
 
         Task<ApiResult<UserVm>> GetUserById(Guid id);
+
+        Task<ApiResult<bool>> Delete(Guid id);
     }
 }
