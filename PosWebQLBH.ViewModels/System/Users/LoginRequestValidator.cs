@@ -11,8 +11,8 @@ namespace PosWebQLBH.ViewModels.System.Users
     {
         public LoginRequestValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Tài khoản là bắt buộc");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Mật khẩu là bắt buộc")
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("Tài khoản không được để trống");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Mật khẩu không được để trống")
                 .MinimumLength(6).WithMessage("Mật khẩu phải có ít nhất 6 ký tự !");
         }
     }

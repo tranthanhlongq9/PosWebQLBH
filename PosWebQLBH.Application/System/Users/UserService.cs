@@ -40,6 +40,14 @@ namespace PosWebQLBH.Application.System.Users
         //hàm xử lý đăng nhập
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
+            if (request.UserName == null)
+            {
+                return new ApiErrorResult<string>("Tài khoản không đc để trống !!");
+            }
+            if (request.Password == null)
+            {
+                return new ApiErrorResult<string>("Mật khẩu không đc để trống !!");
+            }
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) return new ApiErrorResult<string>("Tài khoản không tồn tại");
 
