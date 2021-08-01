@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PosWebQLBH.AdminApp.Services;
+using PosWebQLBH.Utilities.Constants;
 using PosWebQLBH.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,10 @@ namespace PosWebQLBH.AdminApp.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10), //sau 10p sẽ out session
                 IsPersistent = false
             };
-            HttpContext.Session.SetString("Token", result.ResultObj);
 
+            HttpContext.Session.SetString(SystemConstants.AppSettings.DefaultLanguageId,
+                                            _configuration[SystemConstants.AppSettings.DefaultLanguageId]);
+            HttpContext.Session.SetString(SystemConstants.AppSettings.Token, result.ResultObj);
             //Cookie và đăng nhập
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
