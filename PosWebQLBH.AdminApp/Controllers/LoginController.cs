@@ -66,7 +66,7 @@ namespace PosWebQLBH.AdminApp.Controllers
                         userPrincipal,
                         authProperties);
 
-            ModelState.AddModelError("", result.Message);
+            //ModelState.AddModelError("", result.Message);
             return RedirectToAction("Index", "Home");
         }
 
