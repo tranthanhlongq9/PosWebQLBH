@@ -1,9 +1,10 @@
 ﻿# POS Web App project 
 ## Technologies
-- ASP.NET Core 5.0
+- ASP.NET Core 5.0 - 
 - Entity Framework Core 5.0
 ## Install Tools
-- .NET Core SDK 3.1
+- .NET Core SDK 5.0 https://dotnet.microsoft.com/download -- tải SDK Core 5.0
+- npm ( nodejs )
 - Git client
 - Visual Studio 2019
 - SQL Server 2019
@@ -11,8 +12,9 @@
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
 - Microsoft.EntityFrameworkCore.Design
+- ...
 ## Youtube tutorial
-- TEDU
+- TEDU Channel
 ## Admin template: https://startbootstrap.com/templates/sb-admin/
 ## Tài khoản:
 - tk: Admin 

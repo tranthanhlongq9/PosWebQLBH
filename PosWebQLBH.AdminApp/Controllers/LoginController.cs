@@ -42,7 +42,8 @@ namespace PosWebQLBH.AdminApp.Controllers
         public async Task<IActionResult> Index(LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
+                //return View(ModelState); //bỏ cái này vì khi lỗi sẽ show ra modelState
+                return View(); //dùng cái này có lỗi sẽ trả về view
 
             var result = await _userApiClient.Authenticate(request); //lấy token
             if (result.ResultObj == null) //nếu ko có tài khoản thì sẽ trả về message lỗi
@@ -65,6 +66,7 @@ namespace PosWebQLBH.AdminApp.Controllers
                         userPrincipal,
                         authProperties);
 
+            ModelState.AddModelError("", result.Message);
             return RedirectToAction("Index", "Home");
         }
 
