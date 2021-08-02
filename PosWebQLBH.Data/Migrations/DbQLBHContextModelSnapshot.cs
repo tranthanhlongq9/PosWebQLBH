@@ -425,6 +425,26 @@ namespace PosWebQLBH.Data.Migrations
                     b.ToTable("Inventory");
                 });
 
+            modelBuilder.Entity("PosWebQLBH.Data.Entities.Language", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(5)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
             modelBuilder.Entity("PosWebQLBH.Data.Entities.Product", b =>
                 {
                     b.Property<string>("IdProduct")

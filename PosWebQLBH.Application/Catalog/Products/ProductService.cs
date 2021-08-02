@@ -99,13 +99,14 @@ namespace PosWebQLBH.Application.Catalog.Products
                         join inv in _context.Inventories on p.IdProduct equals inv.IdProduct
                         join c in _context.Categories on p.IdCategory equals c.IdCategory
                         join u in _context.Units on p.IdUnit equals u.IdUnit
+                        //where p.LanguageId == request.LanguageId //sau này thêm language sẽ cần
                         select new { p, c, inv, u };
 
             //2. filter
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.p.NameProduct.Contains(request.Keyword));
 
-            if (request.CategoryIds.Count > 0)
+            if (request.CategoryIds != null && request.CategoryIds.Count > 0)
             {
                 query = query.Where(p => request.CategoryIds.Contains(p.c.IdCategory));
             }
@@ -127,6 +128,10 @@ namespace PosWebQLBH.Application.Catalog.Products
                     Height = x.p.Height,
                     Weight = x.p.Weight,
                     Quantity = x.inv.Quantity,
+                    CreatedBy = x.p.CreatedBy,
+                    CreatedDate = x.p.CreatedDate,
+                    UpdatedBy = x.p.UpdatedBy,
+                    UpdatedDate = x.p.UpdatedDate,
                     ThumbnailImage = x.p.ImagePath
                 }).ToListAsync();
 

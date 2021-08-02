@@ -31,11 +31,18 @@ namespace PosWebQLBH.BackendApi.Controllers
             return Ok(products);
         }
 
-        //http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
-        [HttpGet("product=")] //lấy sp theo category id
-        public async Task<IActionResult> GetByCategoryId([FromQuery] GetPublicProductPagingRequest request)
+        ////http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
+        //[HttpGet("product=")] //lấy sp theo category id
+        //public async Task<IActionResult> GetByCategoryId([FromQuery] GetPublicProductPagingRequest request)
+        //{
+        //    var products = await _productService.GetAllByCategoryId(request);
+        //    return Ok(products);
+        //}
+
+        [HttpGet("paging")] //lấy sp theo category id
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
         {
-            var products = await _productService.GetAllByCategoryId(request);
+            var products = await _productService.GetAllpaging(request);
             return Ok(products);
         }
 

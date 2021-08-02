@@ -10,8 +10,8 @@ using PosWebQLBH.Data.Entities;
 namespace PosWebQLBH.Data.Migrations
 {
     [DbContext(typeof(DbQLBHContext))]
-    [Migration("20210801075636_test")]
-    partial class test
+    [Migration("20210801152020_AddLanguage")]
+    partial class AddLanguage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -425,6 +425,26 @@ namespace PosWebQLBH.Data.Migrations
                     b.HasIndex("IdProduct");
 
                     b.ToTable("Inventory");
+                });
+
+            modelBuilder.Entity("PosWebQLBH.Data.Entities.Language", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(5)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("PosWebQLBH.Data.Entities.Product", b =>
