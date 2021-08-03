@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PosWebQLBH.Application.Catalog.Products;
 using PosWebQLBH.Application.Common;
+using PosWebQLBH.Application.Partner.Customers;
 using PosWebQLBH.Application.System.Languages;
 using PosWebQLBH.Application.System.Roles;
 using PosWebQLBH.Application.System.Users;
@@ -53,6 +54,10 @@ namespace PosWebQLBH.WebApp
             //Declare DI -- product
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IProductService, ProductService>();
+
+            //Declare DI -- customer
+            services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<ICustomerService, CustomerService>();
 
             // Declare DI --> login
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
