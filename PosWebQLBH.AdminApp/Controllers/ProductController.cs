@@ -23,7 +23,7 @@ namespace PosWebQLBH.AdminApp.Controllers
         }
 
         //lấy product show lên
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10) //phân trang
         {
             //lấy session
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);

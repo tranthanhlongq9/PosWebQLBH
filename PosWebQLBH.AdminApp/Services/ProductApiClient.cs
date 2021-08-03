@@ -26,6 +26,7 @@ namespace PosWebQLBH.AdminApp.Services
             _httpClientFactory = httpClientFactory;
         }
 
+        //Tạo SP
         public async Task<bool> CreateProduct(ProductCreateRequest request)
         {
             var sessions = _httpContextAccessor.HttpContext
@@ -71,6 +72,7 @@ namespace PosWebQLBH.AdminApp.Services
             return response.IsSuccessStatusCode;
         }
 
+        //show sp và phân trang
         public async Task<PagedResult<ProductViewModel>> GetProductPagings(GetManageProductPagingRequest request)
         {
             var data = await GetAsync<PagedResult<ProductViewModel>>(
