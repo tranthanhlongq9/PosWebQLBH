@@ -80,10 +80,11 @@
                         <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                     </div>
 
-                    <!--thử nhiệm-->
+                    <!--Create by sẽ tự động thêm-->
                     <div class="form-group">
                         <label asp-for="CreatedBy" class="control-label"></label>
-                        <input asp-for="CreatedBy" class="form-control" />
+                        <input asp-for="CreatedBy" class="form-control" value="@User.Identity.Name" />
+
                         <span asp-validation-for="CreatedBy" class="text-danger"></span>
                     </div>
 
