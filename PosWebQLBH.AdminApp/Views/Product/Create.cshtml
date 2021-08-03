@@ -82,8 +82,8 @@
 
                     <!--Create by sẽ tự động thêm-->
                     <div class="form-group">
-                        <label asp-for="CreatedBy" class="control-label"></label>
-                        <input asp-for="CreatedBy" class="form-control" value="@User.Identity.Name" />
+                        @*<label asp-for="CreatedBy" class="control-label"></label>*@
+                        <input type="hidden" asp-for="CreatedBy" class="form-control" value="@User.Identity.Name" />
 
                         <span asp-validation-for="CreatedBy" class="text-danger"></span>
                     </div>
