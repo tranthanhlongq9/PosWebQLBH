@@ -63,6 +63,7 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
         [Display(Name = "Số lượng:")]
         public int Quantity { get; set; }
 
+        [Display(Name = "Hình ảnh sản phẩm:")]
         public string ThumbnailImage { get; set; }
     }
 }

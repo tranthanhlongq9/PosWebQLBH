@@ -36,7 +36,7 @@
                         </div>
                     }*@
 
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="datatablesSimple">
                     <thead>
                         <tr>
                             <th>
@@ -63,7 +63,7 @@
                                     <input type="hidden" asp-for="Roles[i].Name" />
                                 </td>
                                 <td>
-                                   @Model.Roles[i].Description
+                                    @Model.Roles[i].Description
                                 </td>
                             </tr>
                         }

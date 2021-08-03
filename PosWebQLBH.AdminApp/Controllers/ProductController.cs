@@ -22,8 +22,8 @@ namespace PosWebQLBH.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        //phương thức lấy user
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        //lấy product show lên
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10) //phân trang
         {
             //lấy session
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
@@ -43,6 +43,32 @@ namespace PosWebQLBH.AdminApp.Controllers
                 ViewBag.SuccessMess = TempData["result"];
             }
             return View(data);
+        }
+
+        //Tạo product -- lấy form nhập
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //-- tạo xong post lên
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request);
+
+            var result = await _productApiClient.CreateProduct(request);
+            if (result)
+            {
+                TempData["result"] = "Thêm mới sản phẩm thành công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", "Thêm sản phẩm thất bại");
+            return View(request);
         }
     }
 }

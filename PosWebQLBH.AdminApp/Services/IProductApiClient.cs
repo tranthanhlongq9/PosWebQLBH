@@ -11,5 +11,7 @@ namespace PosWebQLBH.AdminApp.Services
     {
         Task<PagedResult<ProductViewModel>> GetProductPagings(GetManageProductPagingRequest request);
 
+        Task<bool> CreateProduct(ProductCreateRequest request);
+
     }
 }

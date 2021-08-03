@@ -28,7 +28,7 @@ namespace PosWebQLBH.AdminApp.Controllers
         }
 
         //phương thức lấy user
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10) //phân trang
         {
             //var sessions = HttpContext.Session.GetString("Token"); //lấy session
             var request = new GetUserPagingRequest()
