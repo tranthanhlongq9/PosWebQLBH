@@ -56,6 +56,9 @@ namespace PosWebQLBH.AdminApp
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             //DI product
             services.AddTransient<IProductApiClient, ProductApiClient>();
+            
+            //customer
+            services.AddTransient<ICustomerApiClient, CustomerApiClient>();
 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
