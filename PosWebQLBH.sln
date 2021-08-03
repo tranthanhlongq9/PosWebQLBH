@@ -13,7 +13,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.ViewModels", "Po
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.Utilities", "PosWebQLBH.Utilities\PosWebQLBH.Utilities.csproj", "{3588D4CC-4AA6-4FD5-B188-F357F05E37E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PosWebQLBH.AdminApp", "PosWebQLBH.AdminApp\PosWebQLBH.AdminApp.csproj", "{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PosWebQLBH.AdminApp", "PosWebQLBH.AdminApp\PosWebQLBH.AdminApp.csproj", "{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Infrastructure", "1. Infrastructure", "{BC905F33-9509-4163-A775-7E382AAE0B54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Domain", "2. Domain", "{8A6A21B3-44A0-4394-AA07-099B3C7678E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Hosts", "3. Hosts", "{E511E4C9-1374-4DD3-87B7-9F646D0911EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Solution Items", "{C3236CE2-0BBA-4740-85F5-13F3D100F308}"
+	ProjectSection(SolutionItems) = preProject
+		Error-LoiChuaFix.txt = Error-LoiChuaFix.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +60,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80029073-8331-4FFF-9E6D-C9DCD0ED451E} = {E511E4C9-1374-4DD3-87B7-9F646D0911EC}
+		{8C9749E1-1C78-4B82-B94B-FC6CDA01E1E5} = {8A6A21B3-44A0-4394-AA07-099B3C7678E1}
+		{5C7A0412-761E-4903-8F96-E9DA733269D7} = {8A6A21B3-44A0-4394-AA07-099B3C7678E1}
+		{38B871C4-44BA-43B5-A612-0220C2FD7899} = {BC905F33-9509-4163-A775-7E382AAE0B54}
+		{3588D4CC-4AA6-4FD5-B188-F357F05E37E6} = {BC905F33-9509-4163-A775-7E382AAE0B54}
+		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A} = {E511E4C9-1374-4DD3-87B7-9F646D0911EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B85FAC9D-F6EF-4A38-89FF-954D939463CD}

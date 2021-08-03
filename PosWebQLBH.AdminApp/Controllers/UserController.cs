@@ -1,93 +1,202 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
 using PosWebQLBH.AdminApp.Services;
+using PosWebQLBH.ViewModels.Common;
 using PosWebQLBH.ViewModels.System.Users;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+//adminApp sẽ tương tác bên ngoài
 namespace PosWebQLBH.AdminApp.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
+        private readonly IRoleApiClient _roleApiClient;
 
-        public UserController(IUserApiClient userApiClient, IConfiguration configuration)
+        public UserController(IUserApiClient userApiClient, IConfiguration configuration,
+                              IRoleApiClient roleApiClient)
         {
             _userApiClient = userApiClient;
             _configuration = configuration;
+            _roleApiClient = roleApiClient;
         }
 
-        public IActionResult Index()
+        //phương thức lấy user
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10) //phân trang
         {
-            return View();
+            //var sessions = HttpContext.Session.GetString("Token"); //lấy session
+            var request = new GetUserPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _userApiClient.GetUsersPagings(request);
+            ViewBag.Keyword = keyword; //để giữ dữ liệu keyword lại trên view khi tìm kiếm
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMess = TempData["result"];
+            }
+            return View(data.ResultObj);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Create()
         {
-            //xử lý: cứ vào trang login là sẽ logout những session cũ đi
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Create(RegisterRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
+                return View();
 
-            var token = await _userApiClient.Authenticate(request); //lấy token
-
-            var userPrincipal = this.ValidateToken(token);
-            var authProperties = new AuthenticationProperties
+            var result = await _userApiClient.RegisterUser(request);
+            if (result.IsSuccessed)
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10), //sau 10p sẽ out session
-                IsPersistent = false
-            };
-            //Login session và đăng nhập
-            await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        userPrincipal,
-                        authProperties);
+                TempData["result"] = "Tạo Người Dùng Thành Công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
 
-            return RedirectToAction("Index", "Home");
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
+            return View(request);
+        }
+
+        [HttpGet] //lấy dữ liệu
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var result = await _userApiClient.GetUserById(id);
+
+            if (result.IsSuccessed)
+            {
+                var user = result.ResultObj;
+                var updateRequest = new UserUpdateRequest()
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Birthday = user.Birthday,
+                    Id = id
+                };
+                return View(updateRequest);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost] //đưa dữ liệu vào db
+        public async Task<IActionResult> Edit(UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid) // ModelState: lỗi hệ thống
+                return View();
+
+            var result = await _userApiClient.UpdateUser(request.Id, request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Chỉnh sửa người dùng thành công.. ";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi (lỗi model)
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var result = await _userApiClient.GetUserById(id);
+            return View(result.ResultObj);
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            //đăng xuất SignOutAsync
+            //đăng xuất SignOutAsync -- xóa cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "User");
+
+            HttpContext.Session.Remove("Token"); //xóa token session đc cấp lúc đăng nhập
+
+            return RedirectToAction("Index", "Login");
         }
 
-        //hàm lấy token
-        private ClaimsPrincipal ValidateToken(string jwtToken)
+        [HttpGet]
+        public IActionResult Delete(Guid id)
         {
-            IdentityModelEventSource.ShowPII = true;
+            return View(new UserDeleteRequest()
+            {
+                Id = id
+            });
+        }
 
-            SecurityToken validatedToken;
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
+        [HttpPost]
+        public async Task<IActionResult> Delete(UserDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
 
-            validationParameters.ValidateLifetime = true;
+            var result = await _userApiClient.DeleteUser(request.Id);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa Người Dùng Thành Công";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
 
-            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
-            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
+            return View(request);
+        }
 
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
+        [HttpGet] //lấy dữ liệu
+        public async Task<IActionResult> RoleAssign(Guid id)
+        {
+            var roleAssignRequest = await GetRoleAssignRequest(id);
+            return View(roleAssignRequest);
+        }
 
-            return principal;
+        [HttpPost] //đưa dữ liệu thay đổi vào db
+        public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid) // ModelState: lỗi hệ thống
+                return View();
+
+            var result = await _userApiClient.RoleAssign(request.Id, request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật quyền cho người dùng thành công ";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi (lỗi model)
+            var roleAssignRequest = await GetRoleAssignRequest(request.Id);
+
+            return View(roleAssignRequest);
+        }
+
+        //lấy tt Role show lên
+        private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
+        {
+            var userObj = await _userApiClient.GetUserById(id);
+            var roleObj = await _roleApiClient.GetAll();
+            var roleAssignRequest = new RoleAssignRequest();
+            foreach (var role in roleObj.ResultObj)
+            {
+                roleAssignRequest.Roles.Add(new SelectItem()
+                {
+                    Id = role.Id.ToString(),
+                    Name = role.Name,
+                    Selected = userObj.ResultObj.Roles.Contains(role.Name),
+                    Description = role.Description
+                });
+            }
+
+            return roleAssignRequest;
         }
     }
 }

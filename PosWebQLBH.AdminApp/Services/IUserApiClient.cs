@@ -1,4 +1,5 @@
-﻿using PosWebQLBH.ViewModels.System.Users;
+﻿using PosWebQLBH.ViewModels.Common;
+using PosWebQLBH.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,21 @@ using System.Threading.Tasks;
 
 namespace PosWebQLBH.AdminApp.Services
 {
+    //này sẽ làm việc với backendAPI
     public interface IUserApiClient
     {
-        Task<string> Authenticate(LoginRequest request);
+        Task<ApiResult<string>> Authenticate(LoginRequest request);
+
+        Task<ApiResult<PagedResult<UserVm>>> GetUsersPagings(GetUserPagingRequest request);
+
+        Task<ApiResult<bool>> RegisterUser(RegisterRequest registerRequest);
+
+        Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
+
+        Task<ApiResult<UserVm>> GetUserById(Guid id);
+
+        Task<ApiResult<bool>> DeleteUser(Guid id);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

@@ -8,10 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//backendApi sẽ tương tác với Database
 namespace PosWebQLBH.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] //ủy quyền
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -22,21 +24,23 @@ namespace PosWebQLBH.BackendApi.Controllers
         }
 
         [HttpPost("authenticate")]
-        [AllowAnonymous]
+        [AllowAnonymous] //cho phép vượt qua ủy quyền -- cho phép hoạt động
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await _userService.Authencate(request);
-            if (string.IsNullOrEmpty(resultToken))
+            var result = await _userService.Authencate(request);
+
+            if (string.IsNullOrEmpty(result.ResultObj))
             {
-                return BadRequest("Username hoặc mật khẩu không đúng");
+                return BadRequest(result);
             }
-            return Ok(resultToken);
+
+            return Ok(result);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -44,11 +48,63 @@ namespace PosWebQLBH.BackendApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Register(request);
-            if (!result)
+            if (!result.IsSuccessed)
             {
-                return BadRequest("Đăng ký thất bại");
+                return BadRequest(result);
             }
-            return Ok();
+            return Ok(result);
+        }
+
+        //http: //localhost/api/users/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        //bắt buộc phải xác nhận ủy quyền vì ko có [AllowAnonymous]
+        //http: //localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=...
+        [HttpGet("paging")] //lấy tất cả user và phân trang
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
+        {
+            var products = await _userService.GetUserPaging(request);
+            return Ok(products);
+        }
+
+        [HttpGet("{id}")] //lấy tất cả user theo id
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var user = await _userService.GetUserById(id);
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")] //lấy tất cả user theo id
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _userService.Delete(id);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.RoleAssign(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }
