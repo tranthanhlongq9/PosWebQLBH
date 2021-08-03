@@ -39,7 +39,7 @@ namespace PosWebQLBH.BackendApi.Controllers
         //    return Ok(products);
         //}
 
-        [HttpGet("paging")] //lấy sp theo category id
+        [HttpGet("paging")] //lấy sp
         public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
         {
             var products = await _productService.GetAllpaging(request);
