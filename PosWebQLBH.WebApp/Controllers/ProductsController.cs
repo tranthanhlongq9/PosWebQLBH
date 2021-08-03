@@ -59,6 +59,7 @@ namespace PosWebQLBH.BackendApi.Controllers
         }
 
         [HttpPost] //thường là HttpPost vì nó tạo mới
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)

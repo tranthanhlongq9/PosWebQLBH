@@ -1,0 +1,98 @@
+﻿@model PosWebQLBH.ViewModels.Catalog.Products.ProductCreateRequest
+
+@{
+    ViewData["Title"] = "Tạo Mới Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Tạo Mới Sản Phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+        <li class="breadcrumb-item active">Thêm mới SP</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Product">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-4">
+                <form asp-action="Create" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ID_Product" class="control-label"></label>
+                        <input asp-for="ID_Product" class="form-control" />
+                        <span asp-validation-for="ID_Product" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name_Product" class="control-label"></label>
+                        <input asp-for="Name_Product" class="form-control" />
+                        <span asp-validation-for="Name_Product" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ID_Category" class="control-label"></label>
+                        <input asp-for="ID_Category" class="form-control" />
+                        <span asp-validation-for="ID_Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" type="number" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" type="number" class="form-control" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ID_Unit" class="control-label"></label>
+                        <input asp-for="ID_Unit" class="form-control" />
+                        <span asp-validation-for="ID_Unit" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Length" class="control-label"></label>
+                        <input asp-for="Length" type="number" class="form-control" />
+                        <span asp-validation-for="Length" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Width" class="control-label"></label>
+                        <input asp-for="Width" type="number" class="form-control" />
+                        <span asp-validation-for="Width" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Height" class="control-label"></label>
+                        <input asp-for="Height" type="number" class="form-control" />
+                        <span asp-validation-for="Height" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Weight" class="control-label"></label>
+                        <input asp-for="Weight" type="number" class="form-control" />
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ThumbnailImage" class="control-label"></label>
+                        <input asp-for="ThumbnailImage" type="file" class="form-control" />
+                        <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                    </div>
+
+                    <!--thử nhiệm-->
+                    <div class="form-group">
+                        <label asp-for="CreatedBy" class="control-label"></label>
+                        <input asp-for="CreatedBy" class="form-control" />
+                        <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
