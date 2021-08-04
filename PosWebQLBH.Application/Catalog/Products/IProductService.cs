@@ -19,7 +19,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         Task<int> Delete(string productId);
 
         //lấy sp theo id
-        Task<ProductViewModel> GetById(string productId);
+        Task<ApiResult<ProductViewModel>> GetById(string productId);
 
         //cập nhật giá
         Task<bool> UpdatePrice(string productId, decimal newPrice);

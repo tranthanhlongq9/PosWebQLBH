@@ -21,6 +21,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         private readonly DbQLBHContext _context;
 
         private readonly IStorageService _storageService;
+        private const string USER_CONTENT_FOLDER_NAME = "user-content";
 
         //gán
         public ProductService(DbQLBHContext context, IStorageService storageService)
@@ -147,7 +148,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         }
 
         //hàm lấy sp theo id
-        public async Task<ProductViewModel> GetById(string productId)
+        public async Task<ApiResult<ProductViewModel>> GetById(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new EShopException($"Cannot find a product: {productId}");
@@ -176,7 +177,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Quantity = inventory.Quantity,
                 ThumbnailImage = product != null ? product.ImagePath : null
             };
-            return productViewModel;
+            return new ApiSuccessResult<ProductViewModel>(productViewModel);
         }
 
         //Phát  triển sau
@@ -326,7 +327,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
+            return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
     }
 }

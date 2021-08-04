@@ -13,5 +13,6 @@ namespace PosWebQLBH.AdminApp.Services
 
         Task<bool> CreateProduct(ProductCreateRequest request);
 
+        Task<ApiResult<ProductViewModel>> GetProductById(string productId);
     }
 }

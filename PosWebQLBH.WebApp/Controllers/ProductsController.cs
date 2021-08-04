@@ -51,10 +51,10 @@ namespace PosWebQLBH.BackendApi.Controllers
         public async Task<IActionResult> GetById(string productId)
         {
             var proById = await _productService.GetById(productId);
-            if (proById == null)
-            {
-                return BadRequest("Không tìm thấy sản phẩm");
-            }
+            //if (proById == null)
+            //{
+            //    return BadRequest("Không tìm thấy sản phẩm");
+            //}
             return Ok(proById);
         }
 

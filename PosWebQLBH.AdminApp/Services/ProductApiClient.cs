@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using PosWebQLBH.Utilities.Constants;
 using PosWebQLBH.ViewModels.Catalog.Products;
 using PosWebQLBH.ViewModels.Common;
@@ -81,6 +82,29 @@ namespace PosWebQLBH.AdminApp.Services
                                             $"&languageId={request.LanguageId}&categoryId={request.CategoryId}");
 
             return data;
+        }
+
+        public async Task<ApiResult<ProductViewModel>> GetProductById(string productId)
+        {
+            //var data = await GetAsync<ApiResult<ProductViewModel>>($"/api/products/{productId}");
+
+            //return data;
+
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            //truyền token đăng nhập vào ủy quyền(Authorization)
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/products/{productId}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<ProductViewModel>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<ProductViewModel>>(body);
         }
     }
 }
