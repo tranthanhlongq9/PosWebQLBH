@@ -5,6 +5,7 @@
     ViewData["Title"] = "Danh Sách Sản Phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
 
 @section Scripts{
     <script>
@@ -71,6 +72,9 @@
                             Tên sản phẩm
                         </th>
                         <th>
+                            Hình ảnh
+                        </th>
+                        <th>
                             Giá
                         </th>
                         <th>
@@ -113,15 +117,18 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
-                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.ID }) |
-                                @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+                                @Html.ActionLink("Sửa", "Edit", new { productId = item.ID }) |
+                                @Html.ActionLink("Chi Tiết", "Details", new { productId = item.ID }) |
+                                @Html.ActionLink("Xóa", "Delete", new { productId = item.ID })
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ID)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name_Product)
+                            </td>
+                            <td>
+                                <img width="150" height="150" src="@(Configuration["BaseAddress"] + item.ThumbnailImage)" />
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Price)

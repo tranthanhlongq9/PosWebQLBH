@@ -83,5 +83,12 @@ namespace PosWebQLBH.AdminApp.Controllers
             ModelState.AddModelError("", "Thêm sản phẩm thất bại");
             return View(request);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string productId)
+        {
+            var result = await _productApiClient.GetProductById(productId);
+            return View(result.ResultObj);
+        }
     }
 }
