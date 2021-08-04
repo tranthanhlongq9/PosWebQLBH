@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using PosWebQLBH.AdminApp.Services;
 using PosWebQLBH.Utilities.Constants;
@@ -16,14 +17,17 @@ namespace PosWebQLBH.AdminApp.Controllers
         private readonly IProductApiClient _productApiClient;
         private readonly IConfiguration _configuration;
 
-        public ProductController(IProductApiClient productApiClient, IConfiguration configuration)
+        private readonly ICategoryApiClient _categoryApiClient;
+
+        public ProductController(IProductApiClient productApiClient, ICategoryApiClient categoryApiClient, IConfiguration configuration)
         {
             _productApiClient = productApiClient;
+            _categoryApiClient = categoryApiClient;
             _configuration = configuration;
         }
 
         //lấy product show lên
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10) //phân trang
+        public async Task<IActionResult> Index(string keyword, string categoryId, int pageIndex = 1, int pageSize = 10) //phân trang
         {
             //lấy session
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
@@ -33,10 +37,19 @@ namespace PosWebQLBH.AdminApp.Controllers
                 Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                LanguageId = languageId
+                LanguageId = languageId,
+                CategoryId = categoryId
             };
             var data = await _productApiClient.GetProductPagings(request);
             ViewBag.Keyword = keyword; //để giữ dữ liệu keyword lại trên view khi tìm kiếm
+
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.NameCate,
+                Value = x.IdCate.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+            });
 
             if (TempData["result"] != null)
             {
