@@ -4,6 +4,22 @@
     ViewData["Title"] = "Tạo Mới Sản Phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!--Tích hợp CkEditor vào, sau này cần dùng cho nhập liệu 1 lượng thông tin lớn như chi tiết sản phẩm-->
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), { //#truyền vào id đc thêm ở dưới
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ] //này dùng để cài đặt toolbar sẽ hiển thị phần nào
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Tạo Mới Sản Phẩm</h1>
