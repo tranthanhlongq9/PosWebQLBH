@@ -21,21 +21,31 @@
         <li class="breadcrumb-item active">Danh sách Product</li>
     </ol>
 
-    <div class="card mb-4">
+    <div class="card mb-12">
         <div class="card-header">
-            <a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
-            <!--Tìm kiếm theo keyword ( nhưng mà nhìn nó phèn hơn JS )-->
-            @*<form asp-action="Index" method="get">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <!--Tìm kiếm theo keyword-->
+                            <div class="col-md-4">
+                                <!--Tìm kiếm theo keyword ( nhưng mà nhìn nó phèn hơn JS )-->
+                                @*<input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />*@
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="@ViewBag.Categories" class="form-control">
+                                    <option>--Chọn loại--</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                @*<button type="submit" class="btn btn-primary">Tìm</button>*@
+                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-outline-primary">Reset</button>
+                            </div>
                         </div>
-                        <div class="cold-md-3">
-                            <button type="submit" class="btn btn-primary">Tìm</button>
-                            <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-dark">Reset</button>
-                        </div>
-                    </div>
-                </form>*@
+                    </form>
+                </div>
+            </div>
         </div>
 
         <div class="card-body">

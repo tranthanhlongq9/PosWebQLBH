@@ -11,8 +11,10 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
     {
         public string Keyword { get; set; }
 
-        public List<string> CategoryIds { get; set; }
+        //public List<string> CategoryIds { get; set; }
 
         public string LanguageId { get; set; }
+
+        public string CategoryId { get; set; }
     }
 }

@@ -106,9 +106,9 @@ namespace PosWebQLBH.Application.Catalog.Products
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.p.NameProduct.Contains(request.Keyword));
 
-            if (request.CategoryIds != null && request.CategoryIds.Count > 0)
+            if (request.CategoryId != null)
             {
-                query = query.Where(p => request.CategoryIds.Contains(p.c.IdCategory));
+                query = query.Where(p => p.c.IdCategory == request.CategoryId);
             }
 
             //3. Paging

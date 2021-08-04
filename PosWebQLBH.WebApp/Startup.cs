@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PosWebQLBH.Application.Catalog.Categories;
 using PosWebQLBH.Application.Catalog.Products;
 using PosWebQLBH.Application.Common;
 using PosWebQLBH.Application.Partner.Customers;
@@ -54,6 +55,9 @@ namespace PosWebQLBH.WebApp
             //Declare DI -- product
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IProductService, ProductService>();
+
+            //Declare DI -- Category
+            services.AddTransient<ICategoryService, CategoryService>();
 
             //Declare DI -- customer
             services.AddTransient<IStorageService, FileStorageService>();
