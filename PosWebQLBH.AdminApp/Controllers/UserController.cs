@@ -128,12 +128,22 @@ namespace PosWebQLBH.AdminApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return View(new UserDeleteRequest()
+            var result = await _userApiClient.GetUserById(id);
+
+            if (result.IsSuccessed)
             {
-                Id = id
-            });
+                var infoUser = result.ResultObj;
+
+                return View(new UserDeleteRequest()
+                {
+                    Id = id,
+                    UserName = infoUser.UserName,
+                    Email = infoUser.Email
+                });
+            }
+            return RedirectToAction("Error", "Home");
         }
 
         [HttpPost]
