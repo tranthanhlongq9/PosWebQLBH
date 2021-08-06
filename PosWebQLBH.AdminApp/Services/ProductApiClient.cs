@@ -65,8 +65,8 @@ namespace PosWebQLBH.AdminApp.Services
             requestContent.Add(new StringContent(request.Width.ToString()), "width");
             requestContent.Add(new StringContent(request.Height.ToString()), "height");
             requestContent.Add(new StringContent(request.Weight.ToString()), "weight");
-            //requestContent.Add(new StringContent(request.CreatedBy.ToString()), "createdBy");
-            requestContent.Add(new StringContent(request.UpdatedBy.ToString()), "updatedBy");
+            requestContent.Add(new StringContent(request.CreatedBy.ToString()), "createdBy");
+            //requestContent.Add(new StringContent(request.UpdatedBy.ToString()), "updatedBy");
             requestContent.Add(new StringContent(request.Quantity.ToString()), "quantity");
 
             var response = await client.PostAsync($"/api/products/", requestContent);
@@ -115,6 +115,27 @@ namespace PosWebQLBH.AdminApp.Services
 
             var response = await client.PutAsync($"/api/products/" + request.ID_Product, requestContent);
             return response.IsSuccessStatusCode;
+        }
+
+        //xóa sản phẩm
+        public async Task<ApiResult<bool>> DeleteProduct(string productId)
+        {
+            //lấy session
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            //truyền token session đăng nhập vào ủy quyền(Authorization)
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.DeleteAsync($"/api/products/{productId}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
 
         //show sp và phân trang

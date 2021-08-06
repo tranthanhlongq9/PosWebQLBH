@@ -96,10 +96,10 @@ namespace PosWebQLBH.BackendApi.Controllers
         public async Task<IActionResult> Delete(string productId)
         {
             var affectedResult = await _productService.Delete(productId);
-            if (affectedResult == 0)
+            if (!affectedResult.IsSuccessed)
                 return BadRequest();
 
-            return Ok();
+            return Ok(affectedResult);
         }
 
         [HttpPatch("{productId}/{newPrice}")] //HttpPatch : Update 1 phần của bản ghi.. (và vì price nằm trong bảng product nên dùng update 1 phần sẽ nhanh hơn, chú trọng vào update giá thôi)
