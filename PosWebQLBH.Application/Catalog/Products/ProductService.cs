@@ -46,8 +46,8 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Weight = request.Weight,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = DateTime.Now,
-                UpdatedBy = request.UpdatedBy,
-                UpdatedDate = DateTime.Now,
+                //UpdatedBy = request.UpdatedBy,
+                //UpdatedDate = DateTime.Now,
 
                 //save image
                 ImagePath = await this.SaveFile(request.ThumbnailImage),
@@ -59,8 +59,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                         Quantity = request.Quantity,
                         CreatedBy = request.CreatedBy,
                         CreatedDate = DateTime.Now,
-                        UpdatedBy = request.UpdatedBy,
-                        UpdatedDate = DateTime.Now,
+                        
                     }
                 }
             };
@@ -228,6 +227,8 @@ namespace PosWebQLBH.Application.Catalog.Products
             //update SL
             var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == request.ID_Product);
             quantity.Quantity = request.Quantity;
+            quantity.UpdatedBy = request.UpdatedBy;
+            quantity.UpdatedDate = DateTime.Now;
             _context.Inventories.Update(quantity);
 
             return await _context.SaveChangesAsync();
