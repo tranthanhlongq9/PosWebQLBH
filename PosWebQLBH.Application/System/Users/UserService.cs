@@ -169,18 +169,6 @@ namespace PosWebQLBH.Application.System.Users
                 return new ApiErrorResult<bool>("Email đã tồn tại");
             }
 
-            //user = new Employee()
-            //{
-            //    IdEmployee = request.UserName,
-            //    NameEmployee = request.NameEmployee,
-            //    PhoneNumber = request.PhoneNumber,
-            //    Gender = request.Gender,
-            //    Birthday = request.Birthday,
-            //    Email = request.Email,
-            //    CreatedBy = request.CreatedBy,
-            //    CreatedDate = DateTime.Now,
-            //};
-
             user = new AppUser()
             {
                 Dob = request.Birthday,
@@ -256,5 +244,21 @@ namespace PosWebQLBH.Application.System.Users
             }
             return new ApiErrorResult<bool>("Cập nhật không thành công");
         }
+
+        //public async Task<ApiResult<bool>> UpdatePassword(Guid id, UserUpdateRequest request)
+        //{
+        //    //AnyAsync : Có bất cứ cái nào thỏa điều kiện
+        //    if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id))
+        //    {
+        //        return new ApiErrorResult<bool>("Email đã tồn tại");
+        //    }
+
+        //    var result = await _userManager.UpdateAsync(request.Password);
+        //    if (result.Succeeded)
+        //    {
+        //        return new ApiSuccessResult<bool>();
+        //    }
+        //    return new ApiErrorResult<bool>("Cập nhật không thành công");
+        //}
     }
 }

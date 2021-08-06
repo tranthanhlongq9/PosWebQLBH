@@ -208,9 +208,17 @@ namespace PosWebQLBH.Application.Catalog.Products
             product.Height = request.Height;
             product.Weight = request.Weight;
             product.UpdatedBy = request.UpdatedBy;
+            product.UpdatedDate = DateTime.Now;
             //save image
             if (request.ThumbnailImage != null)
             {
+                ////xóa ảnh
+                var images = _context.Products.Where(i => i.IdProduct == request.ID_Product);
+                foreach (var image in images)
+                {
+                    await _storageService.DeleteFileAsync(image.ImagePath);
+                }
+                //thêm ảnh mới
                 product.ImagePath = await this.SaveFile(request.ThumbnailImage);
             }
 
