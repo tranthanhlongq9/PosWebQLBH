@@ -128,7 +128,7 @@
                                 @Html.DisplayFor(modelItem => item.Name_Product)
                             </td>
                             <td>
-                                <img width="150" height="150" src="@(Configuration["BaseAddress"] + item.ThumbnailImage)" />
+                                <img width="150" height="150" src="@(Configuration["BaseAddress"] +"/user-content/" + item.ThumbnailImage)" />
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Price)

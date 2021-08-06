@@ -65,7 +65,7 @@ namespace PosWebQLBH.AdminApp.Controllers
             return View();
         }
 
-        //-- tạo xong post lên
+        //Tạo product-- tạo xong post lên
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
@@ -84,6 +84,87 @@ namespace PosWebQLBH.AdminApp.Controllers
             return View(request);
         }
 
+        //Cập nhật product -- lấy form dữ liệu
+        [HttpGet]
+        public async Task<IActionResult> Edit(string productId)
+        {
+            var result = await _productApiClient.GetProductById(productId);
+
+            if (result.IsSuccessed)
+            {
+                var product = result.ResultObj;
+                var editVm = new ProductUpdateRequest()
+                {
+                    ID_Product = product.ID,
+                    ID_Category = product.ID_Category,
+                    Name_Product = product.Name_Product,
+                    Price = product.Price,
+                    ID_Unit = product.ID_Unit,
+                    Length = product.Length,
+                    Width = product.Width,
+                    Weight = product.Weight,
+                    Height = product.Height,
+                    Quantity = product.Quantity
+                };
+                return View(editVm);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        //Cập nhật product-- tạo xong post lên
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request);
+
+            var result = await _productApiClient.UpdateProduct(request);
+            if (result)
+            {
+                TempData["result"] = "Cập nhật sản phẩm thành công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
+            return View(request);
+        }
+
+        //Xóa sản phẩm
+        [HttpGet]
+        public async Task<IActionResult> Delete(string productId)
+        {
+            var result = await _productApiClient.GetProductById(productId);
+            if (result.IsSuccessed)
+            {
+                var infoProduct = result.ResultObj;
+                return View(new ProductDeleteRequest()
+                {
+                    ID_Product = productId,
+                    Name_Product = infoProduct.Name_Product
+                });
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.DeleteProduct(request.ID_Product);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa sản phẩm Thành Công";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
+            return View(request);
+        }
+
+        //xem chi tiết
         [HttpGet]
         public async Task<IActionResult> Details(string productId)
         {

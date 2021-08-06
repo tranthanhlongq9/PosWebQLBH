@@ -11,7 +11,10 @@ namespace PosWebQLBH.ViewModels.System.Users
     {
         public Guid Id { get; set; }
 
-        [Display(Name = "Tài khoản - Mã nhân viên")]
+        [Display(Name = "Tài khoản - Mã nhân viên:")]
         public string UserName { get; set; }
+
+        [Display(Name = "Email:")]
+        public string Email { get; set; }
     }
 }

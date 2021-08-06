@@ -71,7 +71,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         }
 
         //hàm xóa sp
-        public async Task<int> Delete(string productId)
+        public async Task<ApiResult<bool>> Delete(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new EShopException($"Cannot find a product: {productId}");
@@ -88,8 +88,11 @@ namespace PosWebQLBH.Application.Catalog.Products
             _context.Inventories.Remove(quantity);
 
             _context.Products.Remove(product);
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+                return new ApiSuccessResult<bool>();
 
-            return await _context.SaveChangesAsync();
+            return new ApiErrorResult<bool>("Xóa không thành công");
         }
 
         //hàm lấy sp và sắp xếp show theo trang
@@ -201,13 +204,26 @@ namespace PosWebQLBH.Application.Catalog.Products
             product.IdProduct = request.ID_Product;
             product.IdCategory = request.ID_Category;
             product.NameProduct = request.Name_Product;
+            product.Price = request.Price;
             product.IdUnit = request.ID_Unit;
             product.Length = request.Length;
             product.Width = request.Width;
             product.Height = request.Height;
             product.Weight = request.Weight;
+            product.UpdatedBy = request.UpdatedBy;
+            product.UpdatedDate = DateTime.Now;
             //save image
-            product.ImagePath = await this.SaveFile(request.ThumbnailImage);
+            if (request.ThumbnailImage != null)
+            {
+                ////xóa ảnh
+                var images = _context.Products.Where(i => i.IdProduct == request.ID_Product);
+                foreach (var image in images)
+                {
+                    await _storageService.DeleteFileAsync(image.ImagePath);
+                }
+                //thêm ảnh mới
+                product.ImagePath = await this.SaveFile(request.ThumbnailImage);
+            }
 
             //update SL
             var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == request.ID_Product);
@@ -327,7 +343,8 @@ namespace PosWebQLBH.Application.Catalog.Products
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
+            return fileName;
+            //return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
     }
 }
