@@ -20,6 +20,7 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
         public string Name_Product { get; set; }
 
         [Display(Name = "Giá:")]
+        [DisplayFormat(DataFormatString = "{0:0,0 VNĐ}")]
         public decimal Price { get; set; }
 
         [Display(Name = "Mã đơn vị:")]

@@ -75,13 +75,16 @@ namespace PosWebQLBH.BackendApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = productId }, request);
         }
 
-        [HttpPut] // là HttpPut vì nó update
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+        [HttpPut("{productId}")] // là HttpPut vì nó update
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute] string productId, [FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            request.ID_Product = productId;
             var affectedResult = await _productService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();

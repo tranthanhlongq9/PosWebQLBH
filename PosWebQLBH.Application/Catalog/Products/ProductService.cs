@@ -201,13 +201,18 @@ namespace PosWebQLBH.Application.Catalog.Products
             product.IdProduct = request.ID_Product;
             product.IdCategory = request.ID_Category;
             product.NameProduct = request.Name_Product;
+            product.Price = request.Price;
             product.IdUnit = request.ID_Unit;
             product.Length = request.Length;
             product.Width = request.Width;
             product.Height = request.Height;
             product.Weight = request.Weight;
+            product.UpdatedBy = request.UpdatedBy;
             //save image
-            product.ImagePath = await this.SaveFile(request.ThumbnailImage);
+            if (request.ThumbnailImage != null)
+            {
+                product.ImagePath = await this.SaveFile(request.ThumbnailImage);
+            }
 
             //update SL
             var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == request.ID_Product);
