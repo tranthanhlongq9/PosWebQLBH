@@ -64,6 +64,7 @@ namespace PosWebQLBH.AdminApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            //phần dropdown
             var categories = await _categoryApiClient.GetAll();
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
@@ -123,6 +124,20 @@ namespace PosWebQLBH.AdminApp.Controllers
         {
             var result = await _productApiClient.GetProductById(productId);
 
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
             if (result.IsSuccessed)
             {
                 var product = result.ResultObj;
@@ -131,8 +146,10 @@ namespace PosWebQLBH.AdminApp.Controllers
                     ID_Product = product.ID,
                     ID_Category = product.ID_Category,
                     Name_Product = product.Name_Product,
+                    Name_Category = product.Name_Category,
                     Price = product.Price,
                     ID_Unit = product.ID_Unit,
+                    Name_Unit = product.Name_Unit,
                     Length = product.Length,
                     Width = product.Width,
                     Weight = product.Weight,
@@ -147,8 +164,25 @@ namespace PosWebQLBH.AdminApp.Controllers
         //Cập nhật product-- tạo xong post lên
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
+        public async Task<IActionResult> Edit(string categoryId, string unitId, [FromForm] ProductUpdateRequest request)
         {
+            //dùng để lấy lên category đưa vào dropdown
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+            });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = unitId == x.IdUnit //gán giá trị vào view dropdown
+            });
+
             if (!ModelState.IsValid)
                 return View(request);
 
