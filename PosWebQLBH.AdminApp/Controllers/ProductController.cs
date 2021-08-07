@@ -60,16 +60,31 @@ namespace PosWebQLBH.AdminApp.Controllers
 
         //Tạo product -- lấy form nhập
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
             return View();
         }
 
         //Tạo product-- tạo xong post lên
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
+        public async Task<IActionResult> Create(string categoryId, [FromForm] ProductCreateRequest request)
         {
+            //dùng để lấy lên category đưa vào dropdown
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+            });
             if (!ModelState.IsValid)
                 return View(request);
 
