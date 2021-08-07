@@ -18,11 +18,13 @@ namespace PosWebQLBH.AdminApp.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly ICategoryApiClient _categoryApiClient;
+        private readonly IUnitApiClient _unitApiClient;
 
-        public ProductController(IProductApiClient productApiClient, ICategoryApiClient categoryApiClient, IConfiguration configuration)
+        public ProductController(IProductApiClient productApiClient, ICategoryApiClient categoryApiClient, IUnitApiClient unitApiClient, IConfiguration configuration)
         {
             _productApiClient = productApiClient;
             _categoryApiClient = categoryApiClient;
+            _unitApiClient = unitApiClient;
             _configuration = configuration;
         }
 
@@ -69,13 +71,20 @@ namespace PosWebQLBH.AdminApp.Controllers
                 Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
             });
 
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
             return View();
         }
 
         //Tạo product-- tạo xong post lên
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create(string categoryId, [FromForm] ProductCreateRequest request)
+        public async Task<IActionResult> Create(string categoryId, string unitId, [FromForm] ProductCreateRequest request)
         {
             //dùng để lấy lên category đưa vào dropdown
             var categories = await _categoryApiClient.GetAll();
@@ -85,6 +94,15 @@ namespace PosWebQLBH.AdminApp.Controllers
                 Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
                 Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
             });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = unitId == x.IdUnit //gán giá trị vào view dropdown
+            });
+
             if (!ModelState.IsValid)
                 return View(request);
 

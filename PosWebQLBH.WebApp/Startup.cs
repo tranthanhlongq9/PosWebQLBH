@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PosWebQLBH.Application.Catalog.Categories;
 using PosWebQLBH.Application.Catalog.Products;
+using PosWebQLBH.Application.Catalog.Units;
 using PosWebQLBH.Application.Common;
 using PosWebQLBH.Application.Partner.Customers;
 using PosWebQLBH.Application.System.Languages;
@@ -58,6 +59,9 @@ namespace PosWebQLBH.WebApp
 
             //Declare DI -- Category
             services.AddTransient<ICategoryService, CategoryService>();
+
+            //DI -- Unit
+            services.AddTransient<IUnitService, UnitService>();
 
             //Declare DI -- customer
             services.AddTransient<IStorageService, FileStorageService>();
