@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Sol
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PosWebQLBH.WebPOS", "PosWebQLBH.WebPOS\PosWebQLBH.WebPOS.csproj", "{8D265B09-AEC4-4DA7-ABB4-44273D3C98EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0804822-5CC3-49F8-B8F8-DA8EFBF9788A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D265B09-AEC4-4DA7-ABB4-44273D3C98EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D265B09-AEC4-4DA7-ABB4-44273D3C98EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D265B09-AEC4-4DA7-ABB4-44273D3C98EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D265B09-AEC4-4DA7-ABB4-44273D3C98EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
