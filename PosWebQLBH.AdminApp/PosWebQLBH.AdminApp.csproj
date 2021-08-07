@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PosWebQLBH.Application\PosWebQLBH.Application.csproj" />
     <ProjectReference Include="..\PosWebQLBH.Utilities\PosWebQLBH.Utilities.csproj" />
     <ProjectReference Include="..\PosWebQLBH.ViewModels\PosWebQLBH.ViewModels.csproj" />
   </ItemGroup>

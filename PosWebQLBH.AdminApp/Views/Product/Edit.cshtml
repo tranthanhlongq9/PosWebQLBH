@@ -19,6 +19,18 @@
                 console.error(err.stack);
             });
     </script>
+    <script>
+        //dùng để đưa dữ liệu từ selected vào
+        function myFunction() {
+            var x = document.getElementById("mySelect").value;
+            document.getElementById("demo").value = x;
+        }
+
+        function myFunctionUnit() {
+            var y = document.getElementById("mySelectUnit").value;
+            document.getElementById("demoUnit").value = y;
+        }
+    </script>
 }
 
 <div class="container-fluid px-4">
@@ -41,7 +53,7 @@
 
                     <div class="form-group">
                         <label asp-for="ID_Product" class="control-label"></label>
-                        <input asp-for="ID_Product" class="form-control" readonly/>
+                        <input asp-for="ID_Product" class="form-control" readonly />
                         <span asp-validation-for="ID_Product" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -50,9 +62,20 @@
                         <span asp-validation-for="Name_Product" class="text-danger"></span>
                     </div>
 
+                    @*<div class="form-group">
+                            <label asp-for="ID_Category" class="control-label"></label>
+                            <input asp-for="ID_Category" class="form-control" />
+                            <span asp-validation-for="ID_Category" class="text-danger"></span>
+                        </div>*@
+
                     <div class="form-group">
                         <label asp-for="ID_Category" class="control-label"></label>
-                        <input asp-for="ID_Category" class="form-control" />
+
+                        <select id="mySelect" name="categoryId" onchange="myFunction()" asp-items="@ViewBag.Categories" class="form-control">
+                            <option>@Model.ID_Category : @Model.Name_Category</option>
+                        </select>
+
+                        <input id="demo" type="hidden" asp-for="ID_Category" class="form-control" />
                         <span asp-validation-for="ID_Category" class="text-danger"></span>
                     </div>
 
@@ -66,9 +89,20 @@
                         <input asp-for="Quantity" type="number" class="form-control" />
                         <span asp-validation-for="Quantity" class="text-danger"></span>
                     </div>
+
+                    @*<div class="form-group">
+                            <label asp-for="ID_Unit" class="control-label"></label>
+                            <input asp-for="ID_Unit" class="form-control" />
+                            <span asp-validation-for="ID_Unit" class="text-danger"></span>
+                        </div>*@
                     <div class="form-group">
                         <label asp-for="ID_Unit" class="control-label"></label>
-                        <input asp-for="ID_Unit" class="form-control" />
+
+                        <select id="mySelectUnit" name="unitId" onchange="myFunctionUnit()" asp-items="@ViewBag.Units" class="form-control">
+                            <option>@Model.ID_Unit : @Model.Name_Unit</option>
+                        </select>
+
+                        <input id="demoUnit" type="hidden" asp-for="ID_Unit" class="form-control" />
                         <span asp-validation-for="ID_Unit" class="text-danger"></span>
                     </div>
                     <div class="form-group">
