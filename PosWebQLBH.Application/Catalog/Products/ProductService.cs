@@ -252,7 +252,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         }
 
         //hàm lấy tất cả sp
-        public async Task<List<ProductViewModel>> GetAll()
+        public async Task<ApiResult<List<ProductViewModel>>> GetAll()
         {
             //return await _context.Products.Select(x => new ProductViewModel()
             //{
@@ -287,7 +287,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                 //UpdatedDate = x.p.UpdatedDate,
                 ThumbnailImage = x.p.ImagePath
             }).ToListAsync();
-            return data;
+            return new ApiSuccessResult<List<ProductViewModel>>(data);
         }
 
         //hàm lấy sản phẩm theo category id
