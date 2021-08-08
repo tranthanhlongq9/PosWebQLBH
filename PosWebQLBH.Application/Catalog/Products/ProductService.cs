@@ -59,7 +59,6 @@ namespace PosWebQLBH.Application.Catalog.Products
                         Quantity = request.Quantity,
                         CreatedBy = request.CreatedBy,
                         CreatedDate = DateTime.Now,
-                        
                     }
                 }
             };
@@ -271,19 +270,21 @@ namespace PosWebQLBH.Application.Catalog.Products
             var data = await query.Select(x => new ProductViewModel()
             {
                 ID = x.p.IdProduct,
+                ID_Category = x.p.IdCategory,
                 Name_Category = x.c.NameCategory,
                 Name_Product = x.p.NameProduct,
                 Price = x.p.Price,
+                ID_Unit = x.p.IdUnit,
                 Name_Unit = x.u.NameUnit,
                 Length = x.p.Length,
                 Width = x.p.Width,
                 Height = x.p.Height,
                 Weight = x.p.Weight,
                 Quantity = x.inv.Quantity,
-                CreatedBy = x.p.CreatedBy,
-                CreatedDate = x.p.CreatedDate,
-                UpdatedBy = x.p.UpdatedBy,
-                UpdatedDate = x.p.UpdatedDate,
+                //CreatedBy = x.p.CreatedBy,
+                //CreatedDate = x.p.CreatedDate,
+                //UpdatedBy = x.p.UpdatedBy,
+                //UpdatedDate = x.p.UpdatedDate,
                 ThumbnailImage = x.p.ImagePath
             }).ToListAsync();
             return data;
