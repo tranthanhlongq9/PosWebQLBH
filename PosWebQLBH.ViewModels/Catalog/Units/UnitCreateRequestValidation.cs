@@ -11,9 +11,8 @@ namespace PosWebQLBH.ViewModels.Catalog.Units
     {
         public UnitCreateRequestValidation()
         {
-
             RuleFor(x => x.ID_Unit).NotEmpty().WithMessage("Mã đơn vị tính là bắt buộc")
-                .Matches(@"^[a-zA-z0-9]*$")
+                .Matches(@"^[a-zA-z0-9-]*$")
                 .WithMessage("Mã đơn vị tính không được sử dụng ký tự đặc biệt, khoảng trắng")
                 .MaximumLength(30).WithMessage("Mã đơn vị tính không được vượt quá 200 ký tự !!");
 
@@ -22,7 +21,5 @@ namespace PosWebQLBH.ViewModels.Catalog.Units
                 .WithMessage("Tên đơn vị tính không được sử dụng ký tự đặc biệt")
                 .MaximumLength(200).WithMessage("Tên đơn vị tính không được vượt quá 200 ký tự !!");
         }
-
-
     }
 }

@@ -12,7 +12,7 @@ namespace PosWebQLBH.ViewModels.Partner.Suppliers
         public SupplierCreateRequestValidation()
         {
             RuleFor(x => x.ID_Supplier).NotEmpty().WithMessage("Mã nhà cung cấp là bắt buộc")
-                .Matches(@"^[a-zA-z0-9]*$")
+                .Matches(@"^[a-zA-z0-9-]*$")
                 .WithMessage("Mã nhà cung cấp không được sử dụng ký tự đặc biệt, khoảng trắng")
                 .MaximumLength(30).WithMessage("Mã nhà cung cấp không được vượt quá 30 ký tự !!");
 
@@ -36,8 +36,6 @@ namespace PosWebQLBH.ViewModels.Partner.Suppliers
                 .WithMessage("Số điện thoại phải là số")
                 .MaximumLength(11).WithMessage("Số điện thoại phải có đủ 9 đến 11 số")
                 .MinimumLength(9).WithMessage("Số điện thoại phải có đủ 9 đến 11 số");
-
-
         }
     }
 }
