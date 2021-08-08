@@ -9,14 +9,13 @@ namespace PosWebQLBH.AdminApp.Services
 {
     public interface ICategoryApiClient
     {
-
         Task<List<CategoryVm>> GetAll();
 
         Task<PagedResult<CategoryVm>> GetCategoryPagings(GetCategoryPagingRequest request);
 
         Task<bool> CreateCategory(CategoryCreateRequest request);
 
-        Task<ApiResult<List<CategoryVm>>> GetAll();
+        //Task<ApiResult<List<CategoryVm>>> GetAll();
 
         Task<bool> UpdateCategory(CategoryUpdateRequest request);
 

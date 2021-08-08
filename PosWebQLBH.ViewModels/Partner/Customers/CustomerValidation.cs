@@ -11,8 +11,7 @@ namespace PosWebQLBH.ViewModels.Partner.Customers
     {
         public CustomerValidation()
         {
-            RuleFor(x => x.ID_Customer).NotEmpty().WithMessage("Mã khách hàng là bắt buộc");
-               
+            //RuleFor(x => x.ID_Customer).NotEmpty().WithMessage("Mã khách hàng là bắt buộc");
 
             RuleFor(x => x.Name_Customer).NotEmpty().WithMessage("Tên khách hàng là bắt buộc")
                 .Matches(@"^[a-zA-z0-9]*$")
@@ -31,6 +30,6 @@ namespace PosWebQLBH.ViewModels.Partner.Customers
 
             RuleFor(x => x.CreatedBy).NotEmpty().WithMessage("Người tạo là bắt buộc")
                 .MaximumLength(200).WithMessage("Người tạo không được vượt quá 200 ký tự !!");
-        } 
+        }
     }
 }

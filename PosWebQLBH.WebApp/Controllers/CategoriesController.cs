@@ -39,12 +39,12 @@ namespace PosWebQLBH.BackendApi.Controllers
             return Ok(cate);
         }
 
-        [HttpGet] //lấy tất cả category
-        public async Task<IActionResult> GetAll()
-        {
-            var categories = await _categoryService.GetAll();
-            return Ok(categories);
-        }
+        //[HttpGet] //lấy tất cả category
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var categories = await _categoryService.GetAll();
+        //    return Ok(categories);
+        //}
 
         //http://localhost:port/unit/
         [HttpGet("{categoryId}")] //lấy theo id

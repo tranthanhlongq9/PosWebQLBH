@@ -28,7 +28,7 @@ namespace PosWebQLBH.AdminApp.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        //Tạo 
+        //Tạo
         public async Task<bool> CreateCustomer(CustomerCreateRequest request)
         {
             var sessions = _httpContextAccessor.HttpContext
@@ -45,7 +45,7 @@ namespace PosWebQLBH.AdminApp.Services
 
             var requestContent = new MultipartFormDataContent();
 
-            requestContent.Add(new StringContent(request.ID_Customer.ToString()), "iD_Customer");
+            //requestContent.Add(new StringContent(request.ID_Customer.ToString()), "iD_Customer");
             requestContent.Add(new StringContent(request.Name_Customer.ToString()), "name_Customer");
             requestContent.Add(new StringContent(request.Phone_Number.ToString()), "phone_Number");
             requestContent.Add(new StringContent(request.Address.ToString()), "Address");
@@ -53,7 +53,6 @@ namespace PosWebQLBH.AdminApp.Services
 
             var response = await client.PostAsync($"/api/customers/", requestContent);
             return response.IsSuccessStatusCode;
-
         }
 
         //show và phân trang
@@ -90,7 +89,6 @@ namespace PosWebQLBH.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<CustomerVm>>(body);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<CustomerVm>>(body);
-
         }
 
         //cập nhật
@@ -107,7 +105,6 @@ namespace PosWebQLBH.AdminApp.Services
 
             var requestContent = new MultipartFormDataContent();
 
-
             requestContent.Add(new StringContent(request.ID.ToString()), "iD_Customer");
             requestContent.Add(new StringContent(request.Name_Customer.ToString()), "name_Customer");
             requestContent.Add(new StringContent(request.Address.ToString()), "address");
@@ -116,7 +113,6 @@ namespace PosWebQLBH.AdminApp.Services
 
             var response = await client.PutAsync($"/api/customers/" + request.ID, requestContent);
             return response.IsSuccessStatusCode;
-
         }
 
         //xóa customer

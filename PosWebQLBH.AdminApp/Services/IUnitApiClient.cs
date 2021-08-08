@@ -9,14 +9,13 @@ namespace PosWebQLBH.AdminApp.Services
 {
     public interface IUnitApiClient
     {
-
-        Task<List<UnitVmodel>> GetAll();
+        Task<List<UnitVm>> GetAll();
 
         Task<PagedResult<UnitVm>> GetUnitPagings(GetUnitPagingRequest request);
 
         Task<bool> CreateUnit(UnitCreateRequest request);
 
-        Task<ApiResult<List<UnitVm>>> GetAll();
+        //Task<ApiResult<List<UnitVm>>> GetAll();
 
         Task<bool> UpdateUnit(UnitUpdateRequest request);
 
