@@ -18,7 +18,7 @@ namespace PosWebQLBH.ViewModels.Partner.Suppliers
         [Display(Name = "Địa chỉ:")]
         public string Address { get; set; }
 
-        [Display(Name = "Người liên hê:")]
+        [Display(Name = "Người liên hệ:")]
         public string Representative { get; set; }
 
          [Display(Name = "Số điện thoại:")]

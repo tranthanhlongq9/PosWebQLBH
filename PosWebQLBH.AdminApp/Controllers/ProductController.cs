@@ -48,9 +48,9 @@ namespace PosWebQLBH.AdminApp.Controllers
             var categories = await _categoryApiClient.GetAll();
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
-                Text = x.NameCate,
-                Value = x.IdCate.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
-                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+                Text = x.Name_Catetory,
+                Value = x.ID_Catetory.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.ID_Catetory //gán giá trị vào view dropdown
             });
 
             if (TempData["result"] != null)
@@ -68,15 +68,15 @@ namespace PosWebQLBH.AdminApp.Controllers
             var categories = await _categoryApiClient.GetAll();
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
-                Text = x.IdCate + ": " + x.NameCate,
-                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+                Text = x.ID_Catetory + ": " + x.Name_Catetory,
+                Value = x.ID_Catetory, //nếu là kiểu int thì sẽ chuyển sang string
             });
 
             var units = await _unitApiClient.GetAll();
             ViewBag.Units = units.Select(x => new SelectListItem()
             {
-                Text = x.IdUnit + ": " + x.NameUnit,
-                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+                Text = x.ID_Unit + ": " + x.Name_Unit,
+                Value = x.ID_Unit, //nếu là kiểu int thì sẽ chuyển sang string
             });
 
             return View();
@@ -91,17 +91,17 @@ namespace PosWebQLBH.AdminApp.Controllers
             var categories = await _categoryApiClient.GetAll();
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
-                Text = x.IdCate + ": " + x.NameCate,
-                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
-                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+                Text = x.ID_Catetory + ": " + x.Name_Catetory,
+                Value = x.ID_Catetory, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.ID_Catetory //gán giá trị vào view dropdown
             });
 
             var units = await _unitApiClient.GetAll();
             ViewBag.Units = units.Select(x => new SelectListItem()
             {
-                Text = x.IdUnit + ": " + x.NameUnit,
-                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
-                Selected = unitId == x.IdUnit //gán giá trị vào view dropdown
+                Text = x.ID_Unit + ": " + x.Name_Unit,
+                Value = x.ID_Unit, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = unitId == x.ID_Unit //gán giá trị vào view dropdown
             });
 
             if (!ModelState.IsValid)
@@ -127,15 +127,15 @@ namespace PosWebQLBH.AdminApp.Controllers
             var categories = await _categoryApiClient.GetAll();
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
-                Text = x.IdCate + ": " + x.NameCate,
-                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+                Text = x.ID_Catetory + ": " + x.Name_Catetory,
+                Value = x.ID_Catetory, //nếu là kiểu int thì sẽ chuyển sang string
             });
 
             var units = await _unitApiClient.GetAll();
             ViewBag.Units = units.Select(x => new SelectListItem()
             {
-                Text = x.IdUnit + ": " + x.NameUnit,
-                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+                Text = x.ID_Unit + ": " + x.Name_Unit,
+                Value = x.ID_Unit, //nếu là kiểu int thì sẽ chuyển sang string
             });
 
             if (result.IsSuccessed)
@@ -170,17 +170,17 @@ namespace PosWebQLBH.AdminApp.Controllers
             var categories = await _categoryApiClient.GetAll();
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
-                Text = x.IdCate + ": " + x.NameCate,
-                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
-                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+                Text = x.ID_Catetory + ": " + x.Name_Catetory,
+                Value = x.ID_Catetory, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.ID_Catetory //gán giá trị vào view dropdown
             });
 
             var units = await _unitApiClient.GetAll();
             ViewBag.Units = units.Select(x => new SelectListItem()
             {
-                Text = x.IdUnit + ": " + x.NameUnit,
-                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
-                Selected = unitId == x.IdUnit //gán giá trị vào view dropdown
+                Text = x.ID_Unit + ": " + x.Name_Unit,
+                Value = x.ID_Unit, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = unitId == x.ID_Unit //gán giá trị vào view dropdown
             });
 
             if (!ModelState.IsValid)
