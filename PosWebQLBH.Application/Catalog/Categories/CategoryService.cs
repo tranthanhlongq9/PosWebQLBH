@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PosWebQLBH.Application.Common;
 using PosWebQLBH.Data.Entities;
 using PosWebQLBH.Utilities.Exceptions;

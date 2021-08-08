@@ -27,6 +27,11 @@ namespace PosWebQLBH.AdminApp.Services
             _httpClientFactory = httpClientFactory;
         }
 
+        public async Task<List<UnitVmodel>> GetAll()
+        {
+            return await GetListAsync<UnitVmodel>("/api/units");
+        }
+
         //show và phân trang
         public async Task<PagedResult<UnitVm>> GetUnitPagings(GetUnitPagingRequest request)
         {

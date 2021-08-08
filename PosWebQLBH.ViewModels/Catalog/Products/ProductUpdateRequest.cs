@@ -19,6 +19,10 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
         [Display(Name = "Mã loại:")]
         public string ID_Category { get; set; }
 
+
+        [Display(Name = "Tên loại:")]
+        public string Name_Category { get; set; }
+      
         [Display(Name = "Tên sản phẩm:")]
         public string Name_Product { get; set; }
 
@@ -28,6 +32,9 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
 
         [Display(Name = "Mã đơn vị:")]
         public string ID_Unit { get; set; }
+
+        [Display(Name = "Tên đơn vị:")]
+        public string Name_Unit { get; set; }
 
         [Display(Name = "Chiều dài:")]
         public decimal? Length { get; set; }

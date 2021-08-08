@@ -56,7 +56,12 @@ namespace PosWebQLBH.AdminApp
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             //DI product
             services.AddTransient<IProductApiClient, ProductApiClient>();
-            
+            //DI Category
+            services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+
+            //DI Unit
+            services.AddTransient<IUnitApiClient, UnitApiClient>();
+
             //customer
             services.AddTransient<ICustomerApiClient, CustomerApiClient>();
 

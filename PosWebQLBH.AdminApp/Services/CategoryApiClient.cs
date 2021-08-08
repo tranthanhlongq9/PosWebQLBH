@@ -15,6 +15,7 @@ namespace PosWebQLBH.AdminApp.Services
 {
     public class CategoryApiClient : BaseApiClient, ICategoryApiClient
     {
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
@@ -26,6 +27,11 @@ namespace PosWebQLBH.AdminApp.Services
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
+        }
+
+        public async Task<List<CategoryVm>> GetAll()
+        {
+            return await GetListAsync<CategoryVm>("/api/categories");
         }
 
         //show và phân trang
@@ -141,3 +147,4 @@ namespace PosWebQLBH.AdminApp.Services
  
     }
 }
+

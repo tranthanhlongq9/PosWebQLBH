@@ -1,4 +1,4 @@
-﻿@model PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel
+@model PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel
 
 @{
     ViewData["Title"] = "Chi Tiết Sản Phẩm";
@@ -16,6 +16,8 @@
     <div class="card mb-4">
         <div class="card-header">
             <a class="btn btn-success" asp-action="Index" asp-controller="Product">Về danh sách SP</a>
+            
+            <a style="margin-left: 220px"> @Html.ActionLink("Sửa", "Edit", new { productId = Model.ID }) </a>
         </div>
 
         <div class="card-body">
@@ -124,8 +126,8 @@
                     <dt />
                     <dd class="col-sm-9">
                         @*@Html.DisplayFor(model => model.ThumbnailImage)*@
-                        <img width="300" height="300" src="@(Configuration["BaseAddress"] + Model.ThumbnailImage)" />
 
+                        <img width="300" height="300" src="@(Configuration["BaseAddress"] +"/user-content/" + Model.ThumbnailImage)" />
                     </dd>
                 </dl>
             </div>

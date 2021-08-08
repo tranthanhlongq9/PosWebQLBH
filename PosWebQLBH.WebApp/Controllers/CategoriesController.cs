@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PosWebQLBH.Application.Catalog.Categories;
@@ -23,6 +24,13 @@ namespace PosWebQLBH.BackendApi.Controllers
             _categoryService = categoryService;
         }
 
+
+        [HttpGet] //lấy tất cả category
+        public async Task<IActionResult> GetAllCategory()
+        {
+            var products = await _categoryService.GetAll();
+            return Ok(products);
+        }
 
         [HttpGet("paging")] //lấy tất cả phân trang
         public async Task<IActionResult> GetAllPaging([FromQuery] GetCategoryPagingRequest request)
@@ -93,6 +101,5 @@ namespace PosWebQLBH.BackendApi.Controllers
 
             return Ok(affectedResult);
         }
-
     }
 }

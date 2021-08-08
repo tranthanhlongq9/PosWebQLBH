@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PosWebQLBH.Application.Catalog.Units;
 using PosWebQLBH.ViewModels.Catalog.Units;
@@ -14,12 +15,20 @@ namespace PosWebQLBH.BackendApi.Controllers
     [ApiController]
     [Authorize]
     public class UnitsController : Controller
+
     {
         private readonly IUnitService _unitService;
 
         public UnitsController(IUnitService unitService)
         {
             _unitService = unitService;
+        }
+
+        [HttpGet] //lấy tất cả category
+        public async Task<IActionResult> GetAllUnit()
+        {
+            var units = await _unitService.GetAll();
+            return Ok(units);
         }
 
         [HttpGet("paging")] //lấy tất cả phân trang
@@ -58,13 +67,7 @@ namespace PosWebQLBH.BackendApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = unitId }, request);
         }
 
-        [HttpGet] //lấy tất cả sp
-        public async Task<IActionResult> GetAll()
-        {
-            var units = await _unitService.GetAll();
-            return Ok(units);
-        }
-
+       
         //http: //localhost/api/unit/id
         [HttpPut("{unitId}")]
         [Consumes("multipart/form-data")]

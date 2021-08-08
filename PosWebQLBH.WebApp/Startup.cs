@@ -58,6 +58,12 @@ namespace PosWebQLBH.WebApp
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IProductService, ProductService>();
 
+            //Declare DI -- Category
+            services.AddTransient<ICategoryService, CategoryService>();
+
+            //DI -- Unit
+            services.AddTransient<IUnitService, UnitService>();
+
             //Declare DI -- customer
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<ICustomerService, CustomerService>();

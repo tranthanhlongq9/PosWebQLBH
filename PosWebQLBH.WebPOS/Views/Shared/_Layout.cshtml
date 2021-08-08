@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>@ViewData["Title"] - POS App</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<style type="text/css">
+    .cl {
+        color: #4c4c4c
+    }
+
+    .shadow-ok2 {
+        -webkit-box-shadow: -1px 2px 16px 1px rgba(32,194,0,0.19);
+        -moz-box-shadow: -1px 2px 16px 1px rgba(32,194,0,0.19);
+        box-shadow: -1px 2px 16px 1px rgba(32,194,0,0.19);
+    }
+
+    .changeType {
+        color: #fff !important;
+        background: #28a745 !important;
+    }
+
+    .shadow-ok {
+        -webkit-box-shadow: 0px 2px 12px 2px rgba(218,255,212,0.6);
+        -moz-box-shadow: 0px 2px 12px 2px rgba(218,255,212,0.6);
+        box-shadow: 0px 2px 12px 2px rgba(218,255,212,0.6);
+    }
+</style>
+<body style="overflow-y:hidden">
+    <div style="position: absolute;right: 0;width: 530px;height: 40px;margin-top: calc(100vh - 40px);z-index:999;">
+        <div style="border-bottom: 40px solid #28a745;border-left: 25px solid transparent;width: 530px;">
+            <p class="text-white font-weight-bold float-right ml-2" style="position: absolute;line-height: 40px;font-size: 100%">
+
+                <a href="Product" class="mr-3 text-white" style="text-decoration: none;">Sản phẩm</a>
+                <a href="User" class="mr-3 text-white" style="text-decoration: none;">Khách Hàng</a>
+                <a href="OrderManage" class="mr-3 text-white" style="text-decoration: none;">Bán hàng</a>
+                <a href="OrderManage" class="mr-3 text-white" style="text-decoration: none;">Nhập hàng</a>
+            </p>
+        </div>
+    </div>
+
+    @RenderBody()
+    @RenderSection("Scripts", required: false)
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>

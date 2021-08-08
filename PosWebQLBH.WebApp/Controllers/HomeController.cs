@@ -19,10 +19,11 @@ namespace PosWebQLBH.WebApp.Controllers
             _logger = logger;
         }
 
+        [ActionName("Home")] //do dính endpoint nên để tạm tên này
         public IActionResult Index()
         {
             //using (DbQLBHContext context = new DbQLBHContext())
-            //{               
+            //{
             //    Category category = new Category();
             //    category.IdCategory = "H33";
             //    category.NameCategory = "Cate là 33";
@@ -32,7 +33,7 @@ namespace PosWebQLBH.WebApp.Controllers
             //    category.UpdatedDate = DateTime.Now;
             //    context.Categories.Add(category);
             //    context.SaveChanges();
-                
+
             //}
             return Ok();
         }
