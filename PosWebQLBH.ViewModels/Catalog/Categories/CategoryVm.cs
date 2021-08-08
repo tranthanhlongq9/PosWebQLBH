@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,10 +10,10 @@ namespace PosWebQLBH.ViewModels.Catalog.Categories
     public class CategoryVm
     {
         [Display(Name = "Mã loại:")]
-        public string IdCate { get; set; }
+        public string ID_Catetory { get; set; }
 
         [Display(Name = "Tên loại:")]
-        public string NameCate { get; set; }
+        public string Name_Catetory { get; set; }
 
         [Display(Name = "Tạo bởi:")]
         public string CreatedBy { get; set; }

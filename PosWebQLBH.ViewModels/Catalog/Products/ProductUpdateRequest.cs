@@ -19,9 +19,10 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
         [Display(Name = "Mã loại:")]
         public string ID_Category { get; set; }
 
+
         [Display(Name = "Tên loại:")]
         public string Name_Category { get; set; }
-
+      
         [Display(Name = "Tên sản phẩm:")]
         public string Name_Product { get; set; }
 
