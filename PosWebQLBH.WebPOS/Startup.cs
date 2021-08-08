@@ -3,17 +3,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PosWebQLBH.AdminApp.Services;
 using PosWebQLBH.ViewModels.System.Users;
-using PosWebQLBH.WebPOS.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PosWebQLBH.WebPOS
 {
@@ -53,7 +48,7 @@ namespace PosWebQLBH.WebPOS
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Declare DI -- product
-            services.AddTransient<IProductApiApp, ProductApiApp>();
+
             services.AddTransient<IUserApiClient, UserApiClient>();
 
             IMvcBuilder builder = services.AddRazorPages();

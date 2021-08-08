@@ -18,6 +18,7 @@ namespace PosWebQLBH.AdminApp.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+
         public UnitApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration,
                                     IHttpContextAccessor httpContextAccessor)
                     : base(httpClientFactory, httpContextAccessor, configuration)
@@ -27,9 +28,9 @@ namespace PosWebQLBH.AdminApp.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<List<UnitVmodel>> GetAll()
+        public async Task<List<UnitVm>> GetAll()
         {
-            return await GetListAsync<UnitVmodel>("/api/units");
+            return await GetListAsync<UnitVm>("/api/units");
         }
 
         //show và phân trang
@@ -43,7 +44,7 @@ namespace PosWebQLBH.AdminApp.Services
             return data;
         }
 
-        //Tạo 
+        //Tạo
         public async Task<bool> CreateUnit(UnitCreateRequest request)
         {
             var sessions = _httpContextAccessor.HttpContext
@@ -70,11 +71,10 @@ namespace PosWebQLBH.AdminApp.Services
         }
 
         //show all
-        public async Task<ApiResult<List<UnitVm>>> GetAll()
-        {
-            return await GetAsync<ApiResult<List<UnitVm>>>("/api/units");
-        }
-
+        //public async Task<ApiResult<List<UnitVm>>> GetAll()
+        //{
+        //    return await GetAsync<ApiResult<List<UnitVm>>>("/api/units");
+        //}
 
         //cập nhật
         public async Task<bool> UpdateUnit(UnitUpdateRequest request)
@@ -90,14 +90,12 @@ namespace PosWebQLBH.AdminApp.Services
 
             var requestContent = new MultipartFormDataContent();
 
-
             requestContent.Add(new StringContent(request.ID_Unit.ToString()), "iD_Unit");
             requestContent.Add(new StringContent(request.Name_Unit.ToString()), "name_Unit");
             requestContent.Add(new StringContent(request.UpdatedBy.ToString()), "updatedBy");
 
             var response = await client.PutAsync($"/api/units/" + request.ID_Unit, requestContent);
             return response.IsSuccessStatusCode;
-
         }
 
         ///
@@ -118,7 +116,6 @@ namespace PosWebQLBH.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<UnitVm>>(body);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<UnitVm>>(body);
-
         }
 
         //xóa unit

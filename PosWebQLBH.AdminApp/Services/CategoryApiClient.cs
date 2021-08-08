@@ -15,7 +15,6 @@ namespace PosWebQLBH.AdminApp.Services
 {
     public class CategoryApiClient : BaseApiClient, ICategoryApiClient
     {
-
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
@@ -45,7 +44,7 @@ namespace PosWebQLBH.AdminApp.Services
             return data;
         }
 
-        //Tạo 
+        //Tạo
         public async Task<bool> CreateCategory(CategoryCreateRequest request)
         {
             var sessions = _httpContextAccessor.HttpContext
@@ -72,10 +71,10 @@ namespace PosWebQLBH.AdminApp.Services
         }
 
         //show all
-        public async Task<ApiResult<List<CategoryVm>>> GetAll()
-        {
-            return await GetAsync<ApiResult<List<CategoryVm>>>("/api/categories");
-        }
+        //public async Task<ApiResult<List<CategoryVm>>> GetAll()
+        //{
+        //    return await GetAsync<ApiResult<List<CategoryVm>>>("/api/categories");
+        //}
 
         //xóa
         //public async Task<bool> DeleteCategory(string categoryid)
@@ -113,19 +112,17 @@ namespace PosWebQLBH.AdminApp.Services
 
             var requestContent = new MultipartFormDataContent();
 
-
             requestContent.Add(new StringContent(request.ID_Category.ToString()), "iD_Category");
             requestContent.Add(new StringContent(request.Name_Category.ToString()), "name_Category");
             requestContent.Add(new StringContent(request.UpdatedBy.ToString()), "updatedBy");
 
             var response = await client.PutAsync($"/api/categories/" + request.ID_Category, requestContent);
             return response.IsSuccessStatusCode;
-
         }
 
         //lấy theo id
         public async Task<ApiResult<CategoryVm>> GetCategoryById(string categoryId)
-        { 
+        {
             //lấy session
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
@@ -142,9 +139,6 @@ namespace PosWebQLBH.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<CategoryVm>>(body);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<CategoryVm>>(body);
-
         }
- 
     }
 }
-
