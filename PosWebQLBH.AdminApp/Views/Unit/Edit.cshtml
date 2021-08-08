@@ -1,0 +1,70 @@
+﻿@model PosWebQLBH.ViewModels.Catalog.Units.UnitUpdateRequest
+
+@{
+    ViewData["Title"] = "Cập nhật đơn vị tính";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+    <script>
+        //dùng để đưa dữ liệu từ selected vào
+        function myFunction() {
+            var x = document.getElementById("mySelect").value;
+            document.getElementById("demo").value = x;
+        }
+            //function myFunctionUnit() {
+            //    var y = document.getElementById("mySelectUnit").value;
+            //    document.getElementById("demoUnit").value = y;
+            //}
+    </script>
+}
+<div class="container-fluid">
+    <h1 class="mt-4">Cập nhật đơn vị tính</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật đơn vị tính</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Unit">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ID_Unit" />
+                    <div class="form-group">
+                        <label asp-for="Name_Unit" class="control-label"></label>
+                        <input asp-for="Name_Unit" class="form-control" />
+                        <span asp-validation-for="Name_Unit" class="text-danger"></span>
+                    </div>
+
+                    <!--Create by sẽ tự động thêm-->
+                    <div class="form-group">
+                        @*<label asp-for="CreatedBy" class="control-label"></label>*@
+                        <input type="hidden" asp-for="UpdatedBy" class="form-control" value="@User.Identity.Name" />
+
+                        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

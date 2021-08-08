@@ -1,0 +1,69 @@
+﻿@model PosWebQLBH.ViewModels.Partner.Customers.CustomerUpdateRequest
+
+@{
+    ViewData["Title"] = "Cập nhật khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}
+<div class="container-fluid">
+    <h1 class="mt-4">Cập nhật khách hàng</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật khách hàng</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Customer">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ID" />
+                    <div class="form-group">
+                        <label asp-for="Name_Customer" class="control-label"></label>
+                        <input asp-for="Name_Customer" class="form-control" />
+                        <span asp-validation-for="Name_Customer" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone_Number" class="control-label"></label>
+                        <input asp-for="Phone_Number" class="form-control" />
+                        <span asp-validation-for="Phone_Number" class="text-danger"></span>
+                    </div>
+
+                    <!--Create by sẽ tự động thêm-->
+                    <div class="form-group">
+                        @*<label asp-for="CreatedBy" class="control-label"></label>*@
+                        <input type="hidden" asp-for="UpdatedBy" class="form-control" value="@User.Identity.Name" />
+
+                        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

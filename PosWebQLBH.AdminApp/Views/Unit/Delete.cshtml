@@ -1,0 +1,44 @@
+﻿@model PosWebQLBH.ViewModels.Catalog.Units.UnitDeleteRequest
+
+@{
+    ViewData["Title"] = "Xóa Đơn Vị Tính";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Xóa đơn vị tính</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+        <li class="breadcrumb-item active">Xóa DVT</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Unit">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-14">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.ID_Unit) :
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.ID_Unit)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Name_Unit) :
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Name_Unit)
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input asp-for="ID_Unit" type="hidden" />
+                    <input type="submit" value="Xóa" class="btn btn-danger" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
