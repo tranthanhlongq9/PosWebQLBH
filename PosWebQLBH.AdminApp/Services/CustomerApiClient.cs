@@ -48,7 +48,7 @@ namespace PosWebQLBH.AdminApp.Services
             //requestContent.Add(new StringContent(request.ID_Customer.ToString()), "iD_Customer");
             requestContent.Add(new StringContent(request.Name_Customer.ToString()), "name_Customer");
             requestContent.Add(new StringContent(request.Phone_Number.ToString()), "phone_Number");
-            requestContent.Add(new StringContent(request.Address.ToString()), "Address");
+            requestContent.Add(new StringContent(request.Address.ToString()), "address");
             requestContent.Add(new StringContent(request.CreatedBy.ToString()), "createdBy");
 
             var response = await client.PostAsync($"/api/customers/", requestContent);

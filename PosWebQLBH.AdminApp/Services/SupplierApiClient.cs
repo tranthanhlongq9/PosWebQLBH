@@ -69,9 +69,9 @@ namespace PosWebQLBH.AdminApp.Services
 
             requestContent.Add(new StringContent(request.ID_Supplier.ToString()), "iD_Supplier");
             requestContent.Add(new StringContent(request.Name_Supplier.ToString()), "name_Supplier");
-            requestContent.Add(new StringContent(request.Representative.ToString()), "Representative");
-            requestContent.Add(new StringContent(request.Address.ToString()), "Address");
-            requestContent.Add(new StringContent(request.Phone_Number.ToString()), "Phone_Number");
+            requestContent.Add(new StringContent(request.Representative.ToString()), "representative");
+            requestContent.Add(new StringContent(request.Address.ToString()), "address");
+            requestContent.Add(new StringContent(request.Phone_Number.ToString()), "phone_Number");
             requestContent.Add(new StringContent(request.CreatedBy.ToString()), "createdBy");
             //requestContent.Add(new StringContent(request.UpdatedBy.ToString()), "updatedBy");
 
