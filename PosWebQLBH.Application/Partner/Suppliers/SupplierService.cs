@@ -146,7 +146,7 @@ namespace PosWebQLBH.Application.Partner.Suppliers
         public async Task<int> Update(SupplierUpdateRequest request)
         {
             var sup = await _context.Suppliers.FindAsync(request.ID_Supplier);
-            if (sup == null) throw new EShopException($"Cannot find a unit with id: {request.ID_Supplier}");
+            if (sup == null) throw new EShopException($"Cannot find a supplier with id: {request.ID_Supplier}");
 
             sup.IdSupplier = request.ID_Supplier;
             sup.NameSupplier = request.Name_Supplier;
