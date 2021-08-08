@@ -10,8 +10,14 @@ namespace PosWebQLBH.Application.Partner.Customers
         //tạo
         Task<long> Create(CustomerCreateRequest request);
 
-        //lấy kh theo id 
-        Task<CustomerVm> GetById(long customerId);
+        //cập nhật
+        Task<int> Update(CustomerUpdateRequest request);
+
+        //xóa
+        Task<ApiResult<bool>> Delete(long customerId);
+
+        //lấy theo id
+        Task<ApiResult<CustomerVm>> GetById(long customerId);
 
         //lấy tất cả KH
         Task<List<CustomerVm>> GetAll();

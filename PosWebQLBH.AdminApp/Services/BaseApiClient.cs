@@ -46,6 +46,24 @@ namespace PosWebQLBH.AdminApp.Services
             return JsonConvert.DeserializeObject<TResponse>(body);
         }
 
+        public async Task<bool> Delete(string url)
+        {
+            var sessions = _httpContextAccessor
+               .HttpContext
+               .Session
+               .GetString(SystemConstants.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+        
         public async Task<List<T>> GetListAsync<T>(string url, bool requiredLogin = false)
         {
             var sessions = _httpContextAccessor
@@ -65,5 +83,6 @@ namespace PosWebQLBH.AdminApp.Services
             }
             throw new Exception(body);
         }
+        
     }
 }
