@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PosWebQLBH.WebPOS.Models;
+using PosWebQLBH.WebPOS.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,15 +12,21 @@ namespace PosWebQLBH.WebPOS.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IProductApiApp _productApiApp;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductApiApp productApiApp, ILogger<HomeController> logger)
         {
             _logger = logger;
+            _productApiApp = productApiApp;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
+            //var product = await _productApiApp.GetAll();
+            //return View(product);
             return View();
         }
 
