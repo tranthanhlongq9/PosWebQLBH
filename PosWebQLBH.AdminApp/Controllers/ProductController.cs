@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using PosWebQLBH.AdminApp.Services;
 using PosWebQLBH.Utilities.Constants;
@@ -16,14 +17,19 @@ namespace PosWebQLBH.AdminApp.Controllers
         private readonly IProductApiClient _productApiClient;
         private readonly IConfiguration _configuration;
 
-        public ProductController(IProductApiClient productApiClient, IConfiguration configuration)
+        private readonly ICategoryApiClient _categoryApiClient;
+        private readonly IUnitApiClient _unitApiClient;
+
+        public ProductController(IProductApiClient productApiClient, ICategoryApiClient categoryApiClient, IUnitApiClient unitApiClient, IConfiguration configuration)
         {
             _productApiClient = productApiClient;
+            _categoryApiClient = categoryApiClient;
+            _unitApiClient = unitApiClient;
             _configuration = configuration;
         }
 
         //lấy product show lên
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10) //phân trang
+        public async Task<IActionResult> Index(string keyword, string categoryId, int pageIndex = 1, int pageSize = 10) //phân trang
         {
             //lấy session
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
@@ -33,10 +39,19 @@ namespace PosWebQLBH.AdminApp.Controllers
                 Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                LanguageId = languageId
+                LanguageId = languageId,
+                CategoryId = categoryId
             };
             var data = await _productApiClient.GetProductPagings(request);
             ViewBag.Keyword = keyword; //để giữ dữ liệu keyword lại trên view khi tìm kiếm
+
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.NameCate,
+                Value = x.IdCate.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+            });
 
             if (TempData["result"] != null)
             {
@@ -47,16 +62,48 @@ namespace PosWebQLBH.AdminApp.Controllers
 
         //Tạo product -- lấy form nhập
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            //phần dropdown
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
             return View();
         }
 
-        //-- tạo xong post lên
+        //Tạo product-- tạo xong post lên
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
+        public async Task<IActionResult> Create(string categoryId, string unitId, [FromForm] ProductCreateRequest request)
         {
+            //dùng để lấy lên category đưa vào dropdown
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+            });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = unitId == x.IdUnit //gán giá trị vào view dropdown
+            });
+
             if (!ModelState.IsValid)
                 return View(request);
 
@@ -69,6 +116,127 @@ namespace PosWebQLBH.AdminApp.Controllers
 
             ModelState.AddModelError("", "Thêm sản phẩm thất bại");
             return View(request);
+        }
+
+        //Cập nhật product -- lấy form dữ liệu
+        [HttpGet]
+        public async Task<IActionResult> Edit(string productId)
+        {
+            var result = await _productApiClient.GetProductById(productId);
+
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+            });
+
+            if (result.IsSuccessed)
+            {
+                var product = result.ResultObj;
+                var editVm = new ProductUpdateRequest()
+                {
+                    ID_Product = product.ID,
+                    ID_Category = product.ID_Category,
+                    Name_Product = product.Name_Product,
+                    Name_Category = product.Name_Category,
+                    Price = product.Price,
+                    ID_Unit = product.ID_Unit,
+                    Name_Unit = product.Name_Unit,
+                    Length = product.Length,
+                    Width = product.Width,
+                    Weight = product.Weight,
+                    Height = product.Height,
+                    Quantity = product.Quantity
+                };
+                return View(editVm);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        //Cập nhật product-- tạo xong post lên
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Edit(string categoryId, string unitId, [FromForm] ProductUpdateRequest request)
+        {
+            //dùng để lấy lên category đưa vào dropdown
+            var categories = await _categoryApiClient.GetAll();
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.IdCate + ": " + x.NameCate,
+                Value = x.IdCate, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = categoryId == x.IdCate //gán giá trị vào view dropdown
+            });
+
+            var units = await _unitApiClient.GetAll();
+            ViewBag.Units = units.Select(x => new SelectListItem()
+            {
+                Text = x.IdUnit + ": " + x.NameUnit,
+                Value = x.IdUnit, //nếu là kiểu int thì sẽ chuyển sang string
+                Selected = unitId == x.IdUnit //gán giá trị vào view dropdown
+            });
+
+            if (!ModelState.IsValid)
+                return View(request);
+
+            var result = await _productApiClient.UpdateProduct(request);
+            if (result)
+            {
+                TempData["result"] = "Cập nhật sản phẩm thành công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
+            return View(request);
+        }
+
+        //Xóa sản phẩm
+        [HttpGet]
+        public async Task<IActionResult> Delete(string productId)
+        {
+            var result = await _productApiClient.GetProductById(productId);
+            if (result.IsSuccessed)
+            {
+                var infoProduct = result.ResultObj;
+                return View(new ProductDeleteRequest()
+                {
+                    ID_Product = productId,
+                    Name_Product = infoProduct.Name_Product
+                });
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.DeleteProduct(request.ID_Product);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa sản phẩm Thành Công";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", result.Message); //sẽ thông báo lỗi có message lỗi
+            return View(request);
+        }
+
+        //xem chi tiết
+        [HttpGet]
+        public async Task<IActionResult> Details(string productId)
+        {
+            var result = await _productApiClient.GetProductById(productId);
+            return View(result.ResultObj);
         }
     }
 }

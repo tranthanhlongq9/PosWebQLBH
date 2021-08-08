@@ -1,0 +1,297 @@
+﻿<div class="p-1" style="width: 100%;height: 200px;border-top: 3px solid #28a745">
+    <div style="width: 100%;height: 100%;border: 1px solid #d1ffca;display: flex;border-radius: 7px">
+        <div style="width: 150px;height: 100%;border: 1px solid #d1ffca;">
+            <div class="p-1" style="width: 100%;height: 50px;border-bottom: 1px solid #d1ffca;">
+                <div class="btn btn-success" style="width: 100%;height: 100%">
+                    Khách hàng
+                </div>
+            </div>
+          
+                <div onclick="OrderFinish()" class="p-1" style="width: 100%;height: calc(100% - 50px);border-top: 1px solid #d1ffca;">
+                    <div class="btn btn-success" style="width: 100%;height: 100%">
+                        <p style="line-height: 100px">Thanh toán</p>
+                    </div>
+                </div>
+           
+        </div>
+        <div style="width: 220px;height: 100%;border: 1px solid #d1ffca;">
+            <div style="width: 100%;height: 100%;border-radius: 5px">
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_1" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">1</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_2" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">2</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_3" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">3</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_sl" class="bg-white shadow-ok2 font-weight-bold text-center" style="height: 100%;border-radius: 5px;line-height: 36px">
+                        SL
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_4" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">4</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_5" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">5</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_6" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">6</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_ck" class="bg-white shadow-ok2 font-weight-bold text-center" style="height: 100%;border-radius: 5px;line-height: 36px">
+                        CK
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_7" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">7</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_8" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">8</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_9" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">9</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_pr" class="bg-white shadow-ok2 font-weight-bold text-center" style="height: 100%;border-radius: 5px;line-height: 36px">
+                        Giá
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_rs" class="bg-white shadow-ok2 font-weight-bold text-center" style="height: 100%;border-radius: 5px;line-height: 36px">
+                        +/-
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_0" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">0</p>
+                    </div>
+                </div>
+                <div class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_dot" class="bg-white shadow-ok2" style="height: 100%;border-radius: 5px">
+                        <p class="text-center font-weight-bold text-success" style="line-height: 36px">.</p>
+                    </div>
+                </div>
+                <div id="number_a" class="float-left p-1" style="width: 25%;height: 25%;">
+                    <div id="number_a" class="bg-white shadow-ok2 font-weight-bold text-center" style="height: 100%;border-radius: 5px;line-height: 36px">
+                        <i class="fa fa-reply-all" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var totalOrder = 0;
+    var discountOrder = 0;
+    function OrderFinish() {
+        $.ajax({
+            method: "post",
+            url: "https://localhost:44358/api/Tbl_order/Update",
+            data: JSON.stringify({
+                fee: parseInt(0),
+                discount: parseInt(discountOrder),
+                total: parseInt(totalOrder),
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function (data) {
+                window.location.href = "/Order"
+            }
+        });
+    }
+</script>
+
+
+
+<script type="text/javascript">
+				var number="";
+				var type=0;
+				$("#number_sl").addClass('changeType');
+				$("#number_1").click(function(){
+					number=number+"1";
+                    UpdateCalculatorItem();
+				});
+				$("#number_2").click(function(){
+					number=number+"2";
+                    UpdateCalculatorItem();
+				});
+				$("#number_3").click(function(){
+					number=number+"3";
+                    UpdateCalculatorItem();
+				});
+				$("#number_4").click(function(){
+					number=number+"4";
+                    UpdateCalculatorItem();
+				});
+				$("#number_5").click(function(){
+					number=number+"5";
+                    UpdateCalculatorItem();
+				});
+				$("#number_6").click(function(){
+					number=number+"6";
+                    UpdateCalculatorItem();
+				});
+				$("#number_7").click(function(){
+					number=number+"7";
+                    UpdateCalculatorItem();
+				});
+				$("#number_8").click(function(){
+					number=number+"8";
+                    UpdateCalculatorItem();
+				});
+				$("#number_9").click(function(){
+					number=number+"9";
+                    UpdateCalculatorItem();
+				});
+				$("#number_0").click(function(){
+					number=number+"0";
+                    UpdateCalculatorItem();
+				});
+				$("#number_a").click(function(){
+                    if (type == 0) {
+                        var string1 = idQuanlityNow.toString();
+                        var result1 = string1.substring(0, string1.length - 1);
+                        number = result1;
+                        //console.log("n" + result1);
+                    } else if (type == 1) {
+                        var string2 = idDiscountNow.toString();
+                        var result2 = string2.substring(0, string2.length - 1);
+                        number = result2;
+                        //console.log("l" + result2);
+                    }
+                    UpdateCalculatorItem();
+				});
+				$("#number_rs").click(function(){
+					number="1";
+					console.log(number);
+				});
+				$("#number_dot").click(function(){
+					if(type==1){
+						number=number+".";
+                        console.log(number);
+                        UpdateCalculatorItem();
+					}else{
+
+					}
+
+				});
+				$("#number_sl").click(function(){
+					type=0;
+					number="";
+					console.log(type);
+					$("#number_sl").addClass('changeType');
+					$("#number_ck").removeClass('changeType');
+					$("#number_pr").removeClass('changeType');
+				});
+				$("#number_ck").click(function(){
+					type=1;
+					number="";
+					console.log(type);
+					$("#number_sl").removeClass('changeType');
+					$("#number_ck").addClass('changeType');
+					$("#number_pr").removeClass('changeType');
+				});
+				$("#number_pr").click(function(){
+					type=2;
+					number="";
+					console.log(type);
+					$("#number_sl").removeClass('changeType');
+					$("#number_ck").removeClass('changeType');
+					$("#number_pr").addClass('changeType');
+				});
+
+
+    function UpdateCalculatorItem() {
+        //var SetData = $("#ListItem");
+        //SetData.html("");
+        console.log("ok" + type);
+        if (type == 0) {
+            $.ajax({
+                method: "post",
+                url: "https://localhost:44358/api/Tbl_item/UpdateQuanlity",
+                data: JSON.stringify({
+                    id: parseInt(idItemMax),
+                    discount: parseInt(idDiscountNow),
+                    quanlity: parseInt(number),
+                    price: parseInt(idPriceNow * number * ((100 - idDiscountNow) / 100)),
+                    idproduct: parseInt(idProductNow),
+                    idorder: parseInt(idOrderNow)
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (data) {
+                    idQuanlityNow = number;
+                    featchListItem();
+
+                }
+            });
+        } else if (type == 1) {
+            
+            $.ajax({
+                method: "post",
+                url: "https://localhost:44358/api/Tbl_item/UpdateDiscount",
+                data: JSON.stringify({
+                    id: parseInt(idItemMax),
+                    discount: parseFloat(number),
+                    quanlity: parseInt(idQuanlityNow),
+                    price: parseInt(idPriceNow * idQuanlityNow * ((100 - number) / 100)),
+                    idproduct: parseInt(idProductNow),
+                    idorder: parseInt(idOrderNow)
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (data) {
+                    idDiscountNow = number
+                    featchListItem();
+                }
+            });
+        } else {
+            $.ajax({
+                method: "post",
+                url: "https://localhost:44358/api/Tbl_item/UpdateDiscount",
+                data: JSON.stringify({
+                    id: parseInt(idItemMax),
+                    discount: parseInt(idDiscountNow),
+                    quanlity: parseInt(idQuanlityNow),
+                    price: parseInt(number),
+                    idproduct: parseInt(idProductNow),
+                    idorder: parseInt(idOrderNow)
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (data) {
+                    idPriceNow = number;
+                    featchListItem();
+                }
+            })
+        }
+    }
+</script>

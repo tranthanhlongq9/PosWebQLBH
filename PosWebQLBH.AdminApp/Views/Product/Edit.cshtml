@@ -1,0 +1,151 @@
+﻿@model PosWebQLBH.ViewModels.Catalog.Products.ProductUpdateRequest
+
+@{
+    ViewData["Title"] = "Cập Nhật Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!--Tích hợp CkEditor vào, sau này cần dùng cho nhập liệu 1 lượng thông tin lớn như chi tiết sản phẩm-->
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), { //#truyền vào id đc thêm ở dưới
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ] //này dùng để cài đặt toolbar sẽ hiển thị phần nào
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+    <script>
+        //dùng để đưa dữ liệu từ selected vào
+        function myFunction() {
+            var x = document.getElementById("mySelect").value;
+            document.getElementById("demo").value = x;
+        }
+
+        function myFunctionUnit() {
+            var y = document.getElementById("mySelectUnit").value;
+            document.getElementById("demoUnit").value = y;
+        }
+    </script>
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Cập Nhật Sản Phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật SP</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Product">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-4">
+                <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ID_Product" />
+
+                    <div class="form-group">
+                        <label asp-for="ID_Product" class="control-label"></label>
+                        <input asp-for="ID_Product" class="form-control" readonly />
+                        <span asp-validation-for="ID_Product" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name_Product" class="control-label"></label>
+                        <input asp-for="Name_Product" class="form-control" />
+                        <span asp-validation-for="Name_Product" class="text-danger"></span>
+                    </div>
+
+                    @*<div class="form-group">
+                            <label asp-for="ID_Category" class="control-label"></label>
+                            <input asp-for="ID_Category" class="form-control" />
+                            <span asp-validation-for="ID_Category" class="text-danger"></span>
+                        </div>*@
+
+                    <div class="form-group">
+                        <label asp-for="ID_Category" class="control-label"></label>
+
+                        <select id="mySelect" name="categoryId" onchange="myFunction()" asp-items="@ViewBag.Categories" class="form-control">
+                            <option>@Model.ID_Category : @Model.Name_Category</option>
+                        </select>
+
+                        <input id="demo" type="hidden" asp-for="ID_Category" class="form-control" />
+                        <span asp-validation-for="ID_Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" type="number" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" type="number" class="form-control" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+
+                    @*<div class="form-group">
+                            <label asp-for="ID_Unit" class="control-label"></label>
+                            <input asp-for="ID_Unit" class="form-control" />
+                            <span asp-validation-for="ID_Unit" class="text-danger"></span>
+                        </div>*@
+                    <div class="form-group">
+                        <label asp-for="ID_Unit" class="control-label"></label>
+
+                        <select id="mySelectUnit" name="unitId" onchange="myFunctionUnit()" asp-items="@ViewBag.Units" class="form-control">
+                            <option>@Model.ID_Unit : @Model.Name_Unit</option>
+                        </select>
+
+                        <input id="demoUnit" type="hidden" asp-for="ID_Unit" class="form-control" />
+                        <span asp-validation-for="ID_Unit" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Length" class="control-label"></label>
+                        <input asp-for="Length" type="number" class="form-control" />
+                        <span asp-validation-for="Length" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Width" class="control-label"></label>
+                        <input asp-for="Width" type="number" class="form-control" />
+                        <span asp-validation-for="Width" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Height" class="control-label"></label>
+                        <input asp-for="Height" type="number" class="form-control" />
+                        <span asp-validation-for="Height" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Weight" class="control-label"></label>
+                        <input asp-for="Weight" type="number" class="form-control" />
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ThumbnailImage" class="control-label"></label>
+                        <input asp-for="ThumbnailImage" type="file" class="form-control" />
+                        <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                    </div>
+
+                    <!--Create by sẽ tự động thêm-->
+                    <div class="form-group">
+                        @*<label asp-for="CreatedBy" class="control-label"></label>*@
+                        <input type="hidden" asp-for="UpdatedBy" class="form-control" value="@User.Identity.Name" />
+
+                        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

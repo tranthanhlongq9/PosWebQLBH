@@ -21,6 +21,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         private readonly DbQLBHContext _context;
 
         private readonly IStorageService _storageService;
+        private const string USER_CONTENT_FOLDER_NAME = "user-content";
 
         //gán
         public ProductService(DbQLBHContext context, IStorageService storageService)
@@ -45,8 +46,8 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Weight = request.Weight,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = DateTime.Now,
-                UpdatedBy = request.UpdatedBy,
-                UpdatedDate = DateTime.Now,
+                //UpdatedBy = request.UpdatedBy,
+                //UpdatedDate = DateTime.Now,
 
                 //save image
                 ImagePath = await this.SaveFile(request.ThumbnailImage),
@@ -58,8 +59,6 @@ namespace PosWebQLBH.Application.Catalog.Products
                         Quantity = request.Quantity,
                         CreatedBy = request.CreatedBy,
                         CreatedDate = DateTime.Now,
-                        UpdatedBy = request.UpdatedBy,
-                        UpdatedDate = DateTime.Now,
                     }
                 }
             };
@@ -70,7 +69,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         }
 
         //hàm xóa sp
-        public async Task<int> Delete(string productId)
+        public async Task<ApiResult<bool>> Delete(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new EShopException($"Cannot find a product: {productId}");
@@ -87,8 +86,11 @@ namespace PosWebQLBH.Application.Catalog.Products
             _context.Inventories.Remove(quantity);
 
             _context.Products.Remove(product);
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+                return new ApiSuccessResult<bool>();
 
-            return await _context.SaveChangesAsync();
+            return new ApiErrorResult<bool>("Xóa không thành công");
         }
 
         //hàm lấy sp và sắp xếp show theo trang
@@ -106,9 +108,9 @@ namespace PosWebQLBH.Application.Catalog.Products
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.p.NameProduct.Contains(request.Keyword));
 
-            if (request.CategoryIds != null && request.CategoryIds.Count > 0)
+            if (request.CategoryId != null)
             {
-                query = query.Where(p => request.CategoryIds.Contains(p.c.IdCategory));
+                query = query.Where(p => p.c.IdCategory == request.CategoryId);
             }
 
             //3. Paging
@@ -147,7 +149,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         }
 
         //hàm lấy sp theo id
-        public async Task<ProductViewModel> GetById(string productId)
+        public async Task<ApiResult<ProductViewModel>> GetById(string productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new EShopException($"Cannot find a product: {productId}");
@@ -176,7 +178,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                 Quantity = inventory.Quantity,
                 ThumbnailImage = product != null ? product.ImagePath : null
             };
-            return productViewModel;
+            return new ApiSuccessResult<ProductViewModel>(productViewModel);
         }
 
         //Phát  triển sau
@@ -200,17 +202,32 @@ namespace PosWebQLBH.Application.Catalog.Products
             product.IdProduct = request.ID_Product;
             product.IdCategory = request.ID_Category;
             product.NameProduct = request.Name_Product;
+            product.Price = request.Price;
             product.IdUnit = request.ID_Unit;
             product.Length = request.Length;
             product.Width = request.Width;
             product.Height = request.Height;
             product.Weight = request.Weight;
+            product.UpdatedBy = request.UpdatedBy;
+            product.UpdatedDate = DateTime.Now;
             //save image
-            product.ImagePath = await this.SaveFile(request.ThumbnailImage);
+            if (request.ThumbnailImage != null)
+            {
+                ////xóa ảnh
+                var images = _context.Products.Where(i => i.IdProduct == request.ID_Product);
+                foreach (var image in images)
+                {
+                    await _storageService.DeleteFileAsync(image.ImagePath);
+                }
+                //thêm ảnh mới
+                product.ImagePath = await this.SaveFile(request.ThumbnailImage);
+            }
 
             //update SL
             var quantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == request.ID_Product);
             quantity.Quantity = request.Quantity;
+            quantity.UpdatedBy = request.UpdatedBy;
+            quantity.UpdatedDate = DateTime.Now;
             _context.Inventories.Update(quantity);
 
             return await _context.SaveChangesAsync();
@@ -253,19 +270,21 @@ namespace PosWebQLBH.Application.Catalog.Products
             var data = await query.Select(x => new ProductViewModel()
             {
                 ID = x.p.IdProduct,
+                ID_Category = x.p.IdCategory,
                 Name_Category = x.c.NameCategory,
                 Name_Product = x.p.NameProduct,
                 Price = x.p.Price,
+                ID_Unit = x.p.IdUnit,
                 Name_Unit = x.u.NameUnit,
                 Length = x.p.Length,
                 Width = x.p.Width,
                 Height = x.p.Height,
                 Weight = x.p.Weight,
                 Quantity = x.inv.Quantity,
-                CreatedBy = x.p.CreatedBy,
-                CreatedDate = x.p.CreatedDate,
-                UpdatedBy = x.p.UpdatedBy,
-                UpdatedDate = x.p.UpdatedDate,
+                //CreatedBy = x.p.CreatedBy,
+                //CreatedDate = x.p.CreatedDate,
+                //UpdatedBy = x.p.UpdatedBy,
+                //UpdatedDate = x.p.UpdatedDate,
                 ThumbnailImage = x.p.ImagePath
             }).ToListAsync();
             return data;
@@ -327,6 +346,7 @@ namespace PosWebQLBH.Application.Catalog.Products
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
+            //return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
     }
 }
