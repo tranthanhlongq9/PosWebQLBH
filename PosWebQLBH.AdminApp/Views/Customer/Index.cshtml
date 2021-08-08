@@ -86,9 +86,9 @@
                     {
                     <tr>
                         <td>
-                            @Html.ActionLink("Sửa", "Edit", new { customerId = item.ID }) |
-                            @Html.ActionLink("Chi Tiết", "Details", new { customerId = item.ID }) |
-                            @Html.ActionLink("Xóa", "Delete", new { customerId = item.ID })
+                            @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Chi Tiết", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ID)

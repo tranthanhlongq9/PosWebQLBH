@@ -30,18 +30,18 @@ namespace PosWebQLBH.BackendApi.Controllers
             return Ok(customer);
         }
 
-        [HttpGet("{customerId}")] //lấy kh theo id
+        /*[HttpGet("{customerId}")] //lấy kh theo id
         public async Task<IActionResult> GetById(long customerId)
         {
-            var cusById = await _customerService.GetById(customerId);
-            if (cusById == null)
+            var proById = await _customerService.GetById(customerId);
+            if (proById == null)
             {
                 return BadRequest("Không tìm thấy khách hàng");
             }
-            return Ok(cusById);
-        }
+            return Ok(proById);
+        }*/
 
-        [HttpPost] //thường là HttpPost vì nó tạo mới
+        /*[HttpPost] //thường là HttpPost vì nó tạo mới
         public async Task<IActionResult> Create([FromForm] CustomerCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -49,45 +49,12 @@ namespace PosWebQLBH.BackendApi.Controllers
                 return BadRequest(ModelState);
             }
             var customerId = await _customerService.Create(request);
-            //if (customerId == null)
-            //    return BadRequest();
+            if (customerId == null)
+                return BadRequest();
 
             var customer = await _customerService.GetById(customerId);
 
             return CreatedAtAction(nameof(GetById), new { id = customerId }, request);
-        }
-
-        [HttpGet] //lấy tất cả 
-        public async Task<IActionResult> GetAll()
-        {
-            var customers = await _customerService.GetAll();
-            return Ok(customers);
-        }
-
-        [HttpPut("{customerId}")]
-        [Consumes("multipart/form-data")]
-        [Authorize]
-        public async Task<IActionResult> Update([FromRoute] long customerId, [FromForm] CustomerUpdateRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            request.ID = customerId;
-            var affectedResult = await _customerService.Update(request);
-            if (affectedResult == 0)
-                return BadRequest();
-            return Ok();
-        }
-
-        [HttpDelete("{customerId}")] // là HttpDelete vì nó xóa
-        public async Task<IActionResult> Delete(long customerId)
-        {
-            var affectedResult = await _customerService.Delete(customerId);
-            if (!affectedResult.IsSuccessed)
-                return BadRequest();
-
-            return Ok(affectedResult);
-        }
+        }*/
     }
 }
