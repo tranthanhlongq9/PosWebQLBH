@@ -25,8 +25,9 @@ namespace PosWebQLBH.WebPOS.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var product = await _productApiApp.GetAll();
-            return View(product);
+            //var product = await _productApiApp.GetAll();
+            //return View(product);
+            return View();
         }
 
         public IActionResult Privacy()

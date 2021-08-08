@@ -5,14 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\image\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PosWebQLBH.AdminApp\PosWebQLBH.AdminApp.csproj" />
     <ProjectReference Include="..\PosWebQLBH.Utilities\PosWebQLBH.Utilities.csproj" />
     <ProjectReference Include="..\PosWebQLBH.ViewModels\PosWebQLBH.ViewModels.csproj" />
     <ProjectReference Include="..\PosWebQLBH.WebApp\PosWebQLBH.BackendApi.csproj" />
