@@ -45,6 +45,6 @@ namespace PosWebQLBH.Application.Catalog.Products
         Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request);
 
         //lấy tất cả
-        Task<List<ProductViewModel>> GetAll();
+        Task<ApiResult<List<ProductViewModel>>> GetAll();
     }
 }

@@ -5,6 +5,7 @@ using PosWebQLBH.Utilities.Constants;
 using PosWebQLBH.ViewModels.Catalog.Products;
 using PosWebQLBH.ViewModels.Common;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -170,6 +171,11 @@ namespace PosWebQLBH.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<ProductViewModel>>(body);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<ProductViewModel>>(body);
+        }
+
+        public async Task<ApiResult<List<ProductViewModel>>> GetAll()
+        {
+            return await GetAsync<ApiResult<List<ProductViewModel>>>("/api/products");
         }
     }
 }
