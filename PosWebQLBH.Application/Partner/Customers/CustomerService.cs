@@ -38,8 +38,8 @@ namespace PosWebQLBH.Application.Partner.Customers
                 Address = request.Address,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = DateTime.Now,
-                UpdatedBy = request.UpdatedBy,
-                UpdatedDate = DateTime.Now,
+                //UpdatedBy = request.UpdatedBy,
+                //UpdatedDate = DateTime.Now,
             };
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
