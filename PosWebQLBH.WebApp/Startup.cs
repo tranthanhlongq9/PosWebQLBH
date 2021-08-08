@@ -12,9 +12,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PosWebQLBH.Application.Catalog.Categories;
 using PosWebQLBH.Application.Catalog.Products;
+using PosWebQLBH.Application.Catalog.Units;
 using PosWebQLBH.Application.Common;
 using PosWebQLBH.Application.Partner.Customers;
+using PosWebQLBH.Application.Partner.Suppliers;
 using PosWebQLBH.Application.System.Languages;
 using PosWebQLBH.Application.System.Roles;
 using PosWebQLBH.Application.System.Users;
@@ -58,6 +61,18 @@ namespace PosWebQLBH.WebApp
             //Declare DI -- customer
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<ICustomerService, CustomerService>();
+
+            //Declare DI -- supplier
+            services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<ISupplierService, SupplierService>();
+
+            //Declare DI -- category
+            services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+
+            //Declare DI -- unit
+            services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<IUnitService, UnitService>();
 
             // Declare DI --> login
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();

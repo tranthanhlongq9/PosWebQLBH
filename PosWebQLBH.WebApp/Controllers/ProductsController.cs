@@ -39,7 +39,7 @@ namespace PosWebQLBH.BackendApi.Controllers
         //    return Ok(products);
         //}
 
-        [HttpGet("paging")] //lấy sp theo category id
+        [HttpGet("paging")] //lấy sp
         public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
         {
             var products = await _productService.GetAllpaging(request);
@@ -51,10 +51,10 @@ namespace PosWebQLBH.BackendApi.Controllers
         public async Task<IActionResult> GetById(string productId)
         {
             var proById = await _productService.GetById(productId);
-            if (proById == null)
-            {
-                return BadRequest("Không tìm thấy sản phẩm");
-            }
+            //if (proById == null)
+            //{
+            //    return BadRequest("Không tìm thấy sản phẩm");
+            //}
             return Ok(proById);
         }
 
@@ -75,13 +75,16 @@ namespace PosWebQLBH.BackendApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = productId }, request);
         }
 
-        [HttpPut] // là HttpPut vì nó update
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+        [HttpPut("{productId}")] // là HttpPut vì nó update
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute] string productId, [FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            request.ID_Product = productId;
             var affectedResult = await _productService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
@@ -93,10 +96,10 @@ namespace PosWebQLBH.BackendApi.Controllers
         public async Task<IActionResult> Delete(string productId)
         {
             var affectedResult = await _productService.Delete(productId);
-            if (affectedResult == 0)
+            if (!affectedResult.IsSuccessed)
                 return BadRequest();
 
-            return Ok();
+            return Ok(affectedResult);
         }
 
         [HttpPatch("{productId}/{newPrice}")] //HttpPatch : Update 1 phần của bản ghi.. (và vì price nằm trong bảng product nên dùng update 1 phần sẽ nhanh hơn, chú trọng vào update giá thôi)
