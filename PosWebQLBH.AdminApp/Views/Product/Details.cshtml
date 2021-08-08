@@ -1,4 +1,4 @@
-﻿@model PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel
+@model PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel
 
 @{
     ViewData["Title"] = "Chi Tiết Sản Phẩm";
@@ -126,8 +126,8 @@
                     <dt />
                     <dd class="col-sm-9">
                         @*@Html.DisplayFor(model => model.ThumbnailImage)*@
-                        <img width="300" height="300" src="@(Configuration["BaseAddress"] +"/user-content/" + Model.ThumbnailImage)" />
 
+                        <img width="300" height="300" src="@(Configuration["BaseAddress"] +"/user-content/" + Model.ThumbnailImage)" />
                     </dd>
                 </dl>
             </div>
