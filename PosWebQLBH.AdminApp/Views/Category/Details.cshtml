@@ -1,0 +1,66 @@
+﻿@model PosWebQLBH.ViewModels.Catalog.Categories.CategoryVm
+
+@{
+    ViewData["Title"] = "Chi Tiết Ngành Hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Chi Tiết Ngành Hàng</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+        <li class="breadcrumb-item active">Chi tiết ngành hàng</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Category">Về danh sách</a>
+
+            <a style="margin-left: 220px"> @Html.ActionLink("Sửa", "Edit", new { categoryId = Model.ID_Catetory }) </a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-12">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.ID_Catetory)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.ID_Catetory)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Name_Catetory)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Name_Catetory)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.CreatedBy)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.CreatedBy)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.CreatedDate)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.UpdatedBy)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.UpdatedBy)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.UpdatedDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.UpdatedDate)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
