@@ -1,5 +1,4 @@
-using PosWebQLBH.ViewModels.Catalog.Units;
-using PosWebQLBH.ViewModels.Common;
+﻿using PosWebQLBH.ViewModels.Catalog.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +8,6 @@ namespace PosWebQLBH.AdminApp.Services
 {
     public interface IUnitApiClient
     {
-
         Task<List<UnitVmodel>> GetAll();
-
-        Task<PagedResult<UnitVm>> GetUnitPagings(GetUnitPagingRequest request);
-
-        Task<bool> CreateUnit(UnitCreateRequest request);
-
-        Task<ApiResult<List<UnitVm>>> GetAll();
-
-        Task<bool> UpdateUnit(UnitUpdateRequest request);
-
-        Task<ApiResult<UnitVm>> GetUnitById(string unitId);
-
-        Task<ApiResult<bool>> DeleteUnit(string unitId);
     }
 }

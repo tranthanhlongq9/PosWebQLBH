@@ -13,14 +13,6 @@ namespace PosWebQLBH.AdminApp.Services
 
         Task<ApiResult<List<CustomerVm>>> GetAll();
 
-        Task<bool> CreateCustomer(CustomerCreateRequest request);
-
-        Task<bool> UpdateCustomer(CustomerUpdateRequest request);
-
-        Task<ApiResult<CustomerVm>> GetCustomerById(long customerId);
-
-        Task<ApiResult<bool>> DeleteCustomer(long customerId);
-
 
     }
 }

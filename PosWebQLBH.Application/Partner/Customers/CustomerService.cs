@@ -32,7 +32,7 @@ namespace PosWebQLBH.Application.Partner.Customers
         {
             var customer = new Customer()
             {
-                IdCustomer = request.ID_Customer,
+                IdCustomer=request.ID_Customer,
                 NameCustomer = request.Name_Customer,
                 PhoneNumber = request.Phone_Number,
                 Address = request.Address,
@@ -41,17 +41,71 @@ namespace PosWebQLBH.Application.Partner.Customers
                 UpdatedBy = request.UpdatedBy,
                 UpdatedDate = DateTime.Now,
 
+                /*SellOrders = new List<SellOrder>()
+                {
+                    new SellOrder()
+                    {
+                        //IdSellOrder = request.ID_SellOrder,
+                        CreatedBy = request.CreatedBy,
+                        CreatedDate = DateTime.Now,
+                        UpdatedBy = request.UpdatedBy,
+                        UpdatedDate = DateTime.Now,
+                    }
+                }*/
             };
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
             return customer.IdCustomer;
         }
+        //hàm lấy khách hàng theo id sell
+        /*public async Task<PagedResult<CustomerVm>> GetAllByCustomerId(GetPublicCustomerPagingRequest request)
+        {
+            //1. select join
+            var query = from cus in _context.Customers
+                        join sell in _context.SellOrders on cus.IdCustomer equals sell.IdCustomer
+                        select new { cus, sell };
 
-         //hàm lấy khách hàng theo id
-        public async Task<ApiResult<CustomerVm>> GetById(long customerId)
+            //2. filter
+            if (request.CustomerId != null)
+            {
+                query = query.Where(cus => cus.cus.CustomerId == request.CustomerId);
+            }
+
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new CustomerVm()
+                {
+
+                    ID = x.cus.IdCustomer,
+                    Name_Customer = x.cus.NameCustomer,
+                    Address = x.cus.Address,
+                    Phone_Number = x.cus.PhoneNumber,
+                    CreatedBy = x.cus.CreatedBy,
+                    CreatedDate = x.cus.CreatedDate,
+                    UpdatedBy = x.cus.UpdatedBy,
+                    UpdatedDate = x.cus.UpdatedDate,
+
+                    ID_Sell = x.sell.IdSellOrder,
+                }).ToListAsync();
+
+            //4. Select and projection
+            var pagedResult = new PagedResult<ProductViewModel>()
+            {
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Items = data
+            };
+            return pagedResult;
+        }
+        */
+        public async Task<CustomerVm> GetById(long customerId)
         {
             var customer = await _context.Customers.FindAsync(customerId);
-            if (customer == null) throw new EShopException($"Cannot find a customer: {customerId}");
+            if (customer == null) throw new EShopException($"Cannot find a product: {customerId}");
 
             //var sellorder = await _context.SellOrders.FirstOrDefaultAsync(x => x.IdCustomer == customerId);
             
@@ -68,7 +122,7 @@ namespace PosWebQLBH.Application.Partner.Customers
                 UpdatedDate = customer.UpdatedDate,
                 //ID_Sell = sellorder.IdSellOrder ,
             };
-            return new ApiSuccessResult<CustomerVm>(customerVm);
+            return customerVm;
         }
 
         //hàm lấy tất cả khách hàng
@@ -97,7 +151,6 @@ namespace PosWebQLBH.Application.Partner.Customers
             return data; 
         }
 
-        //hàm lấy tất cả khách hàng phân trang
         public async Task<PagedResult<CustomerVm>> GetAllpaging(GetManageCustomerPagingRequest request)
         {
             //1. select join
@@ -117,7 +170,7 @@ namespace PosWebQLBH.Application.Partner.Customers
                 .Take(request.PageSize)
                 .Select(x => new CustomerVm()
                 {
-                    ID= x.cus.IdCustomer,
+                    ID = x.cus.IdCustomer,
                     Name_Customer = x.cus.NameCustomer,
                     Address = x.cus.Address,
                     Phone_Number = x.cus.PhoneNumber,
@@ -138,38 +191,5 @@ namespace PosWebQLBH.Application.Partner.Customers
             };
             return pagedResult;
         }
-
-        //hàm cập nhật 
-        public async Task<int> Update(CustomerUpdateRequest request)
-        {
-            var cus = await _context.Customers.FindAsync(request.ID);
-            if (cus == null) throw new EShopException($"Cannot find a unit with id: {request.ID}");
-
-            cus.IdCustomer = request.ID;
-            cus.NameCustomer = request.Name_Customer;
-            cus.Address = request.Address;
-            cus.PhoneNumber = request.Phone_Number;
-            cus.UpdatedBy = request.UpdatedBy;
-            cus.UpdatedDate = DateTime.Now;
-
-            return await _context.SaveChangesAsync();
-
-        }
-
-        //hàm xóa dvt
-        public async Task<ApiResult<bool>> Delete(long customerId)
-        {
-            var cus = await _context.Customers.FindAsync(customerId);
-            if (cus == null) throw new EShopException($"Cannot find a customer : {customerId}");
-
-            _context.Customers.Remove(cus);
-            var result = await _context.SaveChangesAsync();
-            if (result > 0)
-                return new ApiSuccessResult<bool>();
-
-            return new ApiErrorResult<bool>("Xóa không thành công");
-        }
-
-
     }
 }
