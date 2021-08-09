@@ -20,5 +20,9 @@ namespace PosWebQLBH.AdminApp.Services
         Task<ApiResult<ProductViewModel>> GetProductById(string productId);
 
         Task<ApiResult<List<ProductViewModel>>> GetAll();
+
+        public Task<string> GetAllPro();
+
+        Task<bool> UpdateStock(ProductUpdateRequest request);
     }
 }

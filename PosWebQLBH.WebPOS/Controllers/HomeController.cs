@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PosWebQLBH.AdminApp.Services;
 using PosWebQLBH.ViewModels.Catalog.Products;
 using PosWebQLBH.WebPOS.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PosWebQLBH.WebPOS.Controllers
@@ -14,42 +18,32 @@ namespace PosWebQLBH.WebPOS.Controllers
     {
         private readonly IProductApiClient _productApiClient;
 
+        private readonly ICategoryApiClient _categoryApiClient;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IProductApiClient productApiClient, ILogger<HomeController> logger)
+        public HomeController(ICategoryApiClient categoryApiClient, IProductApiClient productApiClient, ILogger<HomeController> logger)
         {
             _logger = logger;
             _productApiClient = productApiClient;
+            _categoryApiClient = categoryApiClient;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() //string categoryId
         {
-            var result = await _productApiClient.GetAll();
-            return View(result);
+            var result = await _productApiClient.GetAllPro();
+            var model = JsonConvert.DeserializeObject<List<ProductViewModel>>(result);
 
-            //if (result.IsSuccessed)
+            //var categories = await _categoryApiClient.GetAll();
+            //ViewBag.Categories = categories.Select(x => new SelectListItem()
             //{
-            //    var product = result.ResultObj;
-            //    var editVm = new SelectListItem()
-            //    {
-            //        ID = product.,
-            //        ID_Category = product.ID_Category,
-            //        Name_Product = product.Name_Product,
-            //        Name_Category = product.Name_Category,
-            //        Price = product.Price,
-            //        ID_Unit = product.ID_Unit,
-            //        Name_Unit = product.Name_Unit,
-            //        Length = product.Length,
-            //        Width = product.Width,
-            //        Weight = product.Weight,
-            //        Height = product.Height,
-            //        Quantity = product.Quantity
-            //    };
-            //    return View(editVm);
-            //}
-            //return RedirectToAction("Error", "Home");
-            //return View();
+            //    Text = x.Name_Catetory,
+            //    Value = x.ID_Catetory.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
+            //    Selected = categoryId == x.ID_Catetory //gán giá trị vào view dropdown
+            //});
+
+            return View(model);
         }
 
         public IActionResult Privacy()

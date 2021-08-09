@@ -12,7 +12,7 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
         public ProductCreateValidation()
         {
             RuleFor(x => x.ID_Product).NotEmpty().WithMessage("Mã sản phẩm là bắt buộc")
-                .Matches(@"^[a-zA-z0-9]*$")
+                .Matches(@"^[a-zA-z0-9-]*$")
                 .WithMessage("Mã sản phẩm không được sử dụng ký tự đặc biệt, khoảng trắng")
                 .MaximumLength(30).WithMessage("Mã sản phẩm không được vượt quá 30 ký tự !!");
 
@@ -23,9 +23,8 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
 
             RuleFor(x => x.ID_Category).NotEmpty().WithMessage("Mã loại sản phẩm là bắt buộc");
 
-
             RuleFor(x => x.ID_Unit).NotEmpty().WithMessage("Mã đơn vị là bắt buộc");
-                
+
             RuleFor(x => x.Price).NotEmpty().WithMessage("Giá sản phẩm là bắt buộc");
 
             RuleFor(x => x.Quantity).NotEmpty().WithMessage("Giá sản phẩm là bắt buộc");
