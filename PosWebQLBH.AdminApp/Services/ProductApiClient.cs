@@ -177,5 +177,20 @@ namespace PosWebQLBH.AdminApp.Services
         {
             return await GetAsync<ApiResult<List<ProductViewModel>>>("/api/products");
         }
+
+        public async Task<string> GetAllPro()
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var response = await client.GetAsync($"/api/products");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            return body;
+        }
     }
 }

@@ -252,15 +252,45 @@ namespace PosWebQLBH.Application.Catalog.Products
         }
 
         //hàm lấy tất cả sp
-        public async Task<ApiResult<List<ProductViewModel>>> GetAll()
+        //public async Task<ApiResult<List<ProductViewModel>>> GetAll()
+        //{
+        //    //return await _context.Products.Select(x => new ProductViewModel()
+        //    //{
+        //    //    ID_Product = x.IdProduct,
+        //    //    Name_Product = x.NameProduct,
+
+        //    //}).ToListAsync();
+
+        //    var query = from p in _context.Products
+        //                join inv in _context.Inventories on p.IdProduct equals inv.IdProduct
+        //                join c in _context.Categories on p.IdCategory equals c.IdCategory
+        //                join u in _context.Units on p.IdUnit equals u.IdUnit
+        //                select new { p, c, u, inv };
+
+        //    var data = await query.Select(x => new ProductViewModel()
+        //    {
+        //        ID = x.p.IdProduct,
+        //        ID_Category = x.p.IdCategory,
+        //        Name_Category = x.c.NameCategory,
+        //        Name_Product = x.p.NameProduct,
+        //        Price = x.p.Price,
+        //        ID_Unit = x.p.IdUnit,
+        //        Name_Unit = x.u.NameUnit,
+        //        Length = x.p.Length,
+        //        Width = x.p.Width,
+        //        Height = x.p.Height,
+        //        Weight = x.p.Weight,
+        //        Quantity = x.inv.Quantity,
+        //        //CreatedBy = x.p.CreatedBy,
+        //        //CreatedDate = x.p.CreatedDate,
+        //        //UpdatedBy = x.p.UpdatedBy,
+        //        //UpdatedDate = x.p.UpdatedDate,
+        //        ThumbnailImage = x.p.ImagePath
+        //    }).ToListAsync();
+        //    return new ApiSuccessResult<List<ProductViewModel>>(data);
+        //}
+        public async Task<List<ProductViewModel>> GetAll()
         {
-            //return await _context.Products.Select(x => new ProductViewModel()
-            //{
-            //    ID_Product = x.IdProduct,
-            //    Name_Product = x.NameProduct,
-
-            //}).ToListAsync();
-
             var query = from p in _context.Products
                         join inv in _context.Inventories on p.IdProduct equals inv.IdProduct
                         join c in _context.Categories on p.IdCategory equals c.IdCategory
@@ -287,7 +317,7 @@ namespace PosWebQLBH.Application.Catalog.Products
                 //UpdatedDate = x.p.UpdatedDate,
                 ThumbnailImage = x.p.ImagePath
             }).ToListAsync();
-            return new ApiSuccessResult<List<ProductViewModel>>(data);
+            return data;
         }
 
         //hàm lấy sản phẩm theo category id
