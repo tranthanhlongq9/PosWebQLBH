@@ -122,6 +122,14 @@ namespace PosWebQLBH.BackendApi.Controllers
         [HttpPut("{productId}/quantity+={addedQuantity}")] //HttpPut : update tồn kho
         public async Task<IActionResult> UpdateStockProduct(string productId, int addedQuantity) //update số lượng tồn kho
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //request.ID_Product = productId;
+            //request.Quantity = addedQuantity;
+
             var isSuccessfull = await _productService.UpdateStock(productId, addedQuantity);
             if (isSuccessfull)
                 return Ok();
