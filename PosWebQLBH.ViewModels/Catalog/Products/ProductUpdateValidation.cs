@@ -11,10 +11,10 @@ namespace PosWebQLBH.ViewModels.Catalog.Products
     {
         public ProductUpdateValidation()
         {
-            RuleFor(x => x.ID_Product).NotEmpty().WithMessage("Mã sản phẩm là bắt buộc")
-                .Matches(@"^[a-zA-z0-9]*$")
-                .WithMessage("Mã sản phẩm không được sử dụng ký tự đặc biệt, khoảng trắng")
-                .MaximumLength(100).WithMessage("Mã sản phẩm không được vượt quá 100 ký tự !!");
+            //RuleFor(x => x.ID_Product).NotEmpty().WithMessage("Mã sản phẩm là bắt buộc")
+            //    .Matches(@"^[a-zA-z0-9]*$")
+            //    .WithMessage("Mã sản phẩm không được sử dụng ký tự đặc biệt, khoảng trắng")
+            //    .MaximumLength(100).WithMessage("Mã sản phẩm không được vượt quá 100 ký tự !!");
 
             RuleFor(x => x.Name_Product).NotEmpty().WithMessage("Tên sản phẩm là bắt buộc")
                 .Matches(@"^[a-zA-z0-9 áàạảãâấầậẩẫăắằặẳẵÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴéèẹẻẽêếềệểễÉÈẸẺẼÊẾỀỆỂỄóòọỏõôốồộổỗơớờợởỡÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠúùụủũưứừựửữÚÙỤỦŨƯỨỪỰỬỮíìịỉĩÍÌỊỈĨđĐýỳỵỷỹÝỲỴỶỸ]*$")
