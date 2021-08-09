@@ -378,5 +378,23 @@ namespace PosWebQLBH.Application.Catalog.Products
             return fileName;
             //return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
+
+        public async Task<List<ProductViewModel>> GetFood()
+        {
+            var query = from p in _context.Products
+                        where p.IdCategory == "DA"
+                        select new { p };
+
+            var data = await query.Select(x => new ProductViewModel()
+            {
+                ID = x.p.IdProduct,
+                Name_Product = x.p.NameProduct,
+                Price = x.p.Price,
+                ThumbnailImage = x.p.ImagePath,
+                ID_Category = x.p.IdCategory
+            }).ToListAsync();
+
+            return data;
+        }
     }
 }

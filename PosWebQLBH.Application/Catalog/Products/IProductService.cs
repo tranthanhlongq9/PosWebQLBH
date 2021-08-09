@@ -47,5 +47,7 @@ namespace PosWebQLBH.Application.Catalog.Products
         //lấy tất cả
         //Task<ApiResult<List<ProductViewModel>>> GetAll();
         public Task<List<ProductViewModel>> GetAll();
+
+        public Task<List<ProductViewModel>> GetFood();
     }
 }

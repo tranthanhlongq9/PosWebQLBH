@@ -13,7 +13,7 @@ namespace PosWebQLBH.BackendApi.Controllers
     //api/products
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -29,6 +29,13 @@ namespace PosWebQLBH.BackendApi.Controllers
         {
             var products = await _productService.GetAll();
             return Ok(products);
+        }
+
+        [HttpGet("GetFood")] //lấy tất cả sp của id category là DA
+        public async Task<IActionResult> GetFood()
+        {
+            var proFood = await _productService.GetFood();
+            return Ok(proFood);
         }
 
         ////http://localhost:port/product?pageIndex=1&pageSize=10&CategoryId=
