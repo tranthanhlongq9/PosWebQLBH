@@ -52,6 +52,8 @@ namespace PosWebQLBH.WebPOS
 
             services.AddTransient<IProductApiClient, ProductApiClient>();
 
+            services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+
             //dùng để chỉnh sửa không cần biên dịch lại chương trình
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
