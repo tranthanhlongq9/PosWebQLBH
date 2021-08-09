@@ -1,5 +1,4 @@
-﻿@using PosWebQLBH.ViewModels.Common;
-@model PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel
+﻿@model IEnumerable<PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel>
 @{
     ViewData["Title"] = "POS Bán Hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -69,17 +68,16 @@
         <div class="p-2 pt-2 scroll--item" style="height: calc(100vh - 70px);overflow-y: scroll;">
             <!--show tất cả sp-->
             <div id="GetAll" class="row m-0 p-2">
-                @*@foreach (var item in Model.Items)
-                    {*@
-                <div onclick="addToCart(@Model.ID , @Model.Price)" class="col-2 p-2">
-                    <div class="shadow-ok" style="width: 100%;height: 160px;background: #fff;border-radius:10px;">
-                        <img src="@(Configuration["BaseAddress"] +"/user-content/" + Model.ThumbnailImage)" width="100%" height="100px" style="border-top-left-radius:10px;border-top-right-radius:10px;">
-                        <p class="font-weight-bold text-center mt-1 mb-0" style="font-size:95%">@Model.Name_Product</p>
-                        <p class="text-center">@(Model.Price)đ</p>
+                @foreach (var item in Model)
+                {
+                    <div onclick="addToCart(@item.ID , @item.Price)" class="col-2 p-2">
+                        <div class="shadow-ok" style="width: 100%;height: 220px;background: #fff;border-radius:10px;">
+                            <img src="@(Configuration["BaseAddress"] +"/user-content/" + item.ThumbnailImage)" width="100%" height="150px" style="border-top-left-radius:10px;border-top-right-radius:10px;">
+                            <p class="font-weight-bold text-center mt-1 mb-0" style="font-size:95%">@item.Name_Product</p>
+                            <p class="text-center">@(item.Price)đ</p>
+                        </div>
                     </div>
-                </div>
-
-                @*}*@
+                }
             </div>
 
             <!--show sp theo loại-->
@@ -102,14 +100,15 @@
                         success: function (data) {
                             //console.log(data);
                             $.each(data, function (index, value) {
-                                var Data = `<div onclick="addToCart(` + value.id + ` , ` + value.price + `)" class="col-2 p-2">
-                                                                            <div class="shadow-ok" style="width: 100%;height: 160px;background: #fff;border-radius:10px;">
-                                                                                <img src="/image/`+ value.image + `" width="100%" height="100px" style="border-top-left-radius:10px;border-top-right-radius:10px;">
-                                                                                <p class="font-weight-bold text-center mt-1 mb-0" style="font-size:95%">`+ value.name + `</p>
-                                                                                <p class="text-center">`+ value.price + `đ</p>
-                                                                            </div>
-                                                                        </div>`;
-                                SetGetAjax.append(Data);
+                            var Data = `
+                                <div onclick="addToCart(` + value.ID + ` , ` + value.Price + `)" class="col-2 p-2">
+                                    <div class="shadow-ok" style="width: 100%;height: 220px;background: #fff;border-radius:10px;">
+                                        <img src="/image/`+ value.ThumbnailImage + `" width="100%" height="100px" style="border-top-left-radius:10px;border-top-right-radius:10px;">
+                                        <p class="font-weight-bold text-center mt-1 mb-0" style="font-size:95%">`+ value.Name_Product + `</p>
+                                        <p class="text-center">`+ value.Price + `đ</p>
+                                    </div>
+                                </div>`;
+                            SetGetAjax.append(Data);
                             }
                             )
                         }
@@ -131,13 +130,13 @@
                         success: function (data) {
                             //console.log(data);
                             $.each(data, function (index, value) {
-                                var Data = `<div onclick="addToCart(` + value.id + ` , ` + value.price + `)" class="col-2 p-2">
-                                                                                                                                                                <div class="shadow-ok" style="width: 100%;height: 160px;background: #fff;border-radius:10px;">
-                                                                                                                                                                    <img src="/image/`+ value.image + `" width="100%" height="100px" style="border-top-left-radius:10px;border-top-right-radius:10px;">
-                                                                                                                                                                    <p class="font-weight-bold text-center mt-1 mb-0" style="font-size:95%">`+ value.name + `</p>
-                                                                                                                                                                    <p class="text-center">`+ value.price + `đ</p>
-                                                                                                                                                                </div>
-                                                                                                                                                            </div>`;
+                                var Data = `<div onclick="addToCart(` + value.ID + ` , ` + value.Price + `)" class="col-2 p-2">
+                                                        <div class="shadow-ok" style="width: 100%;height: 220px;background: #fff;border-radius:10px;">
+                                                            <img src="/image/`+ value.ThumbnailImage + `" width="100%" height="100px" style="border-top-left-radius:10px;border-top-right-radius:10px;">
+                                                            <p class="font-weight-bold text-center mt-1 mb-0" style="font-size:95%">`+ value.Name_Product + `</p>
+                                                            <p class="text-center">`+ value.Price + `đ</p>
+                                                        </div>
+                                                    </div>`;
                                 SetGetAjax.append(Data);
                             }
                             )

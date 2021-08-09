@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PosWebQLBH.AdminApp.Services;
 using PosWebQLBH.ViewModels.Catalog.Products;
 using PosWebQLBH.WebPOS.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -25,31 +27,10 @@ namespace PosWebQLBH.WebPOS.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var result = await _productApiClient.GetAll();
-            return View(result);
+            var result = await _productApiClient.GetAllPro();
+            var model = JsonConvert.DeserializeObject<List<ProductViewModel>>(result);
 
-            //if (result.IsSuccessed)
-            //{
-            //    var product = result.ResultObj;
-            //    var editVm = new SelectListItem()
-            //    {
-            //        ID = product.,
-            //        ID_Category = product.ID_Category,
-            //        Name_Product = product.Name_Product,
-            //        Name_Category = product.Name_Category,
-            //        Price = product.Price,
-            //        ID_Unit = product.ID_Unit,
-            //        Name_Unit = product.Name_Unit,
-            //        Length = product.Length,
-            //        Width = product.Width,
-            //        Weight = product.Weight,
-            //        Height = product.Height,
-            //        Quantity = product.Quantity
-            //    };
-            //    return View(editVm);
-            //}
-            //return RedirectToAction("Error", "Home");
-            //return View();
+            return View(model);
         }
 
         public IActionResult Privacy()
