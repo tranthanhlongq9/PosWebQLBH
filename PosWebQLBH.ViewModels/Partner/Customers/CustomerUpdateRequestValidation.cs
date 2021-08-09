@@ -11,8 +11,10 @@ namespace PosWebQLBH.ViewModels.Partner.Customers
     {
         public CustomerUpdateRequestValidation()
         {
-            RuleFor(x => x.Name_Customer).NotEmpty().WithMessage("tên khách hàng là bắt buộc")
-                .Matches(@"^[a-zA-z0-9,. áàạảãâấầậẩẫăắằặẳẵÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴéèẹẻẽêếềệểễÉÈẸẺẼÊẾỀỆỂỄóòọỏõôốồộổỗơớờợởỡÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠúùụủũưứừựửữÚÙỤỦŨƯỨỪỰỬỮíìịỉĩÍÌỊỈĨđĐýỳỵỷỹÝỲỴỶỸ]*$")
+
+            RuleFor(x => x.Name_Customer).NotEmpty().WithMessage("Tên khách hàng là bắt buộc")
+                .Matches(@"^[a-zA-z0-9 áàạảãâấầậẩẫăắằặẳẵÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴéèẹẻẽêếềệểễÉÈẸẺẼÊẾỀỆỂỄóòọỏõôốồộổỗơớờợởỡÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠúùụủũưứừựửữÚÙỤỦŨƯỨỪỰỬỮíìịỉĩÍÌỊỈĨđĐýỳỵỷỹÝỲỴỶỸ]*$")
+
                 .WithMessage("Tên khách hàng không được sử dụng ký tự đặc biệt")
                 .MaximumLength(200).WithMessage("Tên khách hàng không được vượt quá 200 ký tự !!");
 
