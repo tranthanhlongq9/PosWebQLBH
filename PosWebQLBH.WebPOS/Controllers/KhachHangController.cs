@@ -1,38 +1,30 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using PosWebQLBH.AdminApp.Models;
 using PosWebQLBH.AdminApp.Services;
 using PosWebQLBH.Utilities.Constants;
 using PosWebQLBH.ViewModels.Partner.Customers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PosWebQLBH.AdminApp.Controllers
+namespace PosWebQLBH.WebPOS.Controllers
 {
-    public class HomeController : BaseController
+    public class KhachHangController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         private readonly ICustomerApiClient _customerApiClient;
         private readonly IConfiguration _configuration;
 
-        public HomeController(ICustomerApiClient customerApiClient, IConfiguration configuration, ILogger<HomeController> logger)
+        public KhachHangController(ICustomerApiClient customerApiClient, IConfiguration configuration)
         {
-            _logger = logger;
             _customerApiClient = customerApiClient;
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        [HttpGet]
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 20)
         {
-            var user = User.Identity.Name;
-
             //lấy session
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
@@ -51,27 +43,32 @@ namespace PosWebQLBH.AdminApp.Controllers
                 ViewBag.SuccessMess = TempData["result"];
             }
             return View(data);
-            //return View();
         }
 
-        public IActionResult Privacy()
+        //Tạo -- lấy form nhập
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
+        //-- tạo xong post lên
         [HttpPost]
-        public IActionResult Language(NavigationViewModel viewModel)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] CustomerCreateRequest request)
         {
-            HttpContext.Session.SetString(SystemConstants.AppSettings.DefaultLanguageId,
-                viewModel.CurrentLanguageId);
+            if (!ModelState.IsValid)
+                return View(request);
 
-            return RedirectToAction("Index");
+            var result = await _customerApiClient.CreateCustomer(request);
+            if (result)
+            {
+                TempData["result"] = "Thêm mới khách hàng thành công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", "Thêm khách hàng thất bại");
+            return View(request);
         }
     }
 }

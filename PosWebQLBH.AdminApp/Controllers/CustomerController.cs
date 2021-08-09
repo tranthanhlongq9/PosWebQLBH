@@ -22,7 +22,7 @@ namespace PosWebQLBH.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        //phương thức lấy user
+        //phương thức lấy customer
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             //lấy session
@@ -70,7 +70,8 @@ namespace PosWebQLBH.AdminApp.Controllers
             ModelState.AddModelError("", "Thêm khách hàng thất bại");
             return View(request);
         }
-        //Xóa 
+
+        //Xóa
         [HttpGet]
         public async Task<IActionResult> Delete(long customerId)
         {

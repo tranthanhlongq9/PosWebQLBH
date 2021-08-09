@@ -71,6 +71,17 @@ namespace PosWebQLBH.WebPOS.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            //đăng xuất SignOutAsync -- xóa cookie
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            HttpContext.Session.Remove("Token"); //xóa token session đc cấp lúc đăng nhập
+
+            return RedirectToAction("Index", "Account");
+        }
+
         //hàm xử lý token
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {

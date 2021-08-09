@@ -238,5 +238,28 @@ namespace PosWebQLBH.AdminApp.Controllers
             var result = await _productApiClient.GetProductById(productId);
             return View(result.ResultObj);
         }
+
+        [HttpGet]
+        public IActionResult UpdateStock()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStock([FromForm] ProductUpdateRequest request)
+        {
+            //if (!ModelState.IsValid)
+            //    return View(request);
+
+            var result = await _productApiClient.UpdateStock(request);
+            if (result)
+            {
+                TempData["result"] = "Cập nhật sản phẩm thành công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
+            return View(request);
+        }
     }
 }
