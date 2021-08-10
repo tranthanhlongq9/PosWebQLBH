@@ -24,5 +24,7 @@ namespace PosWebQLBH.AdminApp.Services
         public Task<string> GetAllPro();
 
         Task<bool> UpdateStock(ProductUpdateRequest request);
+
+        Task<bool> SellStock(ProductUpdateRequest request);
     }
 }

@@ -242,12 +242,21 @@ namespace PosWebQLBH.Application.Catalog.Products
             return await _context.SaveChangesAsync() > 0;
         }
 
-        //hàm cập nhật tồn kho
-        public async Task<bool> UpdateStock(string productId, int addedQuantity) //update số lượng tồn kho
+        //hàm nhập kho
+        public async Task<bool> UpdateStock(string productId, int addedQuantity) //update số lượng kho
         {
             var proQuantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
             if (proQuantity == null) throw new EShopException($"Cannot find a product with id: {productId}");
-            proQuantity.Quantity += addedQuantity; //tăng số lượng tồn kho lên
+            proQuantity.Quantity += addedQuantity; //tăng số lượng trong kho lên
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        //hàm xuất kho
+        public async Task<bool> SellStock(string productId, int addedQuantity) //xuất hàng
+        {
+            var proQuantity = await _context.Inventories.FirstOrDefaultAsync(x => x.IdProduct == productId);
+            if (proQuantity == null) throw new EShopException($"Cannot find a product with id: {productId}");
+            proQuantity.Quantity -= addedQuantity; //giảm số lượng trong kho xuống
             return await _context.SaveChangesAsync() > 0;
         }
 
