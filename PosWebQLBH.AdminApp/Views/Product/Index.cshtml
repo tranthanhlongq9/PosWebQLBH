@@ -130,13 +130,13 @@
                             <td>
                                 <img width="150" height="150" src="@(Configuration["BaseAddress"] +"/user-content/" + item.ThumbnailImage)" />
                             </td>
-                            <td>
+                            <td style="color: blue; font-weight:600">
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
-                            <td>
+                            <td style="color: red; font-weight:700">
                                 @Html.DisplayFor(modelItem => item.Quantity)
                             </td>
-                            <td>
+                            <td style="color: darkviolet; font-weight:600">
                                 @Html.DisplayFor(modelItem => item.Name_Category)
                             </td>
                             <td>

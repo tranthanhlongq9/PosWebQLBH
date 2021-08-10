@@ -214,5 +214,27 @@ namespace PosWebQLBH.AdminApp.Services
             var response = await client.PutAsync($"/api/products/" + request.ID_Product + "/quantity+=" + request.Quantity, requestContent);
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> SellStock(ProductUpdateRequest request)
+        {
+            var sessions = _httpContextAccessor.HttpContext
+                                                .Session.GetString(SystemConstants.AppSettings.Token);
+
+            //lấy language sau này cần
+            //var languageId = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            requestContent.Add(new StringContent(request.ID_Product.ToString()), "iD_Product");
+            //requestContent.Add(new StringContent(request.UpdatedBy.ToString()), "updatedBy");
+            requestContent.Add(new StringContent(request.Quantity.ToString()), "quantity");
+
+            var response = await client.PutAsync($"/api/products/" + request.ID_Product + "/quantity-=" + request.Quantity, requestContent);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

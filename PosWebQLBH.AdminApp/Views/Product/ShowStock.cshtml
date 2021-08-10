@@ -1,0 +1,90 @@
+﻿@using PosWebQLBH.ViewModels.Common;
+@model PagedResult<PosWebQLBH.ViewModels.Catalog.Products.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Sản Phẩm Tồn Kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 3000);
+    </script>
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Sản Phẩm Tồn Kho</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+        <li class="breadcrumb-item active">Tồn kho Product</li>
+    </ol>
+
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <a class="btn btn-success" asp-action="UpdateStock" asp-controller="Product">Tạo nhập kho</a>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <a class="btn btn-success" asp-action="SellStock" asp-controller="Product">Tạo xuất kho</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <!--alert thông báo-->
+            @if (ViewBag.SuccessMess != null)
+            {
+                <div id="msgAlert" class="alert alert-success" role="alert">
+                    @ViewBag.SuccessMess
+                </div>
+            }
+
+            <!-- id="datatablesSimple" -->
+            <table class="table table-bordered" id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>
+                            Mã sản phẩm
+                        </th>
+                        <th>
+                            Tên sản phẩm
+                        </th>
+
+                        <th>
+                            Tồn kho
+                        </th>
+                        <th>
+                            Hình ảnh
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                    <tr>
+                        <td style="font-weight:500; font-size:large">
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name_Product)
+                        </td>
+
+                        <td style="color: red; font-weight:800; font-size:large">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            <img width="150" height="150" src="@(Configuration["BaseAddress"] +"/user-content/" + item.ThumbnailImage)" />
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+            @await Component.InvokeAsync("Pager", Model) <!--Phân trang-->
+        </div>
+    </div>
+</div>

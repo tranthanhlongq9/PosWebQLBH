@@ -136,5 +136,20 @@ namespace PosWebQLBH.BackendApi.Controllers
 
             return BadRequest();
         }
+
+        [HttpPut("{productId}/quantity-={addedQuantity}")] //HttpPut : update tồn kho
+        public async Task<IActionResult> SellStockProduct(string productId, int addedQuantity) //xuất hàng
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var isSuccessfull = await _productService.SellStock(productId, addedQuantity);
+            if (isSuccessfull)
+                return Ok();
+
+            return BadRequest();
+        }
     }
 }
