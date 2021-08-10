@@ -25,8 +25,11 @@ namespace PosWebQLBH.Application.Catalog.Products
         //cập nhật giá
         Task<bool> UpdatePrice(string productId, decimal newPrice);
 
-        //cập nhật tồn kho
+        //nhập hàng
         Task<bool> UpdateStock(string productId, int addedQuantity);
+
+        //xuất hàng
+        Task<bool> SellStock(string productId, int addedQuantity);
 
         //lấy sp lên phân trang
         Task<PagedResult<ProductViewModel>> GetAllpaging(GetManageProductPagingRequest request);

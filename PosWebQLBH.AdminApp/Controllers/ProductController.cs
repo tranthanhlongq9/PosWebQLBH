@@ -254,12 +254,66 @@ namespace PosWebQLBH.AdminApp.Controllers
             var result = await _productApiClient.UpdateStock(request);
             if (result)
             {
-                TempData["result"] = "Cập nhật sản phẩm thành công !!";
+                TempData["result"] = "Nhập sản phẩm thành công !!";
                 return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
             }
 
-            ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
+            ModelState.AddModelError("", "Nhập sản phẩm thất bại");
             return View(request);
+        }
+
+        [HttpGet]
+        public IActionResult SellStock()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SellStock([FromForm] ProductUpdateRequest request)
+        {
+            //if (!ModelState.IsValid)
+            //    return View(request);
+
+            var result = await _productApiClient.SellStock(request);
+            if (result)
+            {
+                TempData["result"] = "Đã xuất sản phẩm thành công !!";
+                return RedirectToAction("Index"); //nếu thành công thì chuyển đến index ở trên
+            }
+
+            ModelState.AddModelError("", "Xuất sản phẩm thất bại");
+            return View(request);
+        }
+
+        public async Task<IActionResult> ShowStock(string keyword, string categoryId, int pageIndex = 1, int pageSize = 10) //phân trang
+        {
+            //lấy session languageId
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+            var request = new GetManageProductPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                LanguageId = languageId,
+                CategoryId = categoryId
+            };
+            var data = await _productApiClient.GetProductPagings(request);
+            /*ViewBag.Keyword = keyword;*/ //để giữ dữ liệu keyword lại trên view khi tìm kiếm
+
+            //var categories = await _categoryApiClient.GetAll();
+            //ViewBag.Categories = categories.Select(x => new SelectListItem()
+            //{
+            //    Text = x.Name_Catetory,
+            //    Value = x.ID_Catetory.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
+            //    Selected = categoryId == x.ID_Catetory //gán giá trị vào view dropdown
+            //});
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMess = TempData["result"];
+            }
+            return View(data);
         }
     }
 }
