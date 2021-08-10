@@ -284,5 +284,36 @@ namespace PosWebQLBH.AdminApp.Controllers
             ModelState.AddModelError("", "Xuất sản phẩm thất bại");
             return View(request);
         }
+
+        public async Task<IActionResult> ShowStock(string keyword, string categoryId, int pageIndex = 1, int pageSize = 10) //phân trang
+        {
+            //lấy session languageId
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+            var request = new GetManageProductPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                LanguageId = languageId,
+                CategoryId = categoryId
+            };
+            var data = await _productApiClient.GetProductPagings(request);
+            /*ViewBag.Keyword = keyword;*/ //để giữ dữ liệu keyword lại trên view khi tìm kiếm
+
+            //var categories = await _categoryApiClient.GetAll();
+            //ViewBag.Categories = categories.Select(x => new SelectListItem()
+            //{
+            //    Text = x.Name_Catetory,
+            //    Value = x.ID_Catetory.ToString(), //nếu là kiểu int thì sẽ chuyển sang string
+            //    Selected = categoryId == x.ID_Catetory //gán giá trị vào view dropdown
+            //});
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMess = TempData["result"];
+            }
+            return View(data);
+        }
     }
 }
